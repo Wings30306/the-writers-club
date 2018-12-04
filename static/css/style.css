@@ -1,0 +1,21 @@
+html, body {
+  margin: 0;
+}
+
+html {
+  min-height: 100vh;
+}
+
+body {
+  background-color: yellow;
+}
+
+header {
+  text-align: center;
+  background-color: blue;
+  color: yellow;
+}
+
+main {
+  background-color: antiquewhite;
+}
