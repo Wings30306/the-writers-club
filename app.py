@@ -6,32 +6,37 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template("index.html", page_title="The Writers' Club - main")
+    return render_template("index.html")
 
 
 @app.route('/register')
 def register():
-    return render_template("index.html", page_title="The Writers' Club - main")
+    return render_template("index.html")
 
 
 @app.route('/login')
 def login():
-    return render_template("index.html", page_title="The Writers' Club - main")
+    return render_template("index.html")
 
 
 @app.route('/<user>')
 def profile(user):
-    return render_template("index.html", page_title="The Writers' Club - main")
+    return render_template("index.html")
 
 
 @app.route('/search')
 def search():
-    return render_template("index.html", page_title="The Writers' Club - main")
+    return render_template("index.html")
 
 
 @app.route('/<title>')
 def read(title):
-    return render_template("index.html", page_title="The Writers' Club - main")
+    return render_template("index.html")
+
+
+@app.route('/new_story')
+def new_story():
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
