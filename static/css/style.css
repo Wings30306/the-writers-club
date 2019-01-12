@@ -1,4 +1,4 @@
-html, body {
+* {
   margin: 0;
 }
 
@@ -7,15 +7,22 @@ html {
 }
 
 body {
-  background-color: yellow;
+  background-color: rgba(218,165,32, 0.5)
 }
 
 header {
   text-align: center;
-  background-color: blue;
-  color: yellow;
+}
+
+header.masthead {
+  background-image: url('https://images.pexels.com/photos/958164/pexels-photo-958164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500');
+  background-color: rgba(218,165,32, 0.5);
+  background-blend-mode: color;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
 }
 
 main {
-  background-color: antiquewhite;
+  background-color: lightgoldenrodyellow;
 }
