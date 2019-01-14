@@ -6,23 +6,13 @@ html {
   min-height: 100vh;
 }
 
-body {
-  background-color: rgba(218,165,32, 0.5)
-}
-
 header {
   text-align: center;
 }
 
 header.masthead {
   background-image: url('https://images.pexels.com/photos/958164/pexels-photo-958164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500');
-  background-color: rgba(218,165,32, 0.5);
-  background-blend-mode: color;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center center;
-}
-
-main {
-  background-color: lightgoldenrodyellow;
 }

@@ -2,4 +2,4 @@
 .vscode
 .travis.yml
 package*
-*.html
+config.*

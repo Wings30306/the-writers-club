@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}
+All Stories
+{% endblock %}
+{% block content %}
+<button class="btn btn-large btn-mycolor">Search</button>
+<hr>
+{% for story in stories %}
+<h4>{{story.title}}<span> by {{story.author}}</span></h4>
+<p>Fandom: {{story.fandom}}</p>
+<p>Summary: {{story.summary}}</p>
+<hr>
+{% endfor %}
+<button class="btn btn-large btn-mycolor">Search</button>
+{%endblock%}
