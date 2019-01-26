@@ -1,20 +1,15 @@
 {% extends "base.html" %}
 {% block title %}
+{{title}}
 {% endblock %}
 {% block content %}
-{% for story in stories %}
-<h4>{{story.title}}</h4>
-<p>Author: {{story.author}}</p>
-<p>Fandom: {{story.fandom}}</p>
-<p>Summary: {{story.summary}}</p>
+<h4>{{title}}</h4>
+<p>Author: {{author}}</p>
+<p>Fandom: {{fandom}}</p>
+<p>Summary: {{summary}}</p>
+<p>Total Chapters: {{total_chapters}}</p>
 <hr>
-<h5>{{story.chapters[0].chapter_title|title}}</h5>
-<p>{{story.chapters[0].chapter_content|replace("\n", "<br>"|safe)}}</p>
-{% endfor %}
-<h2>story title</h2>
-<h5>by author</h5>
-<hr>
-<p>story content</p>
-<hr>
+<h5>{{chapter.chapter_title|title}}</h5>
+<p>{{chapter.chapter_content|replace("\n", "<br>"|safe)}}</p>
 <button class="btn btn-large btn-mycolor">Feedback</button>
-{%endblock%}
+{% endblock %}
