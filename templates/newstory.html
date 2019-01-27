@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}
+Submit Your Story
+{% endblock %}
+{% block content %}
+<form>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Title</label>
+    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="What's your story called?">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Rating</label>
+    <select class="form-control" id="exampleFormControlSelect1">
+      <option>Adult/NSFW</option>
+      <option>15</option>
+      <option>12</option>
+      <option>PG</option>
+      <option>All Ages</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlSelect2">Genre</label>
+    <select multiple class="form-control" id="exampleFormControlSelect2">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Summary</label>
+    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+</form>
+{%endblock%}

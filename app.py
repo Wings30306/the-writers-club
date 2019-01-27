@@ -2,12 +2,13 @@ import os
 from flask import Flask, app, redirect, url_for, render_template, request, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-from config import mongo_uri, mongodb
+from config import mongo_uri, mongodb, secret_key
 from slugify import slugify
 
 app = Flask(__name__)
 app.config["MONGO_DBNAME"] = mongodb()
 app.config["MONGO_URI"] = mongo_uri()
+app.config["SECRET_KEY"] = secret_key()
 
 mongo = PyMongo(app)
 
@@ -54,12 +55,12 @@ def read(story_to_read, chapter_number):
             summary = story['summary']
             total_chapters = len(story['chapters'])
             chapter = story['chapters'][chapter_index]
-    return render_template("story.html", story=story_to_read, title=title, author=author, fandom=fandom, summary=summary, total_chapters=total_chapters, chapter=chapter)
+    return render_template("story.html", story=story_to_read, title=title, author=author, fandom=fandom, summary=summary, total_chapters=total_chapters, chapter=chapter, chapter_number=chapter_number)
 
 
 @app.route('/new_story')
 def new_story():
-    return render_template("index.html")
+    return render_template("newstory.html")
 
 
 if __name__ == "__main__":
