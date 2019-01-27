@@ -1,12 +1,22 @@
-{% extends "base.html" %}
-{% block title %}
-Submit Your Story
-{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %} Submit Your Story {% endblock %} {%
+block content %}
 <form>
   <div class="form-group">
     <label for="exampleFormControlInput1">Title</label>
-    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="What's your story called?">
+    <input
+      type="text"
+      class="form-control"
+      id="exampleFormControlInput1"
+      placeholder="What's your story called?"
+    />
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Summary</label>
+    <textarea
+      class="form-control"
+      id="exampleFormControlTextarea1"
+      rows="3"
+    ></textarea>
   </div>
   <div class="form-group">
     <label for="exampleFormControlSelect1">Rating</label>
@@ -19,18 +29,51 @@ Submit Your Story
     </select>
   </div>
   <div class="form-group">
-    <label for="exampleFormControlSelect2">Genre</label>
+    <label for="exampleFormControlSelect2"
+      >Genre <br /><span
+        >(multiple select available: <br />CTRL+click on Windows,
+        CMD+Shift+click on MacOS)</span
+      ></label
+    >
     <select multiple class="form-control" id="exampleFormControlSelect2">
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
+      <option>Slash</option>
+      <option>Romance</option>
+      <option>Humor</option>
+      <option>Fanfic</option>
+      <option>Poem</option>
+      <option>Add Genre</option>
     </select>
   </div>
   <div class="form-group">
-    <label for="exampleFormControlTextarea1">Summary</label>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    <label for="exampleFormControlSelect2"
+      >Fandom <br /><span
+        >(multiple select available: <br />CTRL+click on Windows,
+        CMD+Shift+click on MacOS)</span
+      ></label
+    >
+    <select multiple class="form-control" id="exampleFormControlSelect2">
+      <option>None (Original story)</option>
+      <option>Harry Potter</option>
+      <option>Westlife</option>
+      <option>Backstreet Boys</option>
+      <option>Add Fandom</option>
+    </select>
+    <span
+      ><strong>Warning:</strong> Only select multiple if the story is a
+      crossover between fandoms!
+    </span>
   </div>
+  <button class="btn btn-sm" id="btn-disclaimer">
+    Add disclaimer (required for fan fiction)
+  </button>
+  <div class="form-group" id="disclaimer">
+    <label for="exampleFormControlTextarea1">Disclaimer</label>
+    <textarea
+      class="form-control"
+      id="exampleFormControlTextarea1"
+      rows="3"
+    ></textarea>
+  </div>
+  <button class="btn btn-lg">save and add chapter</button>
 </form>
 {%endblock%}
