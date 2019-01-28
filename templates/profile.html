@@ -3,6 +3,10 @@
 {% block header %} {{ user | title }} {% endblock %} 
 {% block content %} 
 <h2>About</h2>
+{% if user == session['username'] %}
+<button class="btn btn-sm">Edit</button> {% endif %}
+<hr>
+<h2>Stories</h2>
 {% for story in stories %} 
 {% if story.author == user %}
 <h4>
