@@ -27,6 +27,11 @@ def login():
     session["username"] = test_user()
     return render_template("index.html")
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for("index"))
+
 
 @app.route('/<user>')
 def profile(user):
