@@ -25,7 +25,7 @@ def register():
 @app.route('/login')
 def login():
     session["username"] = test_user()
-    return render_template("index.html")
+    return redirect(url_for('profile', user=session['username']))
 
 @app.route('/logout')
 def logout():
@@ -33,9 +33,10 @@ def logout():
     return redirect(url_for("index"))
 
 
-@app.route('/<user>')
+@app.route('/profile/<user>')
 def profile(user):
-    return render_template("index.html")
+    stories=mongo.db.stories.find()
+    return render_template("profile.html", user=user, stories=stories)
 
 
 @app.route('/all_stories')
