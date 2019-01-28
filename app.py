@@ -35,7 +35,7 @@ def logout():
 
 @app.route('/profile/<user>')
 def profile(user):
-    stories=mongo.db.stories.find()
+    stories=mongo.db.stories.find({'author': user})
     return render_template("profile.html", user=user, stories=stories)
 
 

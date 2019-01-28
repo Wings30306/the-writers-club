@@ -22,6 +22,7 @@ form label {
   justify-content: space-between;
   align-items: flex-start;
 }
+
 form span {
   font-size: 0.75em;
   text-align: right;

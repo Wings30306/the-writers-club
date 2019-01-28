@@ -7,8 +7,7 @@
 <button class="btn btn-sm">Edit</button> {% endif %}
 <hr>
 <h2>Stories</h2>
-{% for story in stories %} 
-{% if story.author == user %}
+{% for story in stories %}
 <h4>
   <a href="{{url_for('read', story_to_read=story.url, chapter_number=1)}}">{{
     story.title
@@ -22,6 +21,7 @@
 {% if story.author == session['username'] %}
 <button class="btn btn-sm">Edit</button> {% endif %}
 <hr />
-{% endif %} 
-{% endfor %} 
+{% endfor %}
+{% if user == session['username'] %}
+<button class="btn btn-sm">Add a story</button> {% endif %}
 {% endblock %}
