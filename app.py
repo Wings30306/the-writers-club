@@ -1,8 +1,8 @@
 import os
-from flask import Flask, app, redirect, url_for, render_template, request, flash
+from flask import Flask, app, redirect, url_for, render_template, request, flash, session
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-from config import mongo_uri, mongodb, secret_key
+from config import mongo_uri, mongodb, secret_key, test_user
 from slugify import slugify
 
 app = Flask(__name__)
@@ -24,6 +24,7 @@ def register():
 
 @app.route('/login')
 def login():
+    session["username"] = test_user()
     return render_template("index.html")
 
 
