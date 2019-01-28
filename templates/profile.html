@@ -2,13 +2,14 @@
 {% block title %} {{ user | title }} {% endblock %} 
 {% block header %} {{ user | title }} {% endblock %} 
 {% block content %} 
+<h2>About</h2>
 {% for story in stories %} 
 {% if story.author == user %}
 <h4>
   <a href="{{url_for('read', story_to_read=story.url, chapter_number=1)}}">{{
     story.title
   }}</a
-  ><span> by {{ story.author }}</span>
+  ><span> by <a href="{{url_for('profile', user=story.author) }}">{{ story.author }}</a></span>
 </h4>
 <p>
   Fandom: {{ story.fandom }}<br />
