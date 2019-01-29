@@ -11,10 +11,21 @@ header {
 }
 
 header.masthead {
-  background-image: url('https://images.pexels.com/photos/958164/pexels-photo-958164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500');
+  background-image: url(https://images.pexels.com/photos/958164/pexels-photo-958164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500);
   background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center center;
+  background-size: cover;
+  background-position: center 75%;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+}
+
+header.masthead .site-heading {
+  padding: 60px 0 0;
+}
+
+.cover-image {
+  width: 100%;
 }
 
 form label {
