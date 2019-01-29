@@ -2,12 +2,21 @@
 {% block title %}
 {{title}}
 {% endblock %}
+{% block header %}
+{{title}}
+{% endblock %}
 {% block content %}
-<h4>{{title}}</h4>
-<p>Author: <a href="{{url_for('profile', user=author) }}">{{ author }}</a></p>
-<p>Fandom: {{fandom}}</p>
-<p>Summary: {{summary}}</p>
-<p>Total Chapters: {{total_chapters}}</p>
+<div class="row">
+  <div class="d-none d-md-block col-md-3"><img class="cover-image" src="https://dummyimage.com/200x300.jpg&text={{title}}" alt="Cover image for {{title}}"></div>
+<div class="col-md-9">
+  <h4>{{title}}</h4>
+Author: <a href="{{url_for('profile', user=author) }}">{{ author }}</a><br>
+Fandom: {{fandom}} <br>
+Summary: {{summary}} <br>
+Total Chapters: {{total_chapters}}
+</div>
+</div>
+
 <hr>
 <h5>{{chapter.chapter_title|title}}</h5>
 <p>{{chapter.chapter_content|replace("\n", "<br>"|safe)}}</p>
