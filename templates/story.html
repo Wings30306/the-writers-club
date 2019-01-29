@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
 <h4>{{title}}</h4>
-<p>Author: {{author}}</p>
+<p>Author: <a href="{{url_for('profile', user=author) }}">{{ author }}</a></p>
 <p>Fandom: {{fandom}}</p>
 <p>Summary: {{summary}}</p>
 <p>Total Chapters: {{total_chapters}}</p>
