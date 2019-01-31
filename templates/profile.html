@@ -2,10 +2,15 @@
 {% block title %} {{ user | title }} {% endblock %} 
 {% block header %} {{ user | title }} {% endblock %} 
 {% block content %} 
-<h2>About</h2>
+{% for this_user in profile %}
+<h2>About {{ this_user.user_name }}</h2>
+{% if this_user.intro %}<p>{{this_user.intro|replace("\n", "<br>"|safe)}}</p>{% endif %}
+{% if this_user.date_started_writing %} <p><em>{{ this_user.user_name|title }} has been writing since {{ this_user.date_started_writing }}.</em></p> {% endif %}
+{% if this_user.show_birthday == true %} <p><em>Birthday: {{this_user.birthday}}</em></p> {% endif %}
 {% if user == session['username'] %}
 <button class="btn btn-sm">Edit</button> {% endif %}
 <hr>
+{% endfor %}
 <h2>Stories</h2>
 {% for story in stories %}
 <h4>
