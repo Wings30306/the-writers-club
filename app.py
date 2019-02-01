@@ -47,7 +47,7 @@ def edit_profile(user):
         return render_template("editprofile.html", user=user, profile=profile)
     else:
         flash("You cannot edit someone else's profile!")
-        return redirect(url_for('index'))
+        return redirect(url_for('profile', user=user))
     
 
 

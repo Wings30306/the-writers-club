@@ -73,14 +73,24 @@
             </li>
             {% if session %}
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('profile', user=session['username']) }}">Your Profile</a>
+              <a
+                class="nav-link"
+                href="{{ url_for('profile', user=session['username']) }}"
+                >Your Profile</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('new_story') }}">Add a Story</a>
+              <a class="nav-link" href="{{ url_for('new_story') }}"
+                >Add a Story</a
+              >
             </li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Log Out</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+            </li>
             {% else %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Sign In</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('login') }}">Sign In</a>
+            </li>
             <li class="nav-item"><a class="nav-link" href="">Register</a></li>
             {% endif %}
             <li class="nav-item">
@@ -103,6 +113,26 @@
             <div class="site-heading">
               <h1>The Writers' Club</h1>
               <h2>{% block header %}{% endblock %}</h2>
+              {% with messages = get_flashed_messages() %} {% if messages %}
+              <ul class="flashes">
+                {% for message in messages %}
+                <div
+                  class="alert alert-danger alert-dismissible fade show"
+                  role="alert"
+                >
+                  {{ message }}
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                {% endfor %}
+              </ul>
+              {% endif %} {% endwith %}
             </div>
           </div>
         </div>
@@ -112,9 +142,7 @@
     <!-- Main Content -->
     <main class="container">
       <div class="row">
-        <div class="col-md-10 mx-auto">
-          {% block content %} {% endblock %}
-        </div>
+        <div class="col-md-10 mx-auto">{% block content %} {% endblock %}</div>
       </div>
     </main>
 
@@ -151,7 +179,16 @@
             </ul>
             <p class="copyright text-muted">
               Copyright &copy;
-              <a href="https://github.com/wings30306" rel="noopener" target="_blank">Joke Heyndels</a> 2018 - <script>document.write(new Date().getFullYear())</script>
+              <a
+                href="https://github.com/wings30306"
+                rel="noopener"
+                target="_blank"
+                >Joke Heyndels</a
+              >
+              2018 -
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
             </p>
           </div>
         </div>
