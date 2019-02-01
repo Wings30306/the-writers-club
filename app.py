@@ -40,6 +40,13 @@ def profile(user):
     return render_template("profile.html", user=user, stories=stories, profile=profile)
 
 
+@app.route('/editprofile/<user>')
+def edit_profile(user):
+    profile=mongo.db.users.find({'user_name': user})
+    return render_template("editprofile.html", user=user, profile=profile)
+    
+
+
 @app.route('/all_stories')
 def all_stories():
     return render_template("allstories.html", 

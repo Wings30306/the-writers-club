@@ -1,0 +1,15 @@
+{% extends 'base.html' %} 
+{% block title %} Edit your profile {% endblock %} 
+{% block header %} Edit your profile {% endblock %} 
+{% block content %} 
+{% for this_user in profile %}
+<div class="form-group">
+<label for="intro">Introduce Yourself!</label>
+<textarea type="text" id="intro" class="form-control" rows=10> {{this_user.intro}}</textarea>
+</div>
+
+{% if this_user.date_started_writing %} <p><em>{{ this_user.user_name|title }} has been writing since {{ this_user.date_started_writing }}.</em></p> {% endif %}
+<p>Birthday: {{this_user.birthday}}</p>
+
+{% endfor %}
+{% endblock %}
