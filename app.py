@@ -42,8 +42,12 @@ def profile(user):
 
 @app.route('/editprofile/<user>')
 def edit_profile(user):
-    profile=mongo.db.users.find({'user_name': user})
-    return render_template("editprofile.html", user=user, profile=profile)
+    profile=mongo.db.users.find({'user_name': session['username']})
+    if user == session['username']:
+        return render_template("editprofile.html", user=user, profile=profile)
+    else:
+        flash("You cannot edit someone else's profile!")
+        return redirect(url_for('index'))
     
 
 

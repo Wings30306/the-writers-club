@@ -8,8 +8,9 @@
 <textarea type="text" id="intro" class="form-control" rows=10> {{this_user.intro}}</textarea>
 </div>
 
-{% if this_user.date_started_writing %} <p><em>{{ this_user.user_name|title }} has been writing since {{ this_user.date_started_writing }}.</em></p> {% endif %}
-<p>Birthday: {{this_user.birthday}}</p>
+<p>I have been writing since <input type="year" name="date_started_writing" id="date_started_writing" value="{{ this_user.date_started_writing }}"></p>
+<p>Birthday: <input type="date" name="birthday" id="birthday" value="{{this_user.birthday}}"> <span class="why"><a href="">Why do we ask this?</a></span></p>
+Show my birthday on Profile: <input type="checkbox" name="show_birthday" id="show_birthday" {% if this_user.show_birthday == true %}checked=checked{% endif %}>
 
 {% endfor %}
 {% endblock %}
