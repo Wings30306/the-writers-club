@@ -1,5 +1,4 @@
 .venv
 .vscode
-.travis.yml
-package*
+__pycache__
 config.*
