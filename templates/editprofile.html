@@ -4,13 +4,21 @@
 {% block content %} 
 {% for this_user in profile %}
 <div class="form-group">
-<label for="intro">Introduce Yourself!</label>
-<textarea type="text" id="intro" class="form-control" rows=10> {{this_user.intro}}</textarea>
+  <label for="intro">Introduce Yourself!</label>
+  <div id="editor"><p>{{this_user.intro|replace("\n", "<br>"|safe)}}</p></div>
+  <input id="hidden-input" name="editor" type="hidden">
 </div>
-
-<p>I have been writing since <input type="year" name="date_started_writing" id="date_started_writing" value="{{ this_user.date_started_writing }}"></p>
-<p>Birthday: <input type="date" name="birthday" id="birthday" value="{{this_user.birthday}}"> <span class="why"><a href="">Why do we ask this?</a></span></p>
-Show my birthday on Profile: <input type="checkbox" name="show_birthday" id="show_birthday" {% if this_user.show_birthday == true %}checked=checked{% endif %}>
+<div class="form-group">
+  <label for="date">I have been writing since </label><input type="year" name="date_started_writing" id="date_started_writing" value="{{ this_user.date_started_writing }}"></label>
+</div>
+<div class="form-group">
+  <label for="birthday">Birthday: </label><input type="date" name="birthday" id="birthday" value="{{this_user.birthday}}"> 
+  <span class="why"><a href="">Why do we ask this?</a></span>
+</div>
+<div class="form-group">
+  <label for="show_birthday">Show my birthday on Profile: </label>
+  <input type="checkbox" name="show_birthday" id="show_birthday" {% if this_user.show_birthday == true %} checked=checked {% endif %}>
+</div>
 
 {% endfor %}
 {% endblock %}
