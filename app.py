@@ -1,4 +1,5 @@
 import os
+from json import JSONEncoder
 from flask import Flask, app, redirect, url_for, render_template, request, flash, session
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -40,14 +41,25 @@ def profile(user):
     return render_template("profile.html", user=user, stories=stories, profile=profile)
 
 
-@app.route('/editprofile/<user>')
+@app.route('/editprofile/<user>', methods=["GET", "POST"])
 def edit_profile(user):
     profile=mongo.db.users.find({'user_name': session['username']})
+    if request.method == "POST":
+        birthday = request.form['birthday']
+        if not request.form['show_birthday']:
+            show_birthday = "off"
+        else:
+           show_birthday = request.form['show_birthday']
+        date_started_writing = request.form['date_started_writing']
+        
+        intro = request.form["intro"]
+        print(intro, date_started_writing, birthday, show_birthday)
+        return redirect(url_for('profile', user = user))
     if user == session['username']:
         return render_template("editprofile.html", user=user, profile=profile)
     else:
         flash("You cannot edit someone else's profile!")
-        return redirect(url_for('profile', user=user))
+        return redirect(url_for('profile', user=user, profile=profile))
     
 
 
