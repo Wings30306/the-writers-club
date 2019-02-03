@@ -41,22 +41,28 @@ def profile(user):
     return render_template("profile.html", user=user, stories=stories, profile=profile)
 
 
-@app.route('/editprofile/<user>', methods=["GET", "POST"])
+@app.route('/editprofile/<user>')
 def edit_profile(user):
     profile=mongo.db.users.find({'user_name': session['username']})
-    if request.method == "POST":
-        birthday = request.form['birthday']
-        if not request.form['show_birthday']:
-            show_birthday = "off"
-        else:
-           show_birthday = request.form['show_birthday']
-        date_started_writing = request.form['date_started_writing']
-        
-        intro = request.form["intro"]
-        print(intro, date_started_writing, birthday, show_birthday)
-        return redirect(url_for('profile', user = user))
     if user == session['username']:
         return render_template("editprofile.html", user=user, profile=profile)
+    else:
+        flash("You cannot edit someone else's profile!")
+        return redirect(url_for('profile', user=user, profile=profile))
+    
+@app.route('/editprofile/<user>', methods=['POST'])
+def update_profile(user):
+    if user == session['username']:
+        users = mongo.db.users
+        users.replace_one( {"user_name": user},
+        {   
+            "user_name": user,
+            "birthday": request.form['birthday'],
+            "date_started_writing": request.form['date_started_writing'],
+            "intro": request.form['intro']
+        })
+
+        return redirect(url_for('profile', user = user)) 
     else:
         flash("You cannot edit someone else's profile!")
         return redirect(url_for('profile', user=user, profile=profile))
