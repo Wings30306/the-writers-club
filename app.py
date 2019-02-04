@@ -1,5 +1,5 @@
 import os
-from json import JSONEncoder
+import json
 from flask import Flask, app, redirect, url_for, render_template, request, flash, session
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -34,14 +34,14 @@ def logout():
     return redirect(url_for("index"))
 
 
-@app.route('/profile/<user>')
+@app.route('/<user>')
 def profile(user):
     profile=mongo.db.users.find({'user_name': user})
     stories=mongo.db.stories.find({'author': user})
     return render_template("profile.html", user=user, stories=stories, profile=profile)
 
 
-@app.route('/editprofile/<user>')
+@app.route('/<user>/edit')
 def edit_profile(user):
     profile=mongo.db.users.find({'user_name': session['username']})
     if user == session['username']:
@@ -50,7 +50,7 @@ def edit_profile(user):
         flash("You cannot edit someone else's profile!")
         return redirect(url_for('profile', user=user, profile=profile))
     
-@app.route('/editprofile/<user>', methods=['POST'])
+@app.route('/<user>/edit', methods=['POST'])
 def update_profile(user):
     if user == session['username']:
         users = mongo.db.users
@@ -80,7 +80,7 @@ def search():
     return render_template("index.html")
 
 
-@app.route('/read/<story_to_read>/<chapter_number>')
+@app.route('/<story_to_read>/<chapter_number>')
 def read(story_to_read, chapter_number):
     stories=mongo.db.stories.find()
     chapter_index=int(chapter_number) - 1
@@ -93,6 +93,39 @@ def read(story_to_read, chapter_number):
             total_chapters = len(story['chapters'])
             chapter = story['chapters'][chapter_index]
     return render_template("story.html", story=story_to_read, title=title, author=author, fandom=fandom, summary=summary, total_chapters=total_chapters, chapter=chapter, chapter_number=chapter_number)
+
+
+@app.route('/<story_to_read>/<chapter_number>/edit')
+def edit_chapter(story_to_read, chapter_number):
+    stories=mongo.db.stories.find()
+    chapter_index=int(chapter_number) - 1
+    for story in stories:
+        if session['username'] == story['author']:
+            if story_to_read == story['url']:
+                author = story['author']
+                title = story['title']
+                fandom = story['fandom']
+                summary = story['summary']
+                total_chapters = len(story['chapters'])
+                chapter = story['chapters'][chapter_index]
+            return render_template("editstory.html", story=story_to_read, title=title, author=author, fandom=fandom, summary=summary, total_chapters=total_chapters, chapter=chapter, chapter_number=chapter_number)
+        else:
+            flash("You cannot edit someone else's story!")
+            return redirect(url_for("index"))
+
+
+@app.route('/<story_to_read>/<chapter_number>/edit', methods=['POST'])
+def update_chapter(story_to_read, chapter_number):
+    if request.form:
+        # Just for your terminal
+        print(request.form['editor'])
+
+        story = json.loads(request.form['editor'])
+        # return the html for testing
+        return story
+    else:
+        # otherwise redirect to same page
+        return redirect(url_for('index'))
 
 
 @app.route('/new_story')
