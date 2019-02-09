@@ -13,12 +13,12 @@
 Author: <a href="{{url_for('profile', user=author) }}">{{ author }}</a><br>
 Fandom: {{fandom}} <br>
 Summary: {{summary}} <br>
-Total Chapters: {{total_chapters}}
+Disclaimer: {{ disclaimer}}
 </div>
 </div>
 
 <hr>
 <h5>{{chapter.chapter_title|title}}</h5>
-<p>{{chapter.chapter_content|replace("\n", "<br>"|safe)}}</p>
+<p>{{chapter.chapter_content|safe}}</p>
 <button class="btn btn-large btn-mycolor">Feedback</button>
 {% endblock %}

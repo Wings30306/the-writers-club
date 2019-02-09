@@ -18,7 +18,7 @@ Edit Chapter {{chapter_number}} of {{title}}
     
   </div>
   <div id="editor">
-    <p>{{chapter.chapter_content|replace("\n", "<br>"|safe)}}</p>
+    <p>{{chapter.chapter_content|safe}}</p>
   </div>
   <!--    Hidden Input    -->
   <input id="hidden-input" name="editor" type="hidden">
