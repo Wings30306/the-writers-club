@@ -95,6 +95,33 @@ def read(story_to_read, chapter_number):
     return render_template("story.html", story=story_to_read, title=title, author=author, fandom=fandom, chapter=chapter, chapter_number=chapter_number, summary=summary, disclaimer=disclaimer)
 
 
+@app.route('/<story_url>/new-chapter')
+def new_chapter(story_url):
+    stories=mongo.db.stories.find({"url": story_url})
+    for story in stories:
+        if session['username'] == story['author']:
+            return render_template("addchapter.html", story=story)
+        else:
+            flash("You cannot edit someone else's story!")
+            return redirect(url_for("index"))
+
+@app.route('/<story_url>/new-chapter', methods=["POST"])
+def add_chapter(story_url):
+    stories = mongo.db.stories
+    chapter_number = request.form['chapter_number']
+    title = request.form['chapter_title']
+    chapter_updated = json.loads(request.form['editor'])
+    chapter = "chapter" + chapter_number
+    stories.find_one_and_update( {"url": story_url},
+    { "$set": {
+        chapter:{'chapter_title': title,
+        'chapter_content': chapter_updated }
+    }}, upsert = True
+    )
+
+    return redirect(url_for('read', story_to_read=story_url, chapter_number=chapter_number))             
+
+
 @app.route('/<story_to_read>/<chapter_number>/edit')
 def edit_chapter(story_to_read, chapter_number):
     stories=mongo.db.stories.find({"url": story_to_read}) 
@@ -114,7 +141,6 @@ def update_chapter(story_to_read, chapter_number):
     title = request.form['chapter_title']
     chapter_updated = json.loads(request.form['editor'])
     chapter = "chapter" + chapter_number
-    print(chapter_updated)
     stories.find_one_and_update( {"url": story_to_read},
     { "$set": {
         chapter:{'chapter_title': title,
@@ -127,6 +153,24 @@ def update_chapter(story_to_read, chapter_number):
 @app.route('/new_story')
 def new_story():
     return render_template("newstory.html")
+
+
+@app.route('/new_story', methods=["POST"])
+def add_story():
+    stories = mongo.db.stories
+    story_url = slugify(request.form.get('title'))
+    stories.insert_one({
+        "title": request.form.get('title'),
+        "url": story_url,
+        "summary": request.form.get('summary'),
+        "author": session['username'],
+        "genre": request.form.get('genre'),
+        "rating": request.form.get('rating'),
+        "fandom": request.form.get('fandom'),
+        "disclaimer": request.form.get('disclaimer'),
+        "chapters": "[]"
+    })
+    return redirect(url_for('new_chapter', story_url=story_url))
 
 
 if __name__ == "__main__":

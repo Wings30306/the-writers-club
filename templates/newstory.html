@@ -2,27 +2,29 @@
 {% block title %} Submit Your Story {% endblock %} 
 {% block header %} Submit Your Story {% endblock %}
 {% block content %}
-<form>
+<form method="POST">
   <div class="form-group">
-    <label for="exampleFormControlInput1">Title</label>
+    <label for="title">Title</label>
     <input
       type="text"
       class="form-control"
-      id="exampleFormControlInput1"
+      id="title"
+      name="title"
       placeholder="What's your story called?"
     />
   </div>
   <div class="form-group">
-    <label for="exampleFormControlTextarea1">Summary</label>
+    <label for="summary">Summary</label>
     <textarea
       class="form-control"
-      id="exampleFormControlTextarea1"
+      id="summary"
+      name="summary"
       rows="3"
     ></textarea>
   </div>
   <div class="form-group">
-    <label for="exampleFormControlSelect1">Rating</label>
-    <select class="form-control" id="exampleFormControlSelect1">
+    <label for="rating">Rating</label>
+    <select class="form-control" id="rating" name="rating">
       <option>Adult/NSFW</option>
       <option>15</option>
       <option>12</option>
@@ -31,13 +33,13 @@
     </select>
   </div>
   <div class="form-group">
-    <label for="exampleFormControlSelect2"
+    <label for="genre"
       >Genre <br /><span
         >(multiple select available: <br />CTRL+click on Windows,
         CMD+Shift+click on MacOS)</span
       ></label
     >
-    <select multiple class="form-control" id="exampleFormControlSelect2">
+    <select multiple class="form-control" id="genre" name="genre">
       <option>Slash</option>
       <option>Romance</option>
       <option>Humor</option>
@@ -47,13 +49,13 @@
     </select>
   </div>
   <div class="form-group">
-    <label for="exampleFormControlSelect2"
+    <label for="fandom"
       >Fandom <br /><span
         >(multiple select available: <br />CTRL+click on Windows,
         CMD+Shift+click on MacOS)</span
       ></label
     >
-    <select multiple class="form-control" id="exampleFormControlSelect2">
+    <select multiple class="form-control" id="fandom" name="fandom">
       <option>None (Original story)</option>
       <option>Harry Potter</option>
       <option>Westlife</option>
@@ -68,11 +70,12 @@
   <button class="btn btn-sm" id="btn-disclaimer">
     Add disclaimer (required for fan fiction)
   </button>
-  <div class="form-group" id="disclaimer">
-    <label for="exampleFormControlTextarea1">Disclaimer</label>
+  <div class="form-group" id="div-disclaimer">
+    <label for="disclaimer">Disclaimer</label>
     <textarea
       class="form-control"
-      id="exampleFormControlTextarea1"
+      id="disclaimer"
+      name="disclaimer"
       rows="3"
     ></textarea>
   </div>
