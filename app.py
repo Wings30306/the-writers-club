@@ -13,6 +13,7 @@ app.config["SECRET_KEY"] = secret_key()
 
 mongo = PyMongo(app)
 
+
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -49,19 +50,22 @@ def edit_profile(user):
     else:
         flash("You cannot edit someone else's profile!")
         return redirect(url_for('profile', user=user, profile=profile))
+
     
 @app.route('/<user>/edit', methods=['POST'])
 def update_profile(user):
     if user == session['username']:
         users = mongo.db.users
-        users.replace_one( {"user_name": user},
+        users.find_one_and_update( {"user_name": user},
+        { "$set": 
         {   
             "user_name": user,
-            "birthday": request.form['birthday'],
-            "date_started_writing": request.form['date_started_writing'],
-            "intro": request.form['intro']
+            "birthday": request.form.get('birthday'),
+            "date_started_writing": request.form.get('date_started_writing'),
+            "intro": json.loads(request.form.get('editor')),
+            "show_birthday": request.form.get('show_birthday')
+        }
         })
-
         return redirect(url_for('profile', user = user)) 
     else:
         flash("You cannot edit someone else's profile!")
