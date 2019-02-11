@@ -84,7 +84,7 @@ def search():
     return render_template("index.html")
 
 
-@app.route('/<story_to_read>/<chapter_number>')
+@app.route('/story/<story_to_read>/<chapter_number>')
 def read(story_to_read, chapter_number):
     stories=mongo.db.stories.find({"url": story_to_read})
     this_chapter = "chapter" + chapter_number
@@ -99,7 +99,7 @@ def read(story_to_read, chapter_number):
     return render_template("story.html", story=story_to_read, title=title, author=author, fandom=fandom, chapter=chapter, chapter_number=chapter_number, summary=summary, disclaimer=disclaimer)
 
 
-@app.route('/<story_url>/new-chapter')
+@app.route('/story/<story_url>/new-chapter')
 def new_chapter(story_url):
     stories=mongo.db.stories.find({"url": story_url})
     for story in stories:
@@ -109,7 +109,7 @@ def new_chapter(story_url):
             flash("You cannot edit someone else's story!")
             return redirect(url_for("index"))
 
-@app.route('/<story_url>/new-chapter', methods=["POST"])
+@app.route('/story/<story_url>/new-chapter', methods=["POST"])
 def add_chapter(story_url):
     stories = mongo.db.stories
     chapter_number = request.form['chapter_number']
@@ -123,10 +123,21 @@ def add_chapter(story_url):
     }}, upsert = True
     )
 
-    return redirect(url_for('read', story_to_read=story_url, chapter_number=chapter_number))             
+    return redirect(url_for('read', story_to_read=story_url, chapter_number=chapter_number))
 
 
-@app.route('/<story_to_read>/<chapter_number>/edit')
+@app.route('/story/<story_to_read>/edit')
+def edit_story(story_to_read):
+    stories=mongo.db.stories.find({"url": story_to_read}) 
+    for story in stories:
+        if session['username'] == story['author']:
+            return render_template("editstory.html", story=story, story_to_read=story_to_read)
+        else:
+            flash("You cannot edit someone else's story!")
+            return redirect(url_for("index"))
+
+
+@app.route('/story/<story_to_read>/<chapter_number>/edit')
 def edit_chapter(story_to_read, chapter_number):
     stories=mongo.db.stories.find({"url": story_to_read}) 
     this_chapter = "chapter" + chapter_number
@@ -139,7 +150,7 @@ def edit_chapter(story_to_read, chapter_number):
             return redirect(url_for("index"))
 
 
-@app.route('/<story_to_read>/<chapter_number>/edit', methods=['POST'])
+@app.route('/story/<story_to_read>/<chapter_number>/edit', methods=['POST'])
 def update_chapter(story_to_read, chapter_number):
     stories = mongo.db.stories
     title = request.form['chapter_title']

@@ -24,7 +24,7 @@
   Summary: {{ story.summary }}
 </p>
 {% if story.author == session['username'] %}
-<a class="btn btn-sm" href="{{url_for('edit_chapter', story_to_read=story.url, chapter_number=1 )}}">Edit</a> {% endif %}
+<a class="btn btn-sm" href="{{url_for('edit_story', story_to_read=story.url )}}">Edit</a> {% endif %}
 <hr />
 {% endfor %}
 {% if user == session['username'] %}
