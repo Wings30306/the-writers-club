@@ -86,9 +86,10 @@ def search():
 
 @app.route('/story/<story_to_read>/<chapter_number>')
 def read(story_to_read, chapter_number):
-    stories=mongo.db.stories.find({"url": story_to_read})
+    stories=mongo.db.stories.find()
     chapter_index = int(chapter_number) - 1
     for story in stories:
+        print(story)
         if story_to_read == story['url']:
             this_chapter = story['chapters'][chapter_index]
             author = story['author']
@@ -99,7 +100,7 @@ def read(story_to_read, chapter_number):
             chapter = this_chapter
             url = story['url']
             total_chapters = len(story['chapters'])
-            return render_template("story.html", story=story_to_read, title=title, author=author, fandom=fandom, chapter=chapter, chapter_number=int(chapter_number), summary=summary, disclaimer=disclaimer, total_chapters = int(total_chapters))
+            return render_template("story.html", story=story, story_to_read=story_to_read, title=title, author=author, fandom=fandom, chapter=chapter, chapter_number=int(chapter_number), summary=summary, disclaimer=disclaimer, total_chapters = int(total_chapters))
 
 
 @app.route('/story/<story_url>/new-chapter')
@@ -118,15 +119,16 @@ def add_chapter(story_url):
     print(stories)
     story = stories.find_one({'url': story_url})
     print(story)
-    chapters = story['chapters']
+    chapters = list()
     print(chapters)
+    chapter_title = request.form['chapter_title']
+    chapter_content = json.loads(request.form['editor'])
     chapter_number = request.form['chapter_number']
-    chapter_index = int(chapter_number) - 1
-    chapters[chapter_index]['chapter_title'] = request.form['chapter_title']
-    chapters[chapter_index]['chapter_content'] = json.loads(request.form['editor'])
+    chapter = {"chapter_title": chapter_title, "chapter_content": chapter_content}
+    print(chapter)
     stories.find_one_and_update( {"url": story_url},
-    { "$set": {
-        "chapters": chapters
+    { "$push": {
+        "chapters": chapter
     }}, upsert = True
     )
 
