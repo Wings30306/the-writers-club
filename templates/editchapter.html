@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block title %}
-Edit Chapter {{chapter_number}} of {{title}}
+Edit Chapter {{chapter_number}} of {{story.title}}
 {% endblock %}
 {% block header %}
-Edit Chapter {{chapter_number}} of {{title}}
+Edit Chapter {{chapter_number}} of {{story.title}}
 {% endblock %}
 {% block content %}
-<form id="form" method="POST" action="{{url_for('update_chapter', story_to_read=story, chapter_number=chapter_number)}}"">
+<form id="form" method="POST" action="{{url_for('update_chapter', story_to_read=story_to_read, chapter_number=chapter_number)}}"">
   <div class="form-group">
     <label for="chapter_title">Chapter Title: </label>
     <input type="text" name="chapter_title" id="chapter_title" value="{{chapter.chapter_title|title}}" class="form-control">

@@ -115,14 +115,18 @@ def new_chapter(story_url):
 @app.route('/story/<story_url>/new-chapter', methods=["POST"])
 def add_chapter(story_url):
     stories = mongo.db.stories
+    print(stories)
+    story = stories.find_one({'url': story_url})
+    print(story)
+    chapters = story['chapters']
+    print(chapters)
     chapter_number = request.form['chapter_number']
-    title = request.form['chapter_title']
-    chapter_updated = json.loads(request.form['editor'])
-    chapter = "chapter" + chapter_number
+    chapter_index = int(chapter_number) - 1
+    chapters[chapter_index]['chapter_title'] = request.form['chapter_title']
+    chapters[chapter_index]['chapter_content'] = json.loads(request.form['editor'])
     stories.find_one_and_update( {"url": story_url},
     { "$set": {
-        chapter:{'chapter_title': title,
-        'chapter_content': chapter_updated }
+        "chapters": chapters
     }}, upsert = True
     )
 
@@ -159,29 +163,32 @@ def update_story(story_to_read):
 
 @app.route('/story/<story_to_read>/<chapter_number>/edit')
 def edit_chapter(story_to_read, chapter_number):
-    stories=mongo.db.stories.find({"url": story_to_read}) 
-    this_chapter = "chapter" + chapter_number
-    for story in stories:
-        if session['username'] == story['author']:
-            chapter = story[this_chapter]
-            return render_template("editstory.html", story=story_to_read, chapter=chapter, chapter_number=chapter_number)
-        else:
-            flash("You cannot edit someone else's story!")
-            return redirect(url_for("index"))
+    story=mongo.db.stories.find_one({"url": story_to_read}) 
+    chapter_index = int(chapter_number) - 1
+    if session['username'] == story['author']:
+        chapter = story['chapters'][chapter_index]
+        return render_template("editchapter.html", story_to_read=story_to_read, story=story, chapter=chapter, chapter_number=chapter_number)
+    else:
+        flash("You cannot edit someone else's story!")
+        return redirect(url_for("index"))
 
 
 @app.route('/story/<story_to_read>/<chapter_number>/edit', methods=['POST'])
 def update_chapter(story_to_read, chapter_number):
     stories = mongo.db.stories
-    title = request.form['chapter_title']
-    chapter_updated = json.loads(request.form['editor'])
-    chapter = "chapter" + chapter_number
+    print(stories)
+    story = stories.find_one({'url': story_to_read})
+    print(story)
+    chapters = story['chapters']
+    print(chapters)
+    chapter_index = int(chapter_number) - 1
+    chapters[chapter_index]['chapter_title'] = request.form['chapter_title']
+    chapters[chapter_index]['chapter_content'] = json.loads(request.form['editor'])
     stories.find_one_and_update( {"url": story_to_read},
     { "$set": {
-        chapter:{'chapter_title': title,
-        'chapter_content': chapter_updated }
-    }
-    })
+        "chapters": chapters
+    }}, upsert = True
+    )
 
     return redirect(url_for('read', story_to_read=story_to_read, chapter_number=chapter_number)) 
 
@@ -203,7 +210,7 @@ def add_story():
         "rating": request.form.get('rating'),
         "fandom": request.form.get('fandom'),
         "disclaimer": request.form.get('disclaimer'),
-        "chapters": "[]"
+        "chapters": []
     })
     return redirect(url_for('new_chapter', story_url=story_url))
 
