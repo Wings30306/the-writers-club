@@ -27,6 +27,6 @@ Total chapters in this story: {{total_chapters}}
 <a href="{{ url_for('read', story_to_read=story, chapter_number = chapter_number - 1)}}" class="btn btn-lg btn-mycolor left">Previous</a>
 {% endif %}
 {% if chapter_number < total_chapters %}
-<a href="{{ url_for('read', story_to_read=story, chapter_number = chapter_number + 1 )}}" class="btn btn-lg btn-mycolor left">Next</a>
+<a href="{{ url_for('read', story_to_read=story_to_read, chapter_number = chapter_number + 1 )}}" class="btn btn-lg btn-mycolor left">Next</a>
 {% endif %}
 {% endblock %}
