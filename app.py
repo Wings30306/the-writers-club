@@ -211,8 +211,7 @@ def add_story():
         "genre": request.form.get('genre'),
         "rating": request.form.get('rating'),
         "fandom": request.form.get('fandom'),
-        "disclaimer": request.form.get('disclaimer'),
-        "chapters": []
+        "disclaimer": request.form.get('disclaimer')
     })
     return redirect(url_for('new_chapter', story_url=story_url))
 
