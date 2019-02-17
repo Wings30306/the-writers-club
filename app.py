@@ -137,6 +137,23 @@ def edit_story(story_to_read):
             return redirect(url_for("index"))
 
 
+@app.route('/story/<story_to_read>/edit', methods=['POST'])
+def update_story(story_to_read):
+    stories = mongo.db.stories
+    stories.find_one_and_update( {"url": story_to_read},
+    { "$set": {
+        "title": request.form.get('title'),
+        "summary": request.form.get('summary'),
+        "author": session['username'],
+        "genre": request.form.get('genre'),
+        "rating": request.form.get('rating'),
+        "fandom": request.form.get('fandom'),
+        "disclaimer": request.form.get('disclaimer'),
+    }
+    })
+    return redirect(url_for('profile', user = session['username']))
+
+
 @app.route('/story/<story_to_read>/<chapter_number>/edit')
 def edit_chapter(story_to_read, chapter_number):
     stories=mongo.db.stories.find({"url": story_to_read}) 

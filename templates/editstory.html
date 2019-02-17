@@ -35,12 +35,10 @@
   </div>
   <div class="form-group">
     <label for="genre"
-      >Genre <br /><span
-        >(multiple select available: <br />CTRL+click on Windows,
-        CMD+Shift+click on MacOS)</span
+      >Genre <br />
       ></label
     >
-    <select multiple class="form-control" id="genre" name="genre" value="{{ story.genre }}">
+    <select class="form-control" id="genre" name="genre" value="{{ story.genre }}">
       <option>Slash</option>
       <option>Romance</option>
       <option>Humor</option>
@@ -51,12 +49,9 @@
   </div>
   <div class="form-group">
     <label for="fandom"
-      >Fandom <br /><span
-        >(multiple select available: <br />CTRL+click on Windows,
-        CMD+Shift+click on MacOS)</span
-      ></label
+      >Fandom <br /></label
     >
-    <select multiple class="form-control" id="fandom" name="fandom" value="{{ story.fandom }}">
+    <select class="form-control" id="fandom" name="fandom" value="{{ story.fandom }}">
       <option>None (Original story)</option>
       <option>Harry Potter</option>
       <option>Westlife</option>
@@ -80,7 +75,7 @@
       rows="3"
     >{{ story.disclaimer }}</textarea>
   </div>
-  <button class="btn btn-lg">save and add chapter</button>
+  <button class="btn btn-lg">save changes</button>
 </form>
 
 {% for chapter in story.chapters %}
