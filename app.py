@@ -87,16 +87,19 @@ def search():
 @app.route('/story/<story_to_read>/<chapter_number>')
 def read(story_to_read, chapter_number):
     stories=mongo.db.stories.find({"url": story_to_read})
-    this_chapter = "chapter" + chapter_number
+    chapter_index = int(chapter_number) - 1
     for story in stories:
         if story_to_read == story['url']:
+            this_chapter = story['chapters'][chapter_index]
             author = story['author']
             title = story['title']
             fandom = story['fandom']
             disclaimer = story['disclaimer']
             summary = story['summary']
-            chapter = story[this_chapter]
-    return render_template("story.html", story=story_to_read, title=title, author=author, fandom=fandom, chapter=chapter, chapter_number=chapter_number, summary=summary, disclaimer=disclaimer)
+            chapter = this_chapter
+            url = story['url']
+            total_chapters = len(story['chapters'])
+            return render_template("story.html", story=story_to_read, title=title, author=author, fandom=fandom, chapter=chapter, chapter_number=int(chapter_number), summary=summary, disclaimer=disclaimer, total_chapters = int(total_chapters))
 
 
 @app.route('/story/<story_url>/new-chapter')

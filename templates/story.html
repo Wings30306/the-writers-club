@@ -13,7 +13,8 @@
 Author: <a href="{{url_for('profile', user=author) }}">{{ author }}</a><br>
 Fandom: {{fandom}} <br>
 Summary: {{summary}} <br>
-Disclaimer: {{ disclaimer}}
+Disclaimer: {{ disclaimer}} <br>
+Total chapters in this story: {{total_chapters}}
 </div>
 </div>
 
@@ -21,4 +22,11 @@ Disclaimer: {{ disclaimer}}
 <h5>{{chapter.chapter_title|title}}</h5>
 <p>{{chapter.chapter_content|safe}}</p>
 <button class="btn btn-large btn-mycolor">Feedback</button>
+<hr>
+{% if chapter_number > 1 %}
+<a href="{{ url_for('read', story_to_read=story, chapter_number = chapter_number - 1)}}" class="btn btn-lg btn-mycolor left">Previous</a>
+{% endif %}
+{% if chapter_number < total_chapters %}
+<a href="{{ url_for('read', story_to_read=story, chapter_number = chapter_number + 1 )}}" class="btn btn-lg btn-mycolor left">Next</a>
+{% endif %}
 {% endblock %}
