@@ -217,6 +217,12 @@ def add_story():
     return redirect(url_for('new_chapter', story_url=story_url))
 
 
+@app.route('/<story_to_read>/delete')
+def delete_story(story_to_read):
+    flash("story deleted")
+    return redirect(url_for('profile', user=session['username']))
+
+
 if __name__ == "__main__":
     app.run(host=os.getenv("IP"),
             port=os.getenv("PORT"),
