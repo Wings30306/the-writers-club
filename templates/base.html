@@ -113,8 +113,14 @@
             <div class="site-heading">
               <h1>The Writers' Club</h1>
               <h2>{% block header %}{% endblock %}</h2>
-              {% with messages = get_flashed_messages() %} {% if messages %}
-              <ul class="flashes">
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Alerts -->
+    {% with messages = get_flashed_messages() %} {% if messages %}
+              <div class="flashes">
                 {% for message in messages %}
                 <div
                   class="alert alert-danger alert-dismissible fade show"
@@ -131,20 +137,14 @@
                   </button>
                 </div>
                 {% endfor %}
-              </ul>
+              </div>
               {% endif %} {% endwith %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
-
     <!-- Main Content -->
-    <main class="container">
+    <section class="container">
       <div class="row">
         <div class="col-md-10 mx-auto">{% block content %} {% endblock %}</div>
       </div>
-    </main>
+    </section>
 
     <!-- Footer (adapted from template) -->
     <footer>
