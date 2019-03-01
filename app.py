@@ -15,7 +15,6 @@ mongo = PyMongo(app)
 
 
 @app.route('/')
-@app.route('/index.html')
 def index():
     return render_template("index.html")
 
@@ -45,8 +44,8 @@ def profile(user):
 
 @app.route('/<user>/edit')
 def edit_profile(user):
-    profile=mongo.db.users.find({'user_name': session['username']})
     if session:
+        profile=mongo.db.users.find({'user_name': user})
         if user == session['username']:
             return render_template("editprofile.html", user=user, profile=profile)
         else:
@@ -60,21 +59,25 @@ def edit_profile(user):
     
 @app.route('/<user>/edit', methods=['POST'])
 def update_profile(user):
-    if user == session['username']:
-        users = mongo.db.users
-        users.find_one_and_update( {"user_name": user},
-        { "$set": 
-        {   
-            "user_name": user,
-            "birthday": request.form.get('birthday'),
-            "date_started_writing": request.form.get('date_started_writing'),
-            "intro": json.loads(request.form.get('editor')),
-            "show_birthday": request.form.get('show_birthday')
-        }
-        })
-        return redirect(url_for('profile', user = user)) 
-    else:
-        flash("You cannot edit someone else's profile!")
+    if session:
+        if user == session['username']:
+            users = mongo.db.users
+            users.find_one_and_update( {"user_name": user},
+            { "$set": 
+            {   
+                "user_name": user,
+                "birthday": request.form.get('birthday'),
+                "date_started_writing": request.form.get('date_started_writing'),
+                "intro": json.loads(request.form.get('editor')),
+                "show_birthday": request.form.get('show_birthday')
+            }
+            })
+            return redirect(url_for('profile', user = user)) 
+        else:
+            flash("You cannot edit someone else's profile!")
+            return redirect(url_for('profile', user=user, profile=profile))
+    else: 
+        flash("You must be signed in to edit your profile!")
         return redirect(url_for('profile', user=user, profile=profile))
     
 
@@ -95,7 +98,6 @@ def read(story_to_read, chapter_number):
     stories=mongo.db.stories.find()
     chapter_index = int(chapter_number) - 1
     for story in stories:
-        print(story)
         if story_to_read == story['url']:
             this_chapter = story['chapters'][chapter_index]
             author = story['author']
@@ -213,22 +215,25 @@ def new_story():
 
 @app.route('/new_story', methods=["POST"])
 def add_story():
-    stories = mongo.db.stories
-    story_url = slugify(request.form.get('title'))
-    stories.insert_one({
-        "title": request.form.get('title'),
-        "url": story_url,
-        "summary": request.form.get('summary'),
-        "author": session['username'],
-        "genre": request.form.get('genre'),
-        "rating": request.form.get('rating'),
-        "fandom": request.form.get('fandom'),
-        "disclaimer": request.form.get('disclaimer')
-    })
-    return redirect(url_for('new_chapter', story_url=story_url))
+    if session:
+        stories = mongo.db.stories
+        story_url = slugify(request.form.get('title'))
+        stories.insert_one({
+            "title": request.form.get('title'),
+            "url": story_url,
+            "summary": request.form.get('summary'),
+            "author": session['username'],
+            "genre": request.form.get('genre'),
+            "rating": request.form.get('rating'),
+            "fandom": request.form.get('fandom'),
+            "disclaimer": request.form.get('disclaimer')
+        })
+        return redirect(url_for('new_chapter', story_url=story_url))
+    else:
+        flash("You must be signed in to add a story!")
 
 
-@app.route('/<story_to_read>/delete')
+@app.route('/story/<story_to_read>/delete')
 def delete_story(story_to_read):
     story=mongo.db.stories.find_one({"url": story_to_read})
     if session: 
@@ -238,7 +243,7 @@ def delete_story(story_to_read):
             flash("You cannot delete someone else's story!")
     else:
         flash("You must be signed in to delete stories!")
-    return redirect(url_for('profile', user=session['username']))
+    return redirect(url_for('index'))
 
 
 @app.route('/story/<story_to_read>/<chapter_number>/delete')
