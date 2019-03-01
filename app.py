@@ -46,11 +46,16 @@ def profile(user):
 @app.route('/<user>/edit')
 def edit_profile(user):
     profile=mongo.db.users.find({'user_name': session['username']})
-    if user == session['username']:
-        return render_template("editprofile.html", user=user, profile=profile)
+    if session:
+        if user == session['username']:
+            return render_template("editprofile.html", user=user, profile=profile)
+        else:
+            flash("You cannot edit someone else's profile!")
+            return redirect(url_for('profile', user=user, profile=profile))
     else:
-        flash("You cannot edit someone else's profile!")
-        return redirect(url_for('profile', user=user, profile=profile))
+        flash("You must be signed in to edit your profile.")
+        return redirect(url_for("index"))
+   
 
     
 @app.route('/<user>/edit', methods=['POST'])
@@ -108,20 +113,21 @@ def read(story_to_read, chapter_number):
 def new_chapter(story_url):
     stories=mongo.db.stories.find({"url": story_url})
     for story in stories:
-        if session['username'] == story['author']:
-            return render_template("addchapter.html", story=story)
-        else:
-            flash("You cannot edit someone else's story!")
+        if session:
+            if session['username'] == story['author']:
+                return render_template("addchapter.html", story=story)
+            else:
+                flash("You cannot edit someone else's story!")
+                return redirect(url_for("index"))
+        else: 
+            flash("You must be signed in to edit your stories!")
             return redirect(url_for("index"))
+
 
 @app.route('/story/<story_url>/new-chapter', methods=["POST"])
 def add_chapter(story_url):
     stories = mongo.db.stories
-    print(stories)
     story = stories.find_one({'url': story_url})
-    print(story)
-    chapters = list()
-    print(chapters)
     chapter_title = request.form['chapter_title']
     chapter_content = json.loads(request.form['editor'])
     chapter_number = request.form['chapter_number']
@@ -140,10 +146,14 @@ def add_chapter(story_url):
 def edit_story(story_to_read):
     stories=mongo.db.stories.find({"url": story_to_read}) 
     for story in stories:
-        if session['username'] == story['author']:
-            return render_template("editstory.html", story=story, story_to_read=story_to_read)
+        if session:
+            if session['username'] == story['author']:
+                return render_template("editstory.html", story=story, story_to_read=story_to_read)
+            else:
+                flash("You cannot edit someone else's story!")
+                return redirect(url_for("index"))
         else:
-            flash("You cannot edit someone else's story!")
+            flash("You must be signed in to edit your stories.")
             return redirect(url_for("index"))
 
 
@@ -168,11 +178,15 @@ def update_story(story_to_read):
 def edit_chapter(story_to_read, chapter_number):
     story=mongo.db.stories.find_one({"url": story_to_read}) 
     chapter_index = int(chapter_number) - 1
-    if session['username'] == story['author']:
-        chapter = story['chapters'][chapter_index]
-        return render_template("editchapter.html", story_to_read=story_to_read, story=story, chapter=chapter, chapter_number=chapter_number)
+    if session: 
+        if session['username'] == story['author']:
+            chapter = story['chapters'][chapter_index]
+            return render_template("editchapter.html", story_to_read=story_to_read, story=story, chapter=chapter, chapter_number=chapter_number)
+        else:
+            flash("You cannot edit someone else's story!")
+            return redirect(url_for("index"))
     else:
-        flash("You cannot edit someone else's story!")
+        flash("You must be signed in to edit your stories!")
         return redirect(url_for("index"))
 
 
@@ -217,10 +231,13 @@ def add_story():
 @app.route('/<story_to_read>/delete')
 def delete_story(story_to_read):
     story=mongo.db.stories.find_one({"url": story_to_read})
-    if session['username'] == story['author']:
-        flash("Story deleted!")
+    if session: 
+        if session['username'] == story['author']:
+            flash("Story deleted!")
+        else:
+            flash("You cannot delete someone else's story!")
     else:
-        flash("You cannot delete someone else's story!")
+        flash("You must be signed in to delete stories!")
     return redirect(url_for('profile', user=session['username']))
 
 
@@ -229,17 +246,21 @@ def delete_chapter(story_to_read, chapter_number):
     stories = mongo.db.stories
     story=mongo.db.stories.find_one({"url": story_to_read}) 
     chapter_index = int(chapter_number) - 1
-    if session['username'] == story['author']:
-        chapter = story['chapters'][chapter_index]
-        stories.find_one_and_update( {"url": story_to_read},
-        { "$pull": {
-        "chapters": chapter
-    }}, upsert = True
-    )
-        flash("Chapter deleted!")
-        return redirect(url_for("edit_story", story_to_read=story_to_read))
+    if session:
+        if session['username'] == story['author']:
+            chapter = story['chapters'][chapter_index]
+            stories.find_one_and_update( {"url": story_to_read},
+            { "$pull": {
+            "chapters": chapter
+            }}, upsert = True
+            )
+            flash("Chapter deleted!")
+            return redirect(url_for("edit_story", story_to_read=story_to_read))
+        else:
+            flash("You cannot delete someone else's story!")
+            return redirect(url_for("index"))
     else:
-        flash("You cannot delete someone else's story!")
+        flash("You must be signed in to delete chapters!")
         return redirect(url_for("index"))
 
 
