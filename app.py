@@ -179,11 +179,8 @@ def edit_chapter(story_to_read, chapter_number):
 @app.route('/story/<story_to_read>/<chapter_number>/edit', methods=['POST'])
 def update_chapter(story_to_read, chapter_number):
     stories = mongo.db.stories
-    print(stories)
     story = stories.find_one({'url': story_to_read})
-    print(story)
     chapters = story['chapters']
-    print(chapters)
     chapter_index = int(chapter_number) - 1
     chapters[chapter_index]['chapter_title'] = request.form['chapter_title']
     chapters[chapter_index]['chapter_content'] = json.loads(request.form['editor'])
@@ -219,8 +216,31 @@ def add_story():
 
 @app.route('/<story_to_read>/delete')
 def delete_story(story_to_read):
-    flash("story deleted")
+    story=mongo.db.stories.find_one({"url": story_to_read})
+    if session['username'] == story['author']:
+        flash("Story deleted!")
+    else:
+        flash("You cannot delete someone else's story!")
     return redirect(url_for('profile', user=session['username']))
+
+
+@app.route('/story/<story_to_read>/<chapter_number>/delete')
+def delete_chapter(story_to_read, chapter_number):
+    stories = mongo.db.stories
+    story=mongo.db.stories.find_one({"url": story_to_read}) 
+    chapter_index = int(chapter_number) - 1
+    if session['username'] == story['author']:
+        chapter = story['chapters'][chapter_index]
+        stories.find_one_and_update( {"url": story_to_read},
+        { "$pull": {
+        "chapters": chapter
+    }}, upsert = True
+    )
+        flash("Chapter deleted!")
+        return redirect(url_for("edit_story", story_to_read=story_to_read))
+    else:
+        flash("You cannot delete someone else's story!")
+        return redirect(url_for("index"))
 
 
 if __name__ == "__main__":

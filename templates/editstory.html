@@ -79,7 +79,9 @@
 </form>
 
 {% for chapter in story.chapters %}
-<p><a href="{{url_for('edit_chapter', chapter_number=loop.index, story_to_read=story_to_read)}}">{{chapter.chapter_title}} </a></p>
+<p><a href="{{url_for('read', chapter_number=loop.index, story_to_read=story_to_read)}}">{{chapter.chapter_title}} </a>
+  <a class="btn btn-sm btn-warning" href="{{url_for('edit_chapter', chapter_number=loop.index, story_to_read=story.url )}}">Edit</a>
+  <a class="btn btn-sm btn-danger" href="{{url_for('delete_chapter', chapter_number=loop.index, story_to_read=story.url )}}">Delete</a></p>
 {% endfor %}
 <a href="{{url_for('add_chapter', story_url=story_to_read)}}" class="btn btn-sm btn-my-color">Add a chapter</a>
 {%endblock%}
