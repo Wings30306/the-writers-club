@@ -221,7 +221,7 @@ def new_story():
 def add_story():
     if session:
         stories = mongo.db.stories
-        story_url = slugify(request.form.get('title'))
+        story_url = (session['username'] + "-" + slugify(request.form.get('title'))).lower()
         stories.insert_one({
             "title": request.form.get('title'),
             "url": story_url,
