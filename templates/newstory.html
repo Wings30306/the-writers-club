@@ -1,7 +1,5 @@
-{% extends "base.html" %} 
-{% block title %} Submit Your Story {% endblock %} 
-{% block header %} Submit Your Story {% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %} Submit Your Story {% endblock %} {%
+block header %} Submit Your Story {% endblock %} {% block content %}
 <form method="POST">
   <div class="form-group">
     <label for="title">Title</label>
@@ -14,6 +12,17 @@
       required
     />
   </div>
+  <label>Choose a cover image</label>
+  {% for image in images %}
+  <div class="form-check-inline">
+    <label class="form-check-label">
+      <input type="radio" class="form-check-input" name="optradio" /><img
+        src="{{url_for('static', filename='images/'+image)}}"
+        alt="{{ image }}"
+      />
+    </label>
+  </div>
+  {% endfor %}
   <div class="form-group">
     <label for="summary">Summary</label>
     <textarea

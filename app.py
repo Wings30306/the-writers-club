@@ -211,7 +211,8 @@ def update_chapter(story_to_read, chapter_number):
 @app.route('/new_story')
 def new_story():
     if session:
-        return render_template("newstory.html")
+        images = ["Wings dark angel blue and white.jpg", "Wings dark angel christmas.jpg", "wings dark angel green and purple.jpg", "wings dark angel Hufflepuff.jpg", "Wings dark angel pink.jpg", "Wings dark angel stressed.jpg", "Wings dark fairy colour.jpg"]
+        return render_template("newstory.html", images=images)
     else:
         flash("You must be signed in to add a story!")
         return redirect(url_for('index'))

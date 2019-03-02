@@ -44,6 +44,16 @@ form span {
   text-align: right;
 }
 
+.form-check-inline {
+  width: 20%;
+  box-sizing: border-box;
+  margin: 5%;
+}
+
+.form-check-inline img {
+  width: 80%;
+}
+
 .ql-align-center,
 .center {
   text-align: center;
