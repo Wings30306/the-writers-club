@@ -1,7 +1,6 @@
-{% extends "base.html" %} 
-{% block title %} Edit {{ story.title}} {% endblock %} 
-{% block header %} Edit "{{ story.title}}" {% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %} Edit {{ story.title }} {% endblock
+%} {% block header %} Edit "{{ story.title }}" {% endblock %} {% block content
+%}
 <form method="POST">
   <div class="form-group">
     <label for="title">Title</label>
@@ -16,16 +15,18 @@
   </div>
   <div class="form-group">
     <label for="summary">Summary</label>
-    <textarea
-      class="form-control"
-      id="summary"
-      name="summary"
-      rows="3"
-    >{{ story.summary }}</textarea>
+    <textarea class="form-control" id="summary" name="summary" rows="3">{{
+      story.summary
+    }}</textarea>
   </div>
   <div class="form-group">
     <label for="rating">Rating</label>
-    <select class="form-control" id="rating" name="rating" value="{{ story.rating }}">
+    <select
+      class="form-control"
+      id="rating"
+      name="rating"
+      value="{{ story.rating }}"
+    >
       <option>Adult/NSFW</option>
       <option>15</option>
       <option>12</option>
@@ -34,11 +35,13 @@
     </select>
   </div>
   <div class="form-group">
-    <label for="genre"
-      >Genre <br />
-      </label
+    <label for="genre">Genre <br /> </label>
+    <select
+      class="form-control"
+      id="genre"
+      name="genre"
+      value="{{ story.genre }}"
     >
-    <select class="form-control" id="genre" name="genre" value="{{ story.genre }}">
       <option>Slash</option>
       <option>Romance</option>
       <option>Humor</option>
@@ -48,10 +51,13 @@
     </select>
   </div>
   <div class="form-group">
-    <label for="fandom"
-      >Fandom <br /></label
+    <label for="fandom">Fandom <br /></label>
+    <select
+      class="form-control"
+      id="fandom"
+      name="fandom"
+      value="{{ story.fandom }}"
     >
-    <select class="form-control" id="fandom" name="fandom" value="{{ story.fandom }}">
       <option>None (Original story)</option>
       <option>Harry Potter</option>
       <option>Westlife</option>
@@ -68,29 +74,62 @@
   </button>
   <div class="form-group" id="div-disclaimer">
     <label for="disclaimer">Disclaimer</label>
-    <textarea
-      class="form-control"
-      id="disclaimer"
-      name="disclaimer"
-      rows="3"
-    >{{ story.disclaimer }}</textarea>
+    <textarea class="form-control" id="disclaimer" name="disclaimer" rows="3">{{
+      story.disclaimer
+    }}</textarea>
   </div>
   <button class="btn btn-lg">save changes</button>
 </form>
 
 {% for chapter in story.chapters %}
-<p><a href="{{url_for('read', chapter_number=loop.index, story_to_read=story_to_read)}}">{{chapter.chapter_title}} </a>
-  <a class="btn btn-sm btn-warning" href="{{url_for('edit_chapter', chapter_number=loop.index, story_to_read=story.url )}}">Edit</a>
-<a class="btn btn-sm btn-danger" type="button" data-toggle="modal" data-target="#{{story.url}}-{{loop.index}}-modal">Delete</a>
-<div id="{{story.url}}-{{loop.index}}-modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-  aria-hidden="true">
+<p>
+  <a
+    href="{{url_for('read', chapter_number=loop.index, story_to_read=story_to_read)}}"
+    >{{ chapter.chapter_title }}
+  </a>
+  <a
+    class="btn btn-sm btn-warning"
+    href="{{url_for('edit_chapter', chapter_number=loop.index, story_to_read=story.url )}}"
+    >Edit</a
+  >
+  <a
+    class="btn btn-sm btn-danger"
+    type="button"
+    data-toggle="modal"
+    data-target="#{{ story.url }}-{{ loop.index }}-modal"
+    >Delete</a
+  >
+</p>
+
+<div
+  id="{{ story.url }}-{{ loop.index }}-modal"
+  class="modal fade bd-example-modal-lg"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myLargeModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Delete Chapter {{loop.index}} of {{story.title}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
       <p>Are you sure you want to delete this chapter?</p>
-      <a href="{{url_for('delete_chapter', story_to_read=story.url, chapter_number=loop.index )}}" class="btn btn-sm btn-danger">DELETE</a>
+      <a
+        href="{{url_for('delete_chapter', story_to_read=story.url, chapter_number=loop.index )}}"
+        class="btn btn-sm btn-danger"
+        >DELETE</a
+      >
     </div>
   </div>
 </div>
 {% endfor %}
-<a href="{{url_for('add_chapter', story_url=story_to_read)}}" class="btn btn-sm btn-my-color">Add a chapter</a>
+<a
+  href="{{url_for('add_chapter', story_url=story_to_read)}}"
+  class="btn btn-sm btn-my-color"
+  >Add a chapter</a
+>
 {%endblock%}
