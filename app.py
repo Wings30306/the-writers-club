@@ -210,7 +210,11 @@ def update_chapter(story_to_read, chapter_number):
 
 @app.route('/new_story')
 def new_story():
-    return render_template("newstory.html")
+    if session:
+        return render_template("newstory.html")
+    else:
+        flash("You must be signed in to add a story!")
+        return redirect(url_for('index'))
 
 
 @app.route('/new_story', methods=["POST"])

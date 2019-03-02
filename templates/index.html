@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Main{% endblock %}
 {% block header %}
-Welcome!
+Welcome {% if session %} {{session.username}} {% endif %}!
 {% endblock %}
 {% block content %}
 <h2>Welcome to the Writers' Club</h2>
