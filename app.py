@@ -242,7 +242,9 @@ def delete_story(story_to_read):
     story=mongo.db.stories.find_one({"url": story_to_read})
     if session: 
         if session['username'] == story['author']:
+            mongo.db.stories.remove({"url": story_to_read})
             flash("Story deleted!")
+            return redirect(url_for('profile', user=session['username']))
         else:
             flash("You cannot delete someone else's story!")
     else:
