@@ -4,8 +4,28 @@ if (window.location.href.endsWith("edit")) {
 }
 
 // Initialize Quill editor 
+
+var toolbarOptions = [
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+
+  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+  [{ 'color': [] }, { 'background': [] }], 
+  [{ 'align': [] }],
+
+  ['clean']                                         // remove formatting button
+];
+
 let quill = new Quill('#editor', {
-  theme: 'snow'
+  theme: 'snow',
+  modules: {
+    toolbar: toolbarOptions
+  }
 });
 
 
