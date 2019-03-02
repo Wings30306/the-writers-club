@@ -6,14 +6,12 @@
 <form id="form" method="POST" action="{{ url_for('update_profile', user=session['username']) }}">
 <div class="form-group">
   <label for="intro">Introduce Yourself!</label>
-  <div id="#toolbar">
-    
-    </div>
-    <div id="editor">
-      <p>{{this_user.intro|safe}}</p>
-    </div>
-    <!--    Hidden Input    -->
-    <input id="hidden-input" name="editor" type="hidden">
+  <!--    Hidden Input    -->
+  <input id="hidden-input" name="editor" type="hidden">
+  <div id="#toolbar"></div>
+  <div id="editor">
+    <p>{{this_user.intro|safe}}</p>
+  </div>
 </div>
 <div class="form-group">
   <label for="date">I have been writing since </label><input type="year" name="date_started_writing" id="date_started_writing" value="{{ this_user.date_started_writing }}"></label>

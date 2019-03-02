@@ -36,7 +36,7 @@ section{
 form label {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 }
 
 form span {
