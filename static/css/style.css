@@ -48,3 +48,11 @@ form span {
 .center {
   text-align: center;
 }
+
+table {
+  width: 100%
+}
+
+tr {
+  padding: 5px
+}
