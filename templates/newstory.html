@@ -54,11 +54,9 @@ block header %} Submit Your Story {% endblock %} {% block content %}
       ></label
     >
     <select multiple class="form-control" id="genre" name="genre" required>
-      <option>Slash</option>
-      <option>Romance</option>
-      <option>Humor</option>
-      <option>Fanfic</option>
-      <option>Poem</option>
+      {% for genre in genres %}
+      <option value="{{genre}}">{{genre}}</option>
+      {% endfor %}
       <option>Add Genre</option>
     </select>
   </div>
@@ -70,10 +68,9 @@ block header %} Submit Your Story {% endblock %} {% block content %}
       ></label
     >
     <select multiple class="form-control" id="fandom" name="fandom" required>
-      <option>None (Original story)</option>
-      <option>Harry Potter</option>
-      <option>Westlife</option>
-      <option>Backstreet Boys</option>
+      {% for fandom in fandoms %}
+      <option value="{{fandom}}">{{fandom}}</option>
+      {% endfor %}
       <option>Add Fandom</option>
     </select>
     <span

@@ -14,6 +14,26 @@ app.config["SECRET_KEY"] = secret_key()
 mongo = PyMongo(app)
 
 
+"""Helper functions"""
+
+def get_genres():
+    stories=mongo.db.stories.find()
+    genres = []
+    for story in stories:
+        genre = story['genre']
+        if genre not in genres:
+            genres.append(genre)
+    return genres
+
+def get_fandoms():
+    stories=mongo.db.stories.find()
+    fandoms = []
+    for story in stories:
+        fandom = story['fandom']
+        if fandom not in fandoms:
+            fandoms.append(fandom)
+    return fandoms
+
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -213,7 +233,9 @@ def update_chapter(story_to_read, chapter_number):
 def new_story():
     if session:
         images = ["Wings dark angel blue and white.jpg", "Wings dark angel christmas.jpg", "wings dark angel green and purple.jpg", "wings dark angel Hufflepuff.jpg", "Wings dark angel pink.jpg", "Wings dark angel stressed.jpg", "Wings dark fairy colour.jpg"]
-        return render_template("newstory.html", images=images)
+        genres = get_genres()
+        fandoms = get_fandoms()
+        return render_template("newstory.html", images=images, genres=genres, fandoms=fandoms)
     else:
         flash("You must be signed in to add a story!")
         return redirect(url_for('index'))
