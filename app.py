@@ -100,6 +100,7 @@ def read(story_to_read, chapter_number):
     for story in stories:
         if story_to_read == story['url']:
             this_chapter = story['chapters'][chapter_index]
+            cover_image = story.get('cover_image')
             author = story['author']
             title = story['title']
             fandom = story['fandom']
@@ -108,7 +109,7 @@ def read(story_to_read, chapter_number):
             chapter = this_chapter
             url = story['url']
             total_chapters = len(story['chapters'])
-            return render_template("story.html", story=story, story_to_read=story_to_read, title=title, author=author, fandom=fandom, chapter=chapter, chapter_number=int(chapter_number), summary=summary, disclaimer=disclaimer, total_chapters = int(total_chapters))
+            return render_template("story.html", story=story, story_to_read=story_to_read, cover_image=cover_image, title=title, author=author, fandom=fandom, chapter=chapter, chapter_number=int(chapter_number), summary=summary, disclaimer=disclaimer, total_chapters = int(total_chapters))
 
 
 @app.route('/story/<story_url>/new-chapter')
@@ -224,7 +225,8 @@ def add_story():
         stories = mongo.db.stories
         story_url = (session['username'] + "-" + slugify(request.form.get('title'))).lower()
         stories.insert_one({
-            "title": request.form.get('title'),
+            "title": request.form.get('title').title(),
+            "cover_image": request.form.get('image'),
             "url": story_url,
             "summary": request.form.get('summary'),
             "author": session['username'],

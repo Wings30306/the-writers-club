@@ -5,11 +5,19 @@
 {% endblock %} {% block content %}
 <div class="row">
   <div class="d-none d-md-block col-md-3">
+    {% if cover_image %}
+    <img
+      class="cover-image"
+      src="{{ cover_image }}"
+      alt="Cover image for {{ title }}"
+    />
+    {% else %}
     <img
       class="cover-image"
       src="https://dummyimage.com/200x300.jpg&text={{ title }}"
       alt="Cover image for {{ title }}"
     />
+    {% endif %}
   </div>
   <div class="col-md-9">
     <h4>{{ title }}</h4>
