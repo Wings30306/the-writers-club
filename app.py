@@ -16,41 +16,58 @@ mongo = PyMongo(app)
 """Global variables"""
 """Collections"""
 stories_collection = mongo.db.stories
-users_collection=mongo.db.users
+users_collection = mongo.db.users
 
 
 """Helper functions"""
 
-def get_genres():
+def list_by_type():
+    list_by_type = {}
+    ratings = []
     genres = []
+    fandoms = []
+    chapter_totals = []
     for story in stories_collection.find():
+        rating = story['rating']
         genre = story['genre']
+        fandom = story['fandom']
+        chapter_total = len(story['chapters'])
+        if rating not in ratings:
+            ratings.append(rating)
         if genre not in genres:
             genres.append(genre)
-    print(genres)
-    return genres
-
-def genre_count():
-    stories_in_genre = []
-    genre_list = get_genres()
-    for genre in genre_list:
-        count = stories_collection.count_documents({"genre": genre})
-        count_obj = {"genre": genre, "total": count}
-        stories_in_genre.append(count_obj)
-    print(stories_in_genre) 
-    return stories_in_genre
-        
-
-def get_fandoms():
-    fandoms = []
-    for story in stories_collection.find():
-        fandom = story['fandom']
         if fandom not in fandoms:
             fandoms.append(fandom)
-    return fandoms
+    list_by_type.update({"ratings": ratings, "genres": genres, "fandoms": fandoms})
+    print(list_by_type)
+    return list_by_type
+
+
+def story_count():
+    story_count = []
+    ratings_list = list_by_type()["ratings"]
+    genres_list = list_by_type()["genres"]
+    fandoms_list = list_by_type()["fandoms"]
+    for rating in ratings_list:
+        count = stories_collection.count_documents({"rating": rating})
+        count_rating = {"rating": rating, "total": count}
+        story_count.append(count_rating)
+    for genre in genres_list:
+        count = stories_collection.count_documents({"genre": genre})
+        count_genre = {"genre": genre, "total": count}
+        story_count.append(count_genre)
+    for fandom in fandoms_list:
+        count = stories_collection.count_documents({"fandom": fandom})
+        count_fandom = {"fandom": fandom, "total": count}
+        story_count.append(count_fandom)
+    print(story_count)
+    return story_count
+
 
 @app.route('/')
 def index():
+    list_by_type()
+    story_count()
     return render_template("index.html")
 
 
@@ -241,10 +258,9 @@ def update_chapter(story_to_read, chapter_number):
 def new_story():
     if session:
         images = ["Wings dark angel blue and white.jpg", "Wings dark angel christmas.jpg", "wings dark angel green and purple.jpg", "wings dark angel Hufflepuff.jpg", "Wings dark angel pink.jpg", "Wings dark angel stressed.jpg", "Wings dark fairy colour.jpg"]
-        genres = get_genres()
-        total_by_genre = genre_count()
-        fandoms = get_fandoms()
-        return render_template("newstory.html", images=images, genres=genres, total_by_genre=total_by_genre, fandoms=fandoms)
+        genres = list_by_type()["genres"]
+        fandoms = list_by_type()["fandoms"]
+        return render_template("newstory.html", images=images, genres=genres, fandoms=fandoms)
     else:
         flash("You must be signed in to add a story!")
         return redirect(url_for('index'))
