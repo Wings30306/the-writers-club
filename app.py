@@ -13,22 +13,37 @@ app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
 
 mongo = PyMongo(app)
 
+"""Global variables"""
+"""Collections"""
+stories_collection = mongo.db.stories
+users_collection=mongo.db.users
+
 
 """Helper functions"""
 
 def get_genres():
-    stories=mongo.db.stories.find()
     genres = []
-    for story in stories:
+    for story in stories_collection.find():
         genre = story['genre']
         if genre not in genres:
             genres.append(genre)
+    print(genres)
     return genres
 
+def genre_count():
+    stories_in_genre = []
+    genre_list = get_genres()
+    for genre in genre_list:
+        count = stories_collection.count_documents({"genre": genre})
+        count_obj = {"genre": genre, "total": count}
+        stories_in_genre.append(count_obj)
+    print(stories_in_genre) 
+    return stories_in_genre
+        
+
 def get_fandoms():
-    stories=mongo.db.stories.find()
     fandoms = []
-    for story in stories:
+    for story in stories_collection.find():
         fandom = story['fandom']
         if fandom not in fandoms:
             fandoms.append(fandom)
@@ -57,17 +72,17 @@ def logout():
 
 @app.route('/<user>')
 def profile(user):
-    profile=mongo.db.users.find({'user_name': user})
-    stories=mongo.db.stories.find({'author': user})
-    return render_template("profile.html", user=user, stories=stories, profile=profile)
+    user_profile=users_collection.find({'user_name': user})
+    user_stories=stories_collection.find({'author': user})
+    return render_template("profile.html", user=user, stories=user_stories, profile=user_profile)
 
 
 @app.route('/<user>/edit')
 def edit_profile(user):
     if session:
-        profile=mongo.db.users.find({'user_name': user})
+        user_profile=users_collection.find({'user_name': user})
         if user == session['username']:
-            return render_template("editprofile.html", user=user, profile=profile)
+            return render_template("editprofile.html", user=user, profile=user_profile)
         else:
             flash("You cannot edit someone else's profile!")
             return redirect(url_for('profile', user=user, profile=profile))
@@ -81,8 +96,7 @@ def edit_profile(user):
 def update_profile(user):
     if session:
         if user == session['username']:
-            users = mongo.db.users
-            users.find_one_and_update( {"user_name": user},
+            users_collection.find_one_and_update( {"user_name": user},
             { "$set": 
             {   
                 "user_name": user,
@@ -104,8 +118,9 @@ def update_profile(user):
 
 @app.route('/all_stories')
 def all_stories():
+    all_stories = stories_collection.find()
     return render_template("allstories.html", 
-    stories=mongo.db.stories.find())
+    stories=all_stories)
 
 
 @app.route('/search')
@@ -115,9 +130,8 @@ def search():
 
 @app.route('/story/<story_to_read>/<chapter_number>')
 def read(story_to_read, chapter_number):
-    stories=mongo.db.stories.find()
     chapter_index = int(chapter_number) - 1
-    for story in stories:
+    for story in stories_collection.find():
         if story_to_read == story['url']:
             this_chapter = story['chapters'][chapter_index]
             cover_image = story.get('cover_image')
@@ -134,8 +148,7 @@ def read(story_to_read, chapter_number):
 
 @app.route('/story/<story_url>/new-chapter')
 def new_chapter(story_url):
-    stories=mongo.db.stories.find({"url": story_url})
-    for story in stories:
+    for story in stories_collection.find({"url": story_url}):
         if session:
             if session['username'] == story['author']:
                 return render_template("addchapter.html", story=story)
@@ -149,14 +162,12 @@ def new_chapter(story_url):
 
 @app.route('/story/<story_url>/new-chapter', methods=["POST"])
 def add_chapter(story_url):
-    stories = mongo.db.stories
-    story = stories.find_one({'url': story_url})
     chapter_title = request.form['chapter_title']
     chapter_content = json.loads(request.form['editor'])
     chapter_number = request.form['chapter_number']
     chapter = {"chapter_title": chapter_title, "chapter_content": chapter_content}
     print(chapter)
-    stories.find_one_and_update( {"url": story_url},
+    stories_collection.find_one_and_update( {"url": story_url},
     { "$push": {
         "chapters": chapter
     }}, upsert = True
@@ -167,8 +178,7 @@ def add_chapter(story_url):
 
 @app.route('/story/<story_to_read>/edit')
 def edit_story(story_to_read):
-    stories=mongo.db.stories.find({"url": story_to_read}) 
-    for story in stories:
+    for story in stories_collection.find({"url": story_to_read}):
         if session:
             if session['username'] == story['author']:
                 return render_template("editstory.html", story=story, story_to_read=story_to_read)
@@ -182,8 +192,7 @@ def edit_story(story_to_read):
 
 @app.route('/story/<story_to_read>/edit', methods=['POST'])
 def update_story(story_to_read):
-    stories = mongo.db.stories
-    stories.find_one_and_update( {"url": story_to_read},
+    stories_collection.find_one_and_update( {"url": story_to_read},
     { "$set": {
         "title": request.form.get('title'),
         "summary": request.form.get('summary'),
@@ -199,7 +208,7 @@ def update_story(story_to_read):
 
 @app.route('/story/<story_to_read>/<chapter_number>/edit')
 def edit_chapter(story_to_read, chapter_number):
-    story=mongo.db.stories.find_one({"url": story_to_read}) 
+    story=stories_collection.find_one({"url": story_to_read}) 
     chapter_index = int(chapter_number) - 1
     if session: 
         if session['username'] == story['author']:
@@ -215,13 +224,12 @@ def edit_chapter(story_to_read, chapter_number):
 
 @app.route('/story/<story_to_read>/<chapter_number>/edit', methods=['POST'])
 def update_chapter(story_to_read, chapter_number):
-    stories = mongo.db.stories
-    story = stories.find_one({'url': story_to_read})
+    story = stories_collection.find_one({'url': story_to_read})
     chapters = story['chapters']
     chapter_index = int(chapter_number) - 1
     chapters[chapter_index]['chapter_title'] = request.form['chapter_title']
     chapters[chapter_index]['chapter_content'] = json.loads(request.form['editor'])
-    stories.find_one_and_update( {"url": story_to_read},
+    stories_collection.find_one_and_update( {"url": story_to_read},
     { "$set": {
         "chapters": chapters
     }}, upsert = True
@@ -234,8 +242,9 @@ def new_story():
     if session:
         images = ["Wings dark angel blue and white.jpg", "Wings dark angel christmas.jpg", "wings dark angel green and purple.jpg", "wings dark angel Hufflepuff.jpg", "Wings dark angel pink.jpg", "Wings dark angel stressed.jpg", "Wings dark fairy colour.jpg"]
         genres = get_genres()
+        total_by_genre = genre_count()
         fandoms = get_fandoms()
-        return render_template("newstory.html", images=images, genres=genres, fandoms=fandoms)
+        return render_template("newstory.html", images=images, genres=genres, total_by_genre=total_by_genre, fandoms=fandoms)
     else:
         flash("You must be signed in to add a story!")
         return redirect(url_for('index'))
@@ -244,9 +253,8 @@ def new_story():
 @app.route('/new_story', methods=["POST"])
 def add_story():
     if session:
-        stories = mongo.db.stories
         story_url = (session['username'] + "-" + slugify(request.form.get('title'))).lower()
-        stories.insert_one({
+        stories_collection.insert_one({
             "title": request.form.get('title').title(),
             "cover_image": request.form.get('image'),
             "url": story_url,
@@ -264,10 +272,10 @@ def add_story():
 
 @app.route('/story/<story_to_read>/delete')
 def delete_story(story_to_read):
-    story=mongo.db.stories.find_one({"url": story_to_read})
+    story=stories_collection.find_one({"url": story_to_read})
     if session: 
         if session['username'] == story['author']:
-            mongo.db.stories.remove({"url": story_to_read})
+            stories_collection.remove({"url": story_to_read})
             flash("Story deleted!")
             return redirect(url_for('profile', user=session['username']))
         else:
@@ -279,13 +287,12 @@ def delete_story(story_to_read):
 
 @app.route('/story/<story_to_read>/<chapter_number>/delete')
 def delete_chapter(story_to_read, chapter_number):
-    stories = mongo.db.stories
-    story=mongo.db.stories.find_one({"url": story_to_read}) 
+    story = stories_collection.find_one({"url": story_to_read}) 
     chapter_index = int(chapter_number) - 1
     if session:
         if session['username'] == story['author']:
             chapter = story['chapters'][chapter_index]
-            stories.find_one_and_update( {"url": story_to_read},
+            stories_collection.find_one_and_update( {"url": story_to_read},
             { "$pull": {
             "chapters": chapter
             }}, upsert = True
