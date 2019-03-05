@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %} Search for a story {% endblock %} {%
+block header %} Search for a story {% endblock %} {% block content %}
+<div class="row">
+  <div class="col-md-4">
+    Ratings:
+    <ul>
+      {% for item in count if item.rating %}
+      <li>{{ item.rating }} - {{ item.total }} stories</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-md-4">
+    Genres:
+    <ul>
+      {% for item in count if item.genre %}
+      <li>{{ item.genre }} - {{ item.total }} stories</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-md-4">
+    Fandoms:
+    <ul>
+      {% for item in count if item.fandom %}
+      <li>{{ item.fandom }} - {{ item.total }} stories</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{%endblock%}

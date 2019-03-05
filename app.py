@@ -142,7 +142,8 @@ def all_stories():
 
 @app.route('/search')
 def search():
-    return render_template("index.html")
+    count = story_count()
+    return render_template("search.html", count=count)
 
 
 @app.route('/story/<story_to_read>/<chapter_number>')
