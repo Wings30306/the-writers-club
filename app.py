@@ -146,6 +146,16 @@ def search():
     return render_template("search.html", count=count)
 
 
+@app.route('/search_results')
+def full_search():
+    return "Results displayed here"
+
+
+@app.route('/random_story')
+def random_story():
+    return "This route will display a random story matching the search criteria."
+
+
 @app.route('/story/<story_to_read>/<chapter_number>')
 def read(story_to_read, chapter_number):
     chapter_index = int(chapter_number) - 1
