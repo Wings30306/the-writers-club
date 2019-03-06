@@ -3,28 +3,54 @@ block header %} Search for a story {% endblock %} {% block content %}
 <div class="row">
   <div class="col-md-4">
     Ratings:
-    <ul>
+    <div class="form-group">
       {% for item in count if item.rating %}
-      <li>{{ item.rating }} - {{ item.total }} stories</li>
+      <input
+        type="checkbox"
+        name="{{ item.rating }}"
+        id="{{ item.rating }}"
+      />&nbsp;<label for="{{ item.rating }}"
+        >{{ item.rating }}&nbsp;&nbsp;({{ item.total }})
+      </label>
+      <br />
       {% endfor %}
-    </ul>
+    </div>
   </div>
   <div class="col-md-4">
     Genres:
-    <ul>
+    <div class="form-group">
       {% for item in count if item.genre %}
-      <li>{{ item.genre }} - {{ item.total }} stories</li>
+      <input
+        type="checkbox"
+        name="{{ item.genre }}"
+        id="{{ item.genre }}"
+      />&nbsp;<label for="{{ item.genre }}"
+        >{{ item.genre }}&nbsp;&nbsp;({{ item.total }})
+      </label>
+      <br />
       {% endfor %}
-    </ul>
+    </div>
   </div>
   <div class="col-md-4">
     Fandoms:
-    <ul>
+    <div class="form-group">
       {% for item in count if item.fandom %}
-      <li>{{ item.fandom }} - {{ item.total }} stories</li>
+      <input
+        type="checkbox"
+        name="{{ item.fandom }}"
+        id="{{ item.fandom }}"
+      />&nbsp;<label for="{{ item.fandom }}"
+        >{{ item.fandom }}&nbsp;&nbsp;({{ item.total }})
+      </label>
+      <br />
       {% endfor %}
-    </ul>
+    </div>
   </div>
+  <a href="{{ url_for('full_search') }}" class="btn btn-lg btn-my-color">Search<br><span>list of matching stories</span></a>
+  <a href="{{ url_for('random_story') }}" class="btn btn-lg btn-my-color">
+    Random Story<br><span>picks a story based on requirements</span>
+  </button>
+  <a href="{{ url_for('all_stories') }}" class="btn btn-lg btn-my-color">All Stories</a>
 </div>
 
 {%endblock%}
