@@ -46,11 +46,11 @@ block header %} Search for a story {% endblock %} {% block content %}
       {% endfor %}
     </div>
   </div>
-  <a href="{{ url_for('full_search') }}" class="btn btn-lg btn-my-color">Search<br><span>list of matching stories</span></a>
-  <a href="{{ url_for('random_story') }}" class="btn btn-lg btn-my-color">
+  <a href="{{ url_for('full_search') }}" class="btn btn-my-color btn-lg btn-my-color">Search<br><span>list of matching stories</span></a>
+  <a href="{{ url_for('random_story') }}" class="btn btn-my-color btn-lg btn-my-color">
     Random Story<br><span>picks a story based on requirements</span>
   </button>
-  <a href="{{ url_for('all_stories') }}" class="btn btn-lg btn-my-color">All Stories</a>
+  <a href="{{ url_for('all_stories') }}" class="btn btn-my-color btn-lg btn-my-color">All Stories</a>
 </div>
 
 {%endblock%}

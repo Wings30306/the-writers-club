@@ -66,3 +66,16 @@ table {
 tr {
   padding: 5px
 }
+
+.btn btn-my-color span {
+  font-size: 0.8em;
+  font-style: italic;
+  font-weight: 100;
+}
+
+.btn-my-color {
+  border: solid 1px darkgrey;
+  border-radius: 5px;
+  box-shadow: 5px 5px 8px darkgrey;
+  margin: 10px;
+}

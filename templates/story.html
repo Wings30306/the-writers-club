@@ -38,15 +38,15 @@
   {% if chapter_number > 1 %}
   <a
     href="{{ url_for('read', story_to_read=story_to_read, chapter_number = chapter_number - 1)}}"
-    class="btn btn-lg btn-mycolor left"
+    class="btn btn-my-color btn-lg btn-my-color left"
     >Previous</a
   >
   {% endif %}
-  <button class="btn btn-large btn-mycolor">Feedback</button>
+  <button class="btn btn-my-color btn-large btn-my-color">Feedback</button>
   {% if chapter_number < total_chapters %}
   <a
     href="{{ url_for('read', story_to_read=story_to_read, chapter_number = chapter_number + 1 )}}"
-    class="btn btn-lg btn-mycolor left"
+    class="btn btn-my-color btn-lg btn-my-color left"
     >Next</a
   >
   {% endif %}

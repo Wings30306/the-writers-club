@@ -6,7 +6,7 @@ All Stories
 All Stories
 {% endblock %}
 {% block content %}
-<button class="btn btn-large btn-mycolor">Search</button>
+<button class="btn btn-large btn-my-color">Search</button>
 <hr>
 {% for story in stories %}
 <h4><a href="{{url_for('read', story_to_read=story.url, chapter_number=1)}}">{{story.title}}</a><span> by <a href="{{url_for('profile', user=story.author) }}">{{ story.author }}</a></span></h4>
@@ -14,5 +14,5 @@ All Stories
 <p>Summary: {{story.summary}}</p>
 <hr>
 {% endfor %}
-<button class="btn btn-large btn-mycolor">Search</button>
+<button class="btn btn-large btn-my-color">Search</button>
 {%endblock%}

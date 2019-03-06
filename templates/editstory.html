@@ -69,7 +69,7 @@
       crossover between fandoms!
     </span>
   </div>
-  <button class="btn btn-sm" id="btn-disclaimer">
+  <button class="btn btn-my-color btn-sm" id="btn-disclaimer">
     Add disclaimer (required for fan fiction)
   </button>
   <div class="form-group" id="div-disclaimer">
@@ -78,7 +78,7 @@
       story.disclaimer
     }}</textarea>
   </div>
-  <button class="btn btn-lg">save changes</button>
+  <button class="btn btn-my-color btn-lg">save changes</button>
 </form>
 <table>
   {% for chapter in story.chapters %}
@@ -91,14 +91,14 @@
     </th>
     <td>
       <a
-        class="btn btn-sm btn-warning"
+        class="btn btn-my-color btn-sm btn-warning"
         href="{{url_for('edit_chapter', chapter_number=loop.index, story_to_read=story.url )}}"
         >Edit</a
       >
     </td>
     <td>
       <a
-        class="btn btn-sm btn-danger"
+        class="btn btn-my-color btn-sm btn-danger"
         type="button"
         data-toggle="modal"
         data-target="#{{ story.url }}-{{ loop.index }}-modal"
@@ -136,7 +136,7 @@
           </h6>
           <a
             href="{{url_for('delete_chapter', story_to_read=story.url, chapter_number=loop.index )}}"
-            class="btn btn-sm btn-danger"
+            class="btn btn-my-color btn-sm btn-danger"
             >DELETE</a
           >
         </div>
@@ -147,7 +147,7 @@
 </table>
 <a
   href="{{url_for('add_chapter', story_url=story_to_read)}}"
-  class="btn btn-sm btn-my-color"
+  class="btn btn-my-color btn-sm btn-my-color"
   >Add a chapter</a
 >
 {%endblock%}
