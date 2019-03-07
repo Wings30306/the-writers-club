@@ -26,20 +26,21 @@ def list_by_type():
     ratings = []
     genres = []
     fandoms = []
-    chapter_totals = []
+    authors = []
     for story in stories_collection.find():
         rating = story['rating']
         genre = story['genre']
         fandom = story['fandom']
-        chapter_total = len(story['chapters'])
+        author = story['author']
         if rating not in ratings:
             ratings.append(rating)
         if genre not in genres:
             genres.append(genre)
         if fandom not in fandoms:
             fandoms.append(fandom)
-    list_by_type.update({"ratings": ratings, "genres": genres, "fandoms": fandoms})
-    print(list_by_type)
+        if author not in authors:
+            authors.append(author)
+    list_by_type.update({"ratings": ratings, "genres": genres, "fandoms": fandoms, "authors": authors})
     return list_by_type
 
 
@@ -48,6 +49,7 @@ def story_count():
     ratings_list = list_by_type()["ratings"]
     genres_list = list_by_type()["genres"]
     fandoms_list = list_by_type()["fandoms"]
+    authors_list = list_by_type()["authors"]
     for rating in ratings_list:
         count = stories_collection.count_documents({"rating": rating})
         count_rating = {"rating": rating, "total": count}
@@ -60,14 +62,29 @@ def story_count():
         count = stories_collection.count_documents({"fandom": fandom})
         count_fandom = {"fandom": fandom, "total": count}
         story_count.append(count_fandom)
-    print(story_count)
+    for author in authors_list:
+        count = stories_collection.count_documents({"author": author})
+        count_author = {"author": author, "total": count}
+        story_count.append(count_author)
     return story_count
 
 
+def search():
+    genre = request.form.get("genre")
+    fandom = request.form.get("fandom")
+    rating = request.form.get("rating")
+    author = request.form.get("author")
+    result = stories_collection.aggregate( [
+        { '$match': { '$and': [ { "genre": genre }, { "fandom": fandom }, {"rating": rating}, { "author": author} ] } } 
+    ] )
+    print(result)
+    return result
+
+
+"""Routes"""
+
 @app.route('/')
 def index():
-    list_by_type()
-    story_count()
     return render_template("index.html")
 
 
@@ -146,14 +163,32 @@ def search():
     return render_template("search.html", count=count)
 
 
+@app.route('/search', methods=["POST"])
+def get_search_results():
+    genre = request.form.get("genre")
+    fandom = request.form.get("fandom")
+    rating = request.form.get("rating")
+    author = request.form.get("author")
+    result = stories_collection.aggregate( [
+        { '$match': { '$and': [ { "genre": genre }, { "fandom": fandom }, {"rating": rating}, { "author": author} ] } } 
+    ] )
+    print(result)
+    return result
+
+
+
+
 @app.route('/search_results')
 def full_search():
-    return "Results displayed here"
+    search()
+    flash("This route will display a list of search results.")
+    return redirect(url_for("all_stories"))
 
 
 @app.route('/random_story')
 def random_story():
-    return "This route will display a random story matching the search criteria."
+    flash("This route will display a random story matching the search criteria.")
+    return redirect(url_for("all_stories"))
 
 
 @app.route('/story/<story_to_read>/<chapter_number>')

@@ -1,56 +1,53 @@
 {% extends "base.html" %} {% block title %} Search for a story {% endblock %} {%
 block header %} Search for a story {% endblock %} {% block content %}
-<div class="row">
-  <div class="col-md-4">
-    Ratings:
-    <div class="form-group">
-      {% for item in count if item.rating %}
-      <input
-        type="checkbox"
-        name="{{ item.rating }}"
-        id="{{ item.rating }}"
-      />&nbsp;<label for="{{ item.rating }}"
-        >{{ item.rating }}&nbsp;&nbsp;({{ item.total }})
-      </label>
-      <br />
-      {% endfor %}
-    </div>
+  <form>
+    <div class="row">
+
+  
+  <div class="form-group col-3">
+    <label for="genre">Genre</label>
+    <select class="form-control" id="genre">
+      <option disabled>No genre selected</option>
+        {% for item in count if item.genre %}
+  <option>{{ item.genre }}</option>
+{% endfor %}
+    </select>
   </div>
-  <div class="col-md-4">
-    Genres:
-    <div class="form-group">
-      {% for item in count if item.genre %}
-      <input
-        type="checkbox"
-        name="{{ item.genre }}"
-        id="{{ item.genre }}"
-      />&nbsp;<label for="{{ item.genre }}"
-        >{{ item.genre }}&nbsp;&nbsp;({{ item.total }})
-      </label>
-      <br />
-      {% endfor %}
+  <div class="form-group col-3">
+      <label for="fandom">Fandom</label>
+      <select class="form-control" id="fandom">
+        <option disabled>No fandom selected</option>
+          {% for item in count if item.fandom %}
+    <option>{{ item.fandom }}</option>
+  {% endfor %}
+      </select>
     </div>
-  </div>
-  <div class="col-md-4">
-    Fandoms:
-    <div class="form-group">
-      {% for item in count if item.fandom %}
-      <input
-        type="checkbox"
-        name="{{ item.fandom }}"
-        id="{{ item.fandom }}"
-      />&nbsp;<label for="{{ item.fandom }}"
-        >{{ item.fandom }}&nbsp;&nbsp;({{ item.total }})
-      </label>
-      <br />
+    <div class="form-group col-3">
+        <label for="rating">Rating</label>
+        <select class="form-control" id="rating">
+          <option disabled>No rating selected</option>
+            {% for item in count if item.rating %}
+      <option>{{ item.rating }}</option>
+    {% endfor %}
+        </select>
+      </div>
+      <div class="form-group col-3">
+          <label for="author">Author</label>
+          <select class="form-control" id="author">
+            <option disabled>No author selected</option>
+              {% for item in count if item.author %}
+        <option>{{ item.author }}</option>
       {% endfor %}
+          </select>
+        </div>
     </div>
+  </form>
   </div>
-  <a href="{{ url_for('full_search') }}" class="btn btn-my-color btn-lg btn-my-color">Search<br><span>list of matching stories</span></a>
-  <a href="{{ url_for('random_story') }}" class="btn btn-my-color btn-lg btn-my-color">
+  <a href="{{ url_for('full_search') }}" class="btn btn-my-color btn-lg">Search<br><span>lists matching stories</span></a>
+  <a href="{{ url_for('random_story') }}" class="btn btn-my-color btn-lg">
     Random Story<br><span>picks a story based on requirements</span>
   </button>
-  <a href="{{ url_for('all_stories') }}" class="btn btn-my-color btn-lg btn-my-color">All Stories</a>
+  <a href="{{ url_for('all_stories') }}" class="btn btn-my-color btn-lg">All Stories</a>
 </div>
 
 {%endblock%}
