@@ -1,12 +1,12 @@
 {% extends "base.html" %} {% block title %} Search for a story {% endblock %} {%
 block header %} Search for a story {% endblock %} {% block content %}
-  <form>
+  <form method="POST">
     <div class="row">
 
   
   <div class="form-group col-3">
     <label for="genre">Genre</label>
-    <select class="form-control" id="genre">
+    <select class="form-control" id="genre" name="genre">
       <option disabled>No genre selected</option>
         {% for item in count if item.genre %}
   <option>{{ item.genre }}</option>
@@ -15,7 +15,7 @@ block header %} Search for a story {% endblock %} {% block content %}
   </div>
   <div class="form-group col-3">
       <label for="fandom">Fandom</label>
-      <select class="form-control" id="fandom">
+      <select class="form-control" id="fandom" name="fandom">
         <option disabled>No fandom selected</option>
           {% for item in count if item.fandom %}
     <option>{{ item.fandom }}</option>
@@ -24,7 +24,7 @@ block header %} Search for a story {% endblock %} {% block content %}
     </div>
     <div class="form-group col-3">
         <label for="rating">Rating</label>
-        <select class="form-control" id="rating">
+        <select class="form-control" id="rating" name="rating">
           <option disabled>No rating selected</option>
             {% for item in count if item.rating %}
       <option>{{ item.rating }}</option>
@@ -33,7 +33,7 @@ block header %} Search for a story {% endblock %} {% block content %}
       </div>
       <div class="form-group col-3">
           <label for="author">Author</label>
-          <select class="form-control" id="author">
+          <select class="form-control" id="author" name="author">
             <option disabled>No author selected</option>
               {% for item in count if item.author %}
         <option>{{ item.author }}</option>
@@ -41,9 +41,9 @@ block header %} Search for a story {% endblock %} {% block content %}
           </select>
         </div>
     </div>
-  </form>
   </div>
-  <a href="{{ url_for('full_search') }}" class="btn btn-my-color btn-lg">Search<br><span>lists matching stories</span></a>
+  <button class="btn btn-my-color btn-lg">Search<br><span>lists matching stories</span></button>
+</form>
   <a href="{{ url_for('random_story') }}" class="btn btn-my-color btn-lg">
     Random Story<br><span>picks a story based on requirements</span>
   </button>

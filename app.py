@@ -69,18 +69,6 @@ def story_count():
     return story_count
 
 
-def search():
-    genre = request.form.get("genre")
-    fandom = request.form.get("fandom")
-    rating = request.form.get("rating")
-    author = request.form.get("author")
-    result = stories_collection.aggregate( [
-        { '$match': { '$and': [ { "genre": genre }, { "fandom": fandom }, {"rating": rating}, { "author": author} ] } } 
-    ] )
-    print(result)
-    return result
-
-
 """Routes"""
 
 @app.route('/')
@@ -169,27 +157,12 @@ def get_search_results():
     fandom = request.form.get("fandom")
     rating = request.form.get("rating")
     author = request.form.get("author")
-    result = stories_collection.aggregate( [
-        { '$match': { '$and': [ { "genre": genre }, { "fandom": fandom }, {"rating": rating}, { "author": author} ] } } 
-    ] )
-    print(result)
-    return result
-
-
-
-
-@app.route('/search_results')
-def full_search():
-    search()
-    flash("This route will display a list of search results.")
-    return redirect(url_for("all_stories"))
-
-
-@app.route('/random_story')
-def random_story():
-    flash("This route will display a random story matching the search criteria.")
-    return redirect(url_for("all_stories"))
-
+    result = stories_collection.find( { '$and': [ { "genre": genre }, { "fandom": fandom }, {"rating": rating}, { "author": author} ] } )
+    search_result=[]
+    for story in result:
+        search_result.append(story)
+    return render_template("allstories.html", stories=search_result)
+    
 
 @app.route('/story/<story_to_read>/<chapter_number>')
 def read(story_to_read, chapter_number):
