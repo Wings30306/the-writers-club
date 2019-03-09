@@ -6,13 +6,19 @@ All Stories
 All Stories
 {% endblock %}
 {% block content %}
-<button class="btn btn-large btn-my-color">Search</button>
 <hr>
+{% if stories == [] %}
+<p>
+  No stories were found with the selected criteria!
+</p>
+<a class="btn btn-large btn-my-color" href="{{url_for('search')}}">Try Another Search</a>
+{% else %}
 {% for story in stories %}
 <h4><a href="{{url_for('read', story_to_read=story.url, chapter_number=1)}}">{{story.title}}</a><span> by <a href="{{url_for('profile', user=story.author) }}">{{ story.author }}</a></span></h4>
 <p>Fandom: {{story.fandom}}</p>
 <p>Summary: {{story.summary}}</p>
 <hr>
 {% endfor %}
-<button class="btn btn-large btn-my-color">Search</button>
+<a class="btn btn-large btn-my-color" href="{{url_for('search')}}">Search</a>
+{% endif %}
 {%endblock%}
