@@ -154,15 +154,24 @@ def search():
 @app.route('/search', methods=["POST"])
 def get_search_results():
     genre = request.form.get("genre")
+    if genre == "No genre selected":
+        genre = { '$exists': True }
     fandom = request.form.get("fandom")
+    if fandom == "No fandom selected":
+        fandom = { '$exists': True }
     rating = request.form.get("rating")
+    if rating == "No rating selected":
+        rating = { '$exists': True }
     author = request.form.get("author")
+    if author == "No author selected":
+        author = { '$exists': True }
     result = stories_collection.find( { '$and': [ { "genre": genre }, { "fandom": fandom }, {"rating": rating}, { "author": author} ] } )
     search_result=[]
     for story in result:
         search_result.append(story)
+    print(search_result)
     return render_template("allstories.html", stories=search_result)
-    
+
 
 @app.route('/story/<story_to_read>/<chapter_number>')
 def read(story_to_read, chapter_number):
