@@ -166,11 +166,7 @@ def get_search_results():
     if author == "No author selected":
         author = { '$exists': True }
     result = stories_collection.find( { '$and': [ { "genre": genre }, { "fandom": fandom }, {"rating": rating}, { "author": author} ] } )
-    search_result=[]
-    for story in result:
-        search_result.append(story)
-    print(search_result)
-    return render_template("allstories.html", stories=search_result)
+    return render_template("allstories.html", stories=result)
 
 
 @app.route('/story/<story_to_read>/<chapter_number>')
