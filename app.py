@@ -29,7 +29,7 @@ def list_by_type():
     authors = []
     for story in stories_collection.find():
         rating = story['rating']
-        genre = story['genre']
+        genre = story.get('genre')
         fandom = story['fandom']
         author = story['author']
         if rating not in ratings:
@@ -293,6 +293,13 @@ def new_story():
 @app.route('/new_story', methods=["POST"])
 def add_story():
     if session:
+        genres = []
+        genre = request.form.get('genre')
+        new_genre = request.form.get('newgenre')
+        if genre not in genres:
+            genres.append(genre)
+        if new_genre:
+            genres.append(new_genre)
         story_url = (session['username'] + "-" + slugify(request.form.get('title'))).lower()
         stories_collection.insert_one({
             "title": request.form.get('title').title(),
@@ -300,7 +307,7 @@ def add_story():
             "url": story_url,
             "summary": request.form.get('summary'),
             "author": session['username'],
-            "genre": request.form.get('genre'),
+            "genres": genres,
             "rating": request.form.get('rating'),
             "fandom": request.form.get('fandom'),
             "disclaimer": request.form.get('disclaimer')

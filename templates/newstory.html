@@ -12,14 +12,22 @@ block header %} Submit Your Story {% endblock %} {% block content %}
       required
     />
   </div>
-  <label>Choose a cover image <br /><span
-    >(If no image is selected, a grey placeholder will show with the chapter title.<br>Uploading your own image is not yet possible at this time.)</span
-  ></label>
+  <label
+    >Choose a cover image <br /><span
+      >(If no image is selected, a grey placeholder will show with the chapter
+      title.<br />Uploading your own image is not yet possible at this
+      time.)</span
+    ></label
+  >
   {% for image in images %}
   <div class="form-check-inline">
     <label class="form-check-label">
-      <input type="radio" class="form-check-input" name="image" 
-      value="{{url_for('static', filename='images/'+image)}}"/><img
+      <input
+        type="radio"
+        class="form-check-input"
+        name="image"
+        value="{{url_for('static', filename='images/'+image)}}"
+      /><img
         src="{{url_for('static', filename='images/'+image)}}"
         alt="{{ image }}"
       />
@@ -47,18 +55,25 @@ block header %} Submit Your Story {% endblock %} {% block content %}
     </select>
   </div>
   <div class="form-group">
-    <label for="genre"
-      >Genre <br /><span
-        >(multiple select available: <br />CTRL+click on Windows,
-        CMD+Shift+click on MacOS)</span
-      ></label
-    >
-    <select multiple class="form-control" id="genre" name="genre" required>
+    <label for="genre">Genre</label>
+    <div class="checkbox-list">
       {% for genre in genres %}
-      <option value="{{genre}}">{{genre}}</option>
+      <label class="form-check-label">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          name="genre{{loopindex}}"
+          value="{{ genre }}"
+        />{{ genre }}
+      </label>
       {% endfor %}
-      <option>Add Genre</option>
-    </select>
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" /><input
+          type="text"
+          name="newgenre"
+        />
+      </label>
+    </div>
   </div>
   <div class="form-group">
     <label for="fandom"
@@ -69,7 +84,7 @@ block header %} Submit Your Story {% endblock %} {% block content %}
     >
     <select multiple class="form-control" id="fandom" name="fandom" required>
       {% for fandom in fandoms %}
-      <option value="{{fandom}}">{{fandom}}</option>
+      <option>{{ fandom }}</option>
       {% endfor %}
       <option>Add Fandom</option>
     </select>
