@@ -82,53 +82,14 @@ def index():
 
 
 """
-User AUTH with thanks to Miroslav Svec, DCD Channel lead.
+User authentication with thanks to Miroslav Svec, DCD Channel lead.
 Adapted from https://github.com/MiroslavSvec/DCD_lead
 """
-
-# Login
-@app.route('/login', methods=['GET'])
-def login():
-        # Check if user is not logged in already
-    if session:
-        flash("You are logged in already!")
-        return redirect(url_for('profile', user=session['username']))
-    else:
-        # Render the page for user to be able to log in
-        return render_template("login.html")
-
-
-# Check user login details from login form
-@app.route('/user_auth', methods=['POST'])
-def user_auth():
-    form = request.form.to_dict()
-    user_in_db = users_collection.find_one({"user_name": form['username']})
-    # Check for user in database
-    if user_in_db:
-        # If passwords match (hashed / real password)
-        if check_password_hash(user_in_db['password'], form['user_password']):
-            # Log user in (add to session)
-            session['username'] = form['username']
-            # If the user is admin redirect him to admin area
-            if session['username'] == "admin":
-                return redirect(url_for('admin'))
-            else:
-                flash("You were logged in!")
-                return redirect(url_for('profile', user=user_in_db['user_name']))
-
-        else:
-            flash("Wrong password / username!")
-            return redirect(url_for('login'))
-    else:
-        flash("You must be registered!")
-        return redirect(url_for('register'))
-
 # Sign up
 @app.route('/register')
 def register():
     # Check if user is not logged in already
     if 'username' in session:
-        print(session)
         flash('You are already signed in!')
         return redirect(url_for('profile', user=session['username']))
         # Render page for user to be able to register
@@ -143,7 +104,7 @@ def check_registration():
         # If so try to find the user in db
         user = users_collection.find_one({"user_name": form['username']})
         if user:
-            flash(form['username'] + " already exists!")
+            flash(form['username'].title() + " already exists!  Is this you?  Please sign in instead.  Else, please choose a different username.")
             return redirect(url_for('register'))
         # If user does not exist register new user
         else:
@@ -169,7 +130,42 @@ def check_registration():
                 return redirect(url_for('register'))
 
     else:
-        flash("Passwords dont match!")
+        flash("Passwords don't match!")
+        return redirect(url_for('register'))
+
+
+# Login
+@app.route('/login', methods=['GET'])
+def login():
+        # Check if user is not logged in already
+    if session:
+        flash("You are logged in already!")
+        return redirect(url_for('profile', user=session['username']))
+    else:
+        # Render the page for user to be able to log in
+        return render_template("login.html")
+
+
+# Check user login details from login form
+@app.route('/user_auth', methods=['POST'])
+def user_auth():
+    form = request.form.to_dict()
+    user_in_db = users_collection.find_one({"user_name": form['username']})
+    # Check for user in database
+    if user_in_db:
+        # If passwords match (hashed / real password)
+        if check_password_hash(user_in_db['password'], form['user_password']):
+            # Log user in (add to session)
+            session['username'] = form['username']
+            # If the user is admin redirect him to admin area
+            flash("You have been successfully signed in!")
+            return redirect(url_for('profile', user=user_in_db['user_name']))
+
+        else:
+            flash("Wrong password / username!")
+            return redirect(url_for('login'))
+    else:
+        flash("You must be registered!")
         return redirect(url_for('register'))
 
 
@@ -178,7 +174,7 @@ def check_registration():
 def logout():
         # Clear the session
     session.clear()
-    flash('You were logged out!')
+    flash('You have been logged out. We hope to see you again soon!')
     return redirect(url_for('index'))
 
 
