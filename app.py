@@ -32,8 +32,12 @@ def list_by_type():
     authors = []
     for story in stories_collection.find():
         rating = story['rating']
-        genre = story.get('genre')
-        fandom = story['fandom']
+        genres_in_story = story['genres']
+        for genre in genres_in_story:
+            genre
+        fandoms_in_story = story['fandoms']
+        for fandom in fandoms_in_story:
+            fandom
         author = story['author']
         if rating not in ratings:
             ratings.append(rating)
@@ -59,17 +63,18 @@ def story_count():
         count_rating = {"rating": rating, "total": count}
         story_count.append(count_rating)
     for genre in genres_list:
-        count = stories_collection.count_documents({"genre": genre})
+        count = stories_collection.count_documents({"genres": genre})
         count_genre = {"genre": genre, "total": count}
         story_count.append(count_genre)
     for fandom in fandoms_list:
-        count = stories_collection.count_documents({"fandom": fandom})
+        count = stories_collection.count_documents({"fandoms": fandom})
         count_fandom = {"fandom": fandom, "total": count}
         story_count.append(count_fandom)
     for author in authors_list:
         count = stories_collection.count_documents({"author": author})
         count_author = {"author": author, "total": count}
         story_count.append(count_author)
+    print(story_count)
     return story_count
 
 
@@ -104,7 +109,8 @@ def check_registration():
         # If so try to find the user in db
         user = users_collection.find_one({"user_name": form['username']})
         if user:
-            flash(form['username'].title() + " already exists!  Is this you?  Please sign in instead.  Else, please choose a different username.")
+            flash(form['username'].title(
+            ) + " already exists!  Is this you?  Please sign in instead.  Else, please choose a different username.")
             return redirect(url_for('register'))
         # If user does not exist register new user
         else:
@@ -254,7 +260,7 @@ def get_search_results():
     author = request.form.get("author")
     if author == "No author selected":
         author = {'$exists': True}
-    result = stories_collection.find({'$and': [{"genre": genre}, {"fandom": fandom}, {
+    result = stories_collection.find({'$and': [{"genres": genre}, {"fandoms": fandom}, {
                                      "rating": rating}, {"author": author}]})
     return render_template("allstories.html", stories=result)
 
@@ -262,19 +268,18 @@ def get_search_results():
 @app.route('/story/<story_to_read>/<chapter_number>')
 def read(story_to_read, chapter_number):
     chapter_index = int(chapter_number) - 1
-    for story in stories_collection.find():
-        if story_to_read == story['url']:
-            this_chapter = story['chapters'][chapter_index]
-            cover_image = story.get('cover_image')
-            author = story['author']
-            title = story['title']
-            fandom = story['fandom']
-            disclaimer = story['disclaimer']
-            summary = story['summary']
-            chapter = this_chapter
-            url = story['url']
-            total_chapters = len(story['chapters'])
-            return render_template("story.html", story=story, story_to_read=story_to_read, cover_image=cover_image, title=title, author=author, fandom=fandom, chapter=chapter, chapter_number=int(chapter_number), summary=summary, disclaimer=disclaimer, total_chapters=int(total_chapters))
+    for story in stories_collection.find({"url": story_to_read}):
+        this_chapter = story['chapters'][chapter_index]
+        cover_image = story.get('cover_image')
+        author = story['author']
+        title = story['title']
+        fandoms = story['fandoms']
+        disclaimer = story['disclaimer']
+        summary = story['summary']
+        chapter = this_chapter
+        url = story['url']
+        total_chapters = len(story['chapters'])
+        return render_template("story.html", story=story, story_to_read=story_to_read, cover_image=cover_image, title=title, author=author, fandoms=fandoms, chapter=chapter, chapter_number=int(chapter_number), summary=summary, disclaimer=disclaimer, total_chapters=int(total_chapters))
 
 
 @app.route('/story/<story_url>/new-chapter')
@@ -313,7 +318,10 @@ def edit_story(story_to_read):
     for story in stories_collection.find({"url": story_to_read}):
         if session:
             if session['username'] == story['author']:
-                return render_template("editstory.html", story=story, story_to_read=story_to_read)
+                genres = list_by_type()["genres"]
+                fandoms = list_by_type()["fandoms"]
+                ratings = ['Adult/NSFW', '15', '12', 'PG', 'All Ages']
+                return render_template("editstory.html", story=story, story_to_read=story_to_read, genres=genres, fandoms=fandoms, ratings=ratings)
             else:
                 flash("You cannot edit someone else's story!")
                 return redirect(url_for("index"))
@@ -324,14 +332,30 @@ def edit_story(story_to_read):
 
 @app.route('/story/<story_to_read>/edit', methods=['POST'])
 def update_story(story_to_read):
+    genres = []
+    genre = request.form.get('genre')
+    new_genre = request.form.get('newgenre')
+    if genre not in genres:
+        if genre is not None:
+            genres.append(genre)
+    if new_genre:
+        genres.append(new_genre)
+    fandoms = []
+    fandom = request.form.get('fandom')
+    new_fandom = request.form.get('newfandom')
+    if fandom not in fandoms:
+        if fandom is not None:
+            fandoms.append(fandom)
+    if new_fandom:
+        fandoms.append(new_fandom)
     stories_collection.find_one_and_update({"url": story_to_read},
                                            {"$set": {
                                                "title": request.form.get('title'),
                                                "summary": request.form.get('summary'),
                                                "author": session['username'],
-                                               "genre": request.form.get('genre'),
+                                               "genres": genres,
                                                "rating": request.form.get('rating'),
-                                               "fandom": request.form.get('fandom'),
+                                               "fandoms": fandoms,
                                                "disclaimer": request.form.get('disclaimer'),
                                            }
     })
@@ -387,13 +411,24 @@ def new_story():
 @app.route('/new_story', methods=["POST"])
 def add_story():
     if session:
-        genres = []
-        genre = request.form.get('genre')
-        new_genre = request.form.get('newgenre')
-        if genre not in genres:
-            genres.append(genre)
-        if new_genre:
-            genres.append(new_genre)
+        formatted_inputs = {}
+        form_data = request.form
+        for key in form_data:
+            value_key = key
+            key = key.split("-")
+            key = key[0]
+            if key in formatted_inputs:
+                formatted_inputs[key].append(form_data[value_key])
+            else:
+                formatted_inputs[f"{key}" ] = []
+                formatted_inputs[key].append(form_data[value_key])
+        genres = formatted_inputs["genre"]
+        print(genres)
+        genres.append(form_data.get("newgenre"))
+        fandoms = formatted_inputs["fandom"]
+        print(fandoms)
+        fandoms.append(form_data.get("newfandom"))
+        print(fandoms)
         story_url = (session['username'] + "-" +
                      slugify(request.form.get('title'))).lower()
         stories_collection.insert_one({
@@ -404,7 +439,7 @@ def add_story():
             "author": session['username'],
             "genres": genres,
             "rating": request.form.get('rating'),
-            "fandom": request.form.get('fandom'),
+            "fandoms": fandoms,
             "disclaimer": request.form.get('disclaimer')
         })
         return redirect(url_for('new_chapter', story_url=story_url))
