@@ -62,7 +62,7 @@ block header %} Submit Your Story {% endblock %} {% block content %}
         <input
           type="checkbox"
           class="form-check-input"
-          name="genre{{loopindex}}"
+          name="genre-{{ loop.index }}"
           value="{{ genre }}"
         />{{ genre }}
       </label>
@@ -76,18 +76,25 @@ block header %} Submit Your Story {% endblock %} {% block content %}
     </div>
   </div>
   <div class="form-group">
-    <label for="fandom"
-      >Fandom <br /><span
-        >(multiple select available: <br />CTRL+click on Windows,
-        CMD+Shift+click on MacOS)</span
-      ></label
-    >
-    <select multiple class="form-control" id="fandom" name="fandom" required>
+    <label for="fandom">Fandom</label>
+    <div class="checkbox-list">
       {% for fandom in fandoms %}
-      <option>{{ fandom }}</option>
+      <label class="form-check-label">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          name="fandom-{{ loop.index }}"
+          value="{{ fandom }}"
+        />{{ fandom }}
+      </label>
       {% endfor %}
-      <option>Add Fandom</option>
-    </select>
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" /><input
+          type="text"
+          name="newfandom"
+        />
+      </label>
+    </div>
     <span
       ><strong>Warning:</strong> Only select multiple if the story is a
       crossover between fandoms!
