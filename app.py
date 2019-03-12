@@ -496,6 +496,11 @@ def delete_chapter(story_to_read, chapter_number):
         return redirect(url_for("index"))
 
 
+@app.route('/story/<story_to_read>/<chapter_number>/feedback')
+def display_fb_page(story_to_read, chapter_number):
+    return render_template("feedback.html")
+
+
 if __name__ == "__main__":
     app.run(host=os.getenv("IP"),
             port=os.getenv("PORT"),

@@ -46,7 +46,11 @@
     >Previous</a
   >
   {% endif %}
-  <button class="btn btn-large btn-mycolor">Feedback</button>
+  <a
+    href="{{ url_for('display_fb_page', story_to_read=story_to_read, chapter_number = chapter_number )}}"
+    class="btn btn-lg btn-mycolor left"
+    >Feedback</a
+  >
   {% if chapter_number < total_chapters %}
   <a
     href="{{ url_for('read', story_to_read=story_to_read, chapter_number = chapter_number + 1 )}}"
