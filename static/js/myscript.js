@@ -1,4 +1,4 @@
-if (window.location.href.endsWith("edit")) {
+if (window.location.href.endsWith("edit"||"feedback")) {
   // you could be all code in here so that if this JS runs on a
   // page without the editor - it will be ignored
 }
@@ -7,15 +7,13 @@ if (window.location.href.endsWith("edit")) {
 
 var toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-  ['blockquote', 'code-block'],
+  ['blockquote'],
 
-  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
   [{ 'list': 'ordered'}, { 'list': 'bullet' }],
   [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
   [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+  [{ 'header': [1, 2, 3, false] }],
 
-  [{ 'color': [] }, { 'background': [] }], 
   [{ 'align': [] }],
 
   ['clean']                                         // remove formatting button

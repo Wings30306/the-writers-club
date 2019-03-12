@@ -39,7 +39,7 @@ form label {
   align-items: center;
 }
 
-form span {
+form label span {
   font-size: 0.75em;
   text-align: right;
 }
@@ -52,6 +52,15 @@ form span {
 
 .form-check-inline img {
   width: 80%;
+}
+
+.ql-container {
+  font-size: 1rem;
+}
+
+.ql-toolbar.ql-snow {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .ql-align-center,
