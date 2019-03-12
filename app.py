@@ -498,7 +498,11 @@ def delete_chapter(story_to_read, chapter_number):
 
 @app.route('/story/<story_to_read>/<chapter_number>/feedback')
 def display_fb_page(story_to_read, chapter_number):
-    return render_template("feedback.html")
+    if session:
+        return render_template("feedback.html")
+    else:
+        flash("You must be signed in to post feedback.")
+        return redirect(url_for('read', story_to_read=story_to_read, chapter_number=chapter_number))
 
 
 if __name__ == "__main__":
