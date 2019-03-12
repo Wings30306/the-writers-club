@@ -4,5 +4,30 @@
   Feedback Page
 </h2>
 <p>You are posting as <strong>{{ session.username }}</strong>. <a href="">Not you?</a></p>
+<form id="form" method="POST" action="{{url_for('post_feedback', story_to_read=story_to_read, chapter_number=chapter_number)}}"">
+    <div class="form-group d-none">
+      <label for="posted_by">Poster: </label>
+      <input type="text" name="posted_by" id="posted_by" value="{{session.username}}" class="form-control">
+    </div>
+    <br>
+    <!--    Quill Editor    -->
+    
+    <div id="#toolbar">
+      
+    </div>
+    <div id="editor">
+      <p></p>
+    </div>
+    <!--    Hidden Input    -->
+    <input id="hidden-input" name="editor" type="hidden">
+    <!--   Hidden Button     -->
+    <button type="submit">Post Feedback</button>
+  </form>
 
+  {% if feedback %}
+  {% for post in feedback %}
+  <p> Posted by: <strong>{{ posted_by }}</strong> on <em>{{ post_date }}</em> </p>
+  {{ post_content }}
+  {% endfor %}
+  {% endif %}
 {% endblock %}

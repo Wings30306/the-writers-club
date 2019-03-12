@@ -505,6 +505,13 @@ def display_fb_page(story_to_read, chapter_number):
         return redirect(url_for('read', story_to_read=story_to_read, chapter_number=chapter_number))
 
 
+@app.route('/story/<story_to_read>/<chapter_number>/feedback', methods=["POST"])
+def post_feedback(story_to_read, chapter_number):
+    flash("Feedback Posted")
+    return redirect(url_for("display_fb_page", story_to_read=story_to_read, chapter_number=chapter_number))
+
+
+
 if __name__ == "__main__":
     app.run(host=os.getenv("IP"),
             port=os.getenv("PORT"),
