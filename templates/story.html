@@ -23,7 +23,11 @@
     <h4>{{ title }}</h4>
     Author: <a href="{{url_for('profile', user=author) }}">{{ author }}</a
     ><br />
-    Fandom: {% for fandom in fandoms %} {{fandom}} {% endfor %} <br />
+    Rating: {{ rating }} <br />
+    Fandom: {% for fandom in fandoms %} {{ fandom }}{% if loop.index <
+    loop.length %}, {% endif %} {% endfor %} <br />
+    Genre: {% for genre in genres %} {{ genre }}{% if loop.index < loop.length
+    %}, {% endif %} {% endfor %} <br />
     Summary: {{ summary }} <br />
     Disclaimer: {{ disclaimer }} <br />
     Total chapters in this story: {{ total_chapters }}
@@ -50,4 +54,5 @@
     >Next</a
   >
   {% endif %}
-</div> {% endblock %}
+</div>
+{% endblock %}

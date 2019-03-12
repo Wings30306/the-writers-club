@@ -277,9 +277,11 @@ def read(story_to_read, chapter_number):
         disclaimer = story['disclaimer']
         summary = story['summary']
         chapter = this_chapter
+        rating = story['rating']
+        genres = story['genres']
         url = story['url']
         total_chapters = len(story['chapters'])
-        return render_template("story.html", story=story, story_to_read=story_to_read, cover_image=cover_image, title=title, author=author, fandoms=fandoms, chapter=chapter, chapter_number=int(chapter_number), summary=summary, disclaimer=disclaimer, total_chapters=int(total_chapters))
+        return render_template("story.html", story=story, story_to_read=story_to_read, cover_image=cover_image, title=title, author=author, fandoms=fandoms, genres=genres, rating=rating, chapter=chapter, chapter_number=int(chapter_number), summary=summary, disclaimer=disclaimer, total_chapters=int(total_chapters))
 
 
 @app.route('/story/<story_url>/new-chapter')
@@ -301,7 +303,8 @@ def add_chapter(story_url):
     chapter_title = request.form['chapter_title']
     chapter_content = json.loads(request.form['editor'])
     chapter_number = request.form['chapter_number']
-    chapter = {"chapter_title": chapter_title,
+    chapter = {"chapter_number":chapter_number,
+               "chapter_title": chapter_title,
                "chapter_content": chapter_content}
     print(chapter)
     stories_collection.find_one_and_update({"url": story_url},
@@ -332,22 +335,28 @@ def edit_story(story_to_read):
 
 @app.route('/story/<story_to_read>/edit', methods=['POST'])
 def update_story(story_to_read):
-    genres = []
-    genre = request.form.get('genre')
-    new_genre = request.form.get('newgenre')
-    if genre not in genres:
-        if genre is not None:
-            genres.append(genre)
-    if new_genre:
-        genres.append(new_genre)
-    fandoms = []
-    fandom = request.form.get('fandom')
-    new_fandom = request.form.get('newfandom')
-    if fandom not in fandoms:
-        if fandom is not None:
-            fandoms.append(fandom)
-    if new_fandom:
-        fandoms.append(new_fandom)
+    formatted_inputs = {}
+    form_data = request.form
+    for key in form_data:
+        value_key = key
+        key = key.split("-")
+        key = key[0]
+        if key in formatted_inputs:
+            formatted_inputs[key].append(form_data[value_key])
+        else:
+            formatted_inputs[f"{key}" ] = []
+            formatted_inputs[key].append(form_data[value_key])
+    genres = formatted_inputs["genre"]
+    print(genres)
+    if form_data["newgenre"] is not "":
+        genres.append(form_data.get("newgenre"))
+    print(genres)
+    fandoms = formatted_inputs["fandom"]
+    print(fandoms)
+    if form_data["newfandom"] is not "":
+        fandoms.append(form_data.get("newfandom"))
+    print(fandoms)
+        
     stories_collection.find_one_and_update({"url": story_to_read},
                                            {"$set": {
                                                "title": request.form.get('title'),
@@ -424,10 +433,13 @@ def add_story():
                 formatted_inputs[key].append(form_data[value_key])
         genres = formatted_inputs["genre"]
         print(genres)
-        genres.append(form_data.get("newgenre"))
+        if form_data["newgenre"] is not "":
+            genres.append(form_data.get("newgenre"))
+        print(genres)
         fandoms = formatted_inputs["fandom"]
         print(fandoms)
-        fandoms.append(form_data.get("newfandom"))
+        if form_data["newfandom"] is not "":
+            fandoms.append(form_data.get("newfandom"))
         print(fandoms)
         story_url = (session['username'] + "-" +
                      slugify(request.form.get('title'))).lower()
