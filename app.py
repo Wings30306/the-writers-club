@@ -163,7 +163,9 @@ def user_auth():
         if check_password_hash(user_in_db['password'], form['user_password']):
             # Log user in (add to session)
             session['username'] = form['username']
-            # If the user is admin redirect him to admin area
+            session['is_admin'] = user_in_db.get('is_admin')
+            print(session)
+
             flash("You have been successfully signed in!")
             return redirect(url_for('profile', user=user_in_db['user_name']))
 
@@ -194,6 +196,18 @@ def profile(user):
     user_profile = users_collection.find({'user_name': user})
     user_stories = stories_collection.find({'author': user})
     return render_template("profile.html", user=user, stories=user_stories, profile=user_profile)
+
+
+@app.route('/<user>/make_admin', methods=['POST'])
+def make_admin(user):
+    users_collection.find_one_and_update({"user_name": user}, {"$set": {"is_admin": True}})
+    return redirect(url_for("profile", user=user))
+
+
+@app.route('/admin')
+def admin_page():
+    users = users_collection.find({"is_admin": True})
+    return render_template("adminteam.html", users=users)
 
 
 @app.route('/<user>/edit')

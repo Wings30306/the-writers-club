@@ -94,13 +94,16 @@ form {
   margin: 10px;
 }
 
-.postbox {
+.postbox,
+.card {
   border: solid 2px #ccc;
   border-radius: 5px;
   padding: 10px;
   margin: 5px 0;
 }
 
+.card p,
 .postbox p {
-  margin: 0 0 0 0.5em;
+  margin: 0 0 0.5em 0;
+  text-align: justify;
 }

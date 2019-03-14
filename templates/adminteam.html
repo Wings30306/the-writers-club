@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block title %} {% if session.is_admin == True
+%}Admin Area{% else %}Meet the Team!{% endif %} {% endblock %} {% block header
+%} {% if session.is_admin == True %}Admin Area{% else %}Meet the Team!{% endif
+%} {% endblock %} {% block content %} {% if session.is_admin == True %}
+<h3>Admin Notifications</h3>
+{% if admin_notifications %} {% for notif in admin_notifications %}
+{{ notif }}
+{% endfor %}
+{% else %} <p>No notifications at this time!</p> {% endif %}
+{% endif %}
+<h3>Meet the Team!</h3>
+<div class="row">
+{% for user in users %}
+  <div class="col-md-4">
+    <div class="card">
+      <h4>{{ user.user_name }}</h4>
+      <p>{{ user.intro | safe }}</p>
+    </div>
+  </div>
+</div>
+{% endfor %} {% endblock %}
