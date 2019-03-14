@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>
-  Feedback Page
-</h2>
+  Feedback Page for {{story.title}}
+  </h2>
+  <h3>chapter {{chapter.chapter_number}}: {{chapter.chapter_title}}</h3>
 <p>You are posting as <strong>{{ session.username }}</strong>. <a href="">Not you?</a></p>
-<form id="form" method="POST" action="{{url_for('post_feedback', story_to_read=story_to_read, chapter_number=chapter_number)}}"">
+<form id="form" method="POST" action="{{url_for('post_feedback', story_to_read=story.url, chapter_number=chapter.chapter_number)}}"">
     <div class="form-group d-none">
       <label for="posted_by">Poster: </label>
       <input type="text" name="posted_by" id="posted_by" value="{{session.username}}" class="form-control">
@@ -25,9 +26,14 @@
   </form>
 
   {% if feedback %}
+  Previous posts:
   {% for post in feedback %}
-  <p> Posted by: <strong>{{ posted_by }}</strong> on <em>{{ post_date }}</em> </p>
-  {{ post_content }}
+  {% if post.fb_for_chapter|int == chapter.chapter_number|int %}
+  <div class="postbox">
+    <p><em>Posted by <a href="{{ url_for('profile', user=post.posted_by) }}">{% if post.posted_by == session.username %}you{% else %}{{ post.posted_by }}{% endif %}</a></em></p>
+    {{ post.feedback_content|safe}}
+  </div>
+  {% endif %}
   {% endfor %}
   {% endif %}
 {% endblock %}

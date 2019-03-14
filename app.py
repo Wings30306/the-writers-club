@@ -303,7 +303,7 @@ def add_chapter(story_url):
     chapter_title = request.form['chapter_title']
     chapter_content = json.loads(request.form['editor'])
     chapter_number = request.form['chapter_number']
-    chapter = {"chapter_number":chapter_number,
+    chapter = {"chapter_number": chapter_number,
                "chapter_title": chapter_title,
                "chapter_content": chapter_content}
     print(chapter)
@@ -344,7 +344,7 @@ def update_story(story_to_read):
         if key in formatted_inputs:
             formatted_inputs[key].append(form_data[value_key])
         else:
-            formatted_inputs[f"{key}" ] = []
+            formatted_inputs[f"{key}"] = []
             formatted_inputs[key].append(form_data[value_key])
     genres = formatted_inputs["genre"]
     print(genres)
@@ -356,7 +356,7 @@ def update_story(story_to_read):
     if form_data["newfandom"] is not "":
         fandoms.append(form_data.get("newfandom"))
     print(fandoms)
-        
+
     stories_collection.find_one_and_update({"url": story_to_read},
                                            {"$set": {
                                                "title": request.form.get('title'),
@@ -429,7 +429,7 @@ def add_story():
             if key in formatted_inputs:
                 formatted_inputs[key].append(form_data[value_key])
             else:
-                formatted_inputs[f"{key}" ] = []
+                formatted_inputs[f"{key}"] = []
                 formatted_inputs[key].append(form_data[value_key])
         genres = formatted_inputs["genre"]
         print(genres)
@@ -499,7 +499,11 @@ def delete_chapter(story_to_read, chapter_number):
 @app.route('/story/<story_to_read>/<chapter_number>/feedback')
 def display_fb_page(story_to_read, chapter_number):
     if session:
-        return render_template("feedback.html")
+        stories=stories_collection.find({"url": story_to_read})
+        for story in stories:
+            chapter=story["chapters"][int(chapter_number) - 1]
+            feedback=story.get("feedback")
+        return render_template("feedback.html", story=story, chapter = chapter, feedback=feedback)
     else:
         flash("You must be signed in to post feedback.")
         return redirect(url_for('read', story_to_read=story_to_read, chapter_number=chapter_number))
@@ -507,9 +511,20 @@ def display_fb_page(story_to_read, chapter_number):
 
 @app.route('/story/<story_to_read>/<chapter_number>/feedback', methods=["POST"])
 def post_feedback(story_to_read, chapter_number):
+    story = story_to_read
+    chapter = chapter_number
+    chapter_index = int(chapter_number) - 1
+    feedback = json.loads(request.form['editor'])
+    posted_by = request.form['posted_by']
+    feedback_post = {"fb_for_chapter": chapter, "posted_by": posted_by, "feedback_content": feedback}
+    print("feedback for" + story + ", chapter " + chapter + ": " + str(feedback_post))
+    stories_collection.find_one_and_update({"url": story},
+                                           {"$push": {
+                                               "feedback": feedback_post
+                                           }}, upsert=True
+                                           )
     flash("Feedback Posted")
-    return redirect(url_for("display_fb_page", story_to_read=story_to_read, chapter_number=chapter_number))
-
+    return redirect(url_for("display_fb_page", story_to_read=story, chapter_number=chapter))
 
 
 if __name__ == "__main__":
