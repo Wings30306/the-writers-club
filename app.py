@@ -198,9 +198,15 @@ def profile(user):
     return render_template("profile.html", user=user, stories=user_stories, profile=user_profile)
 
 
-@app.route('/<user>/make_admin', methods=['POST'])
+@app.route('/<user>/make_admin')
 def make_admin(user):
     users_collection.find_one_and_update({"user_name": user}, {"$set": {"is_admin": True}})
+    return redirect(url_for("profile", user=user))
+
+
+@app.route('/<user>/remove_admin')
+def remove_admin(user):
+    users_collection.find_one_and_update({"user_name": user}, {"$set": {"is_admin": False}})
     return redirect(url_for("profile", user=user))
 
 

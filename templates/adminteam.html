@@ -14,8 +14,9 @@
   <div class="col-md-4">
     <div class="card">
       <h4>{{ user.user_name }}</h4>
-      <p>{{ user.intro | safe }}</p>
+      <p>{{ user.intro[0:120] | safe }}{% if user.intro|length > 100 %}... <a href="{{url_for('profile', user=user.user_name) }}">Read More</a>{% endif %}</p>
     </div>
   </div>
+{% endfor %}
 </div>
-{% endfor %} {% endblock %}
+{% endblock %}

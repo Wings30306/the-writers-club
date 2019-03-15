@@ -100,10 +100,26 @@ form {
   border-radius: 5px;
   padding: 10px;
   margin: 5px 0;
+  width: 100%;
+  height: 100%
 }
 
 .card p,
 .postbox p {
   margin: 0 0 0.5em 0;
   text-align: justify;
+}
+
+
+.admin-only {
+  color: darkred;
+  text-decoration: none;
+  font-style: italic;
+}
+
+
+.admin-only:hover{
+  font-weight: bold;
+  text-decoration: none;
+  color: darkred;
 }

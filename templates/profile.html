@@ -2,7 +2,20 @@
 block header %} {{ user | title }} {% endblock %} {% block content %} {% for
 this_user in profile %}
 <h2>About {{ this_user.user_name }}</h2>
-{% if this_user.intro %}
+{% if session.is_admin == True %} {% if this_user.is_admin != True %}
+<a
+  href="{{url_for('make_admin', user=this_user.user_name) }}"
+  class="admin-only"
+  >Make {{ this_user.user_name }} admin</a
+>
+{% else %}
+<a
+  href="{{url_for('remove_admin', user=this_user.user_name) }}"
+  class="admin-only"
+  >Remove {% if session.username == this_user.user_name %}me{% else %}
+  {{ this_user.user_name }}{%endif %} as admin</a
+>
+{% endif %} {% endif %} {% if this_user.intro %}
 <p>{{ this_user.intro | safe }}</p>
 {% endif %} {% if this_user.date_started_writing %}
 <p>
@@ -13,33 +26,19 @@ this_user in profile %}
 </p>
 {% endif %} {% if this_user.show_birthday == "on" %}
 <p>
-  <em>Birthday: {{ this_user.birthday[8:10] }}
-    {% if this_user.birthday[5:7] == "01" %}
-     January 
-    {% elif this_user.birthday[5:7] == "02" %}
-     February 
-    {% elif this_user.birthday[5:7] == "03" %}
-     March 
-    {% elif this_user.birthday[5:7] == "04" %}
-     April 
-    {% elif this_user.birthday[5:7] == "05" %}
-     May 
-    {% elif this_user.birthday[5:7] == "06" %}
-     June 
-    {% elif this_user.birthday[5:7] == "07" %}
-     July 
-    {% elif this_user.birthday[5:7] == "08" %}
-     August 
-    {% elif this_user.birthday[5:7] == "09" %}
-     September 
-    {% elif this_user.birthday[5:7] == "10" %}
-     October 
-    {% elif this_user.birthday[5:7] == "11" %}
-     November 
-    {% elif this_user.birthday[5:7] == "12" %}
-     December 
-    {% endif %}
-    {{ this_user.birthday [0:4] }}</em>
+  <em
+    >Birthday: {{ this_user.birthday[8:10] }}
+    {% if this_user.birthday[5:7] == "01" %} January {% elif
+    this_user.birthday[5:7] == "02" %} February {% elif this_user.birthday[5:7]
+    == "03" %} March {% elif this_user.birthday[5:7] == "04" %} April {% elif
+    this_user.birthday[5:7] == "05" %} May {% elif this_user.birthday[5:7] ==
+    "06" %} June {% elif this_user.birthday[5:7] == "07" %} July {% elif
+    this_user.birthday[5:7] == "08" %} August {% elif this_user.birthday[5:7] ==
+    "09" %} September {% elif this_user.birthday[5:7] == "10" %} October {% elif
+    this_user.birthday[5:7] == "11" %} November {% elif this_user.birthday[5:7]
+    == "12" %} December {% endif %}
+    {{ this_user.birthday [0:4] }}</em
+  >
 </p>
 {% endif %} {% if user == session['username'] %}
 <a href="{{url_for('edit_profile', user=user)}}"
@@ -114,5 +113,7 @@ this_user in profile %}
 </div>
 <hr />
 {% endfor %} {% if user == session['username'] %}
-<a class="btn btn-my-color btn-sm btn-info" href="{{ url_for('new_story') }}">Add a story</a>
+<a class="btn btn-my-color btn-sm btn-info" href="{{ url_for('new_story') }}"
+  >Add a story</a
+>
 {% endif %} {% endblock %}
