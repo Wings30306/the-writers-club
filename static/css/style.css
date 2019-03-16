@@ -123,3 +123,9 @@ form {
   text-decoration: none;
   color: darkred;
 }
+
+
+a:hover {
+  font-weight: bold;
+  text-decoration: none;
+}
