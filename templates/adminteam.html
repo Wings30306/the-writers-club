@@ -19,9 +19,11 @@
         }}</a>
       </h4>
       <p>
-        {{ user.intro[0:120] | safe }}{% if user.intro|length > 120 %}...
-        <a href="{{url_for('profile', user=user.user_name) }}">Read More</a>{%
+        {{ user.intro[0:120] | safe }}{% if user.intro|length > 120 %}... {%
         endif %}
+      </p>
+      <p>
+        <a href="{{url_for('profile', user=user.user_name) }}">Read More</a>
       </p>
     </div>
   </div>
