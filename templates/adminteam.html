@@ -3,11 +3,22 @@
 %} {% if session.is_admin == True %}Admin Area{% else %}Meet the Team!{% endif
 %} {% endblock %} {% block content %} {% if session.is_admin == True %}
 <h3>Admin Notifications</h3>
-{% if admin_notifications %} {% for notif in admin_notifications %}
-{{ notif }}
+{% if reports %} {% for reported_story in reports %}
+<div class="card">
+  <h4>Story: {{ reported_story.title }}</h4>
+  {% for report in reported_story.reports %}
+  <hr>
+  <h5>Report {{loop.index}}</h5>
+  <p>Item reported: {% if reported_story.url == report.item_reported %}Full story{% else %}{{report.item_reported}}{%endif%}</p>
+  <p>Reported by: {{ report.reported_by}}</p>
+  <p>Reason: {{ report.reason_given}}</p>
+{% endfor %}
+</div>
 {% endfor %} {% else %}
 <p>No notifications at this time!</p>
-{% endif %} {% endif %}
+{% endif %} 
+<hr>
+{% endif %}
 <h3>Meet the Team!</h3>
 <div class="row">
   {% for user in users %}

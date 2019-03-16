@@ -74,8 +74,12 @@ def story_count():
         count = stories_collection.count_documents({"author": author})
         count_author = {"author": author, "total": count}
         story_count.append(count_author)
-    print(story_count)
     return story_count
+
+
+def report(item, reason_given, this_story, reported_by):
+    stories_collection.find_one_and_update({"url": this_story}, {'$push': {"reports": {"item_reported": item, "reported_by": reported_by, "reason_given": reason_given}}}, upsert=True)
+    return flash("Report sent to admins.")
 
 
 """Routes"""
@@ -212,8 +216,10 @@ def remove_admin(user):
 
 @app.route('/admin')
 def admin_page():
+    if session["is_admin"] == True:
+        reports = stories_collection.find({"reports": {'$exists': True}})
     users = users_collection.find({"is_admin": True})
-    return render_template("adminteam.html", users=users)
+    return render_template("adminteam.html", users=users, reports=reports)
 
 
 @app.route('/<user>/edit')
@@ -545,6 +551,30 @@ def post_feedback(story_to_read, chapter_number):
                                            )
     flash("Feedback Posted")
     return redirect(url_for("display_fb_page", story_to_read=story, chapter_number=chapter))
+
+
+
+
+
+@app.route('/story/<story_to_read>/report')
+def report_story(story_to_read):
+    if session:
+        stories = stories_collection.find({"url": story_to_read})
+        for story in stories:
+            story
+        return render_template('report.html', story=story)
+    else:
+        flash("You must be signed in to report stories.")
+        return redirect(url_for('login'))
+
+
+@app.route('/story/<story_to_read>/report', methods=["POST"])
+def send_story_report(story_to_read):
+    item = story_to_read
+    reported_by = session['username']
+    report_reason = request.form["reason"]
+    report(item, report_reason, story_to_read, reported_by)
+    return redirect(url_for("admin_page"))
 
 
 if __name__ == "__main__":
