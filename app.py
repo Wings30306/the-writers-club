@@ -217,9 +217,23 @@ def remove_admin(user):
 @app.route('/admin')
 def admin_page():
     if session["is_admin"] == True:
-        reports = stories_collection.find({"reports": {'$exists': True}})
+        report_list = []
+        reports = stories_collection.find({"reports": {'$gt':{'$size':0}}})
+        for report in reports:
+            report_list.append(report) 
+        if len(report_list) > 0:
+            report_list
     users = users_collection.find({"is_admin": True})
-    return render_template("adminteam.html", users=users, reports=reports)
+    return render_template("adminteam.html", users=users, reports=report_list)
+
+
+@app.route('/story/<story_to_read>/clear_report/<loop_index>')
+def clear_reports(story_to_read, loop_index):
+    list_index = int(loop_index) - 1
+    story = stories_collection.find_one({"url": story_to_read})
+    report = story['reports'][list_index]
+    stories_collection.find_one_and_update({"url": story_to_read}, {'$pull': {'reports': report}})
+    return redirect(url_for("admin_page"))
 
 
 @app.route('/<user>/edit')

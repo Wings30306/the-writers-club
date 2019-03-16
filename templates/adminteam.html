@@ -3,7 +3,7 @@
 %} {% if session.is_admin == True %}Admin Area{% else %}Meet the Team!{% endif
 %} {% endblock %} {% block content %} {% if session.is_admin == True %}
 <h3>Admin Notifications</h3>
-{% if reports %} {% for reported_story in reports %}
+{% if reports %} {{reports}} {% for reported_story in reports %}
 <div class="card">
   <h4>Story: {{ reported_story.title }}</h4>
   {% for report in reported_story.reports %}
@@ -12,6 +12,7 @@
   <p>Item reported: {% if reported_story.url == report.item_reported %}Full story{% else %}{{report.item_reported}}{%endif%}</p>
   <p>Reported by: {{ report.reported_by}}</p>
   <p>Reason: {{ report.reason_given}}</p>
+  <a class="admin-only" href="{{ url_for('clear_reports', story_to_read=reported_story.url, loop_index=loop.index) }}">Clear Report</a>
 {% endfor %}
 </div>
 {% endfor %} {% else %}
