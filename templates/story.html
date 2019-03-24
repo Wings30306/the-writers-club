@@ -33,7 +33,7 @@
     Total chapters in this story: {{ total_chapters }}
   </div>
 </div>
-
+{% if session.username != author %} <a href="{{url_for('report_story', story_to_read = story_to_read)}}">Report this story to admins</a>{% endif %}
 <hr />
 <h5 class="center">{{ chapter.chapter_title | title }}</h5>
 <p>{{ chapter.chapter_content | safe }}</p>

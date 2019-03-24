@@ -3,7 +3,7 @@
 %} {% if session.is_admin == True %}Admin Area{% else %}Meet the Team!{% endif
 %} {% endblock %} {% block content %} {% if session.is_admin == True %}
 <h3>Admin Notifications</h3>
-{% if reports %} {{reports}} {% for reported_story in reports %}
+{% if reports %} {% for reported_story in reports %}
 <div class="card">
   <h4>Story: {{ reported_story.title }}</h4>
   {% for report in reported_story.reports %}

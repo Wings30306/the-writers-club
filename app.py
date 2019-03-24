@@ -148,7 +148,7 @@ def check_registration():
 @app.route('/login', methods=['GET'])
 def login():
         # Check if user is not logged in already
-    if session:
+    if session.get('username') is not None:
         flash("You are logged in already!")
         return redirect(url_for('profile', user=session['username']))
     else:
