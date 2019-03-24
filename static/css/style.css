@@ -22,7 +22,9 @@ header.masthead {
 }
 
 header.masthead .site-heading {
-  padding: 60px 0 0;
+  width:100%;
+  padding: 4rem 0 0;
+  font-stretch: ultra-condensed
 }
 
 section{
@@ -39,9 +41,8 @@ form label {
   align-items: center;
 }
 
-form label span {
+form span {
   font-size: 0.75em;
-  text-align: right;
 }
 
 .form-check-inline {
@@ -61,7 +62,14 @@ form label span {
 
 .ql-toolbar.ql-snow {
   display: flex;
-  justify-content: space-evenly;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+.ql-toolbar .ql-formats {
+  display:flex;
+  flex-direction: row;
+  align-items: flex-start;
 }
 
 .ql-align-center,
