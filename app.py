@@ -216,15 +216,16 @@ def remove_admin(user):
 
 @app.route('/admin')
 def admin_page():
-    if session["is_admin"] == True:
+    if session.get("is_admin") == True:
         report_list = []
         reports = stories_collection.find({"reports": {'$gt':{'$size':0}}})
         for report in reports:
             report_list.append(report) 
         if len(report_list) > 0:
             report_list
+        return render_template("adminteam.html", users=users, reports=report_list)
     users = users_collection.find({"is_admin": True})
-    return render_template("adminteam.html", users=users, reports=report_list)
+    return render_template("adminteam.html", users=users)
 
 
 @app.route('/story/<story_to_read>/clear_report/<loop_index>')
