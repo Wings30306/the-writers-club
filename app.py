@@ -14,7 +14,7 @@ app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
 
 mongo = PyMongo(app)
 
-"""Global variables"""
+
 """Collections"""
 stories_collection = mongo.db.stories
 users_collection = mongo.db.users
@@ -471,13 +471,16 @@ def add_story():
             else:
                 formatted_inputs[f"{key}"] = []
                 formatted_inputs[key].append(form_data[value_key])
-        genres = formatted_inputs["genre"]
-        print(genres)
+        genres = formatted_inputs.get("genre")
+        if genres == None:
+            genres = []
         if form_data["newgenre"] is not "":
             genres.append(form_data.get("newgenre"))
         print(genres)
-        fandoms = formatted_inputs["fandom"]
+        fandoms = formatted_inputs.get("fandom")
         print(fandoms)
+        if fandoms == None:
+            fandoms = []
         if form_data["newfandom"] is not "":
             fandoms.append(form_data.get("newfandom"))
         print(fandoms)
