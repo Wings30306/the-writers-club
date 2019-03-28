@@ -31,10 +31,10 @@ def list_by_type():
     authors = []
     for story in stories_collection.find():
         rating = story['rating']
-        genres_in_story = story['genres']
+        genres_in_story = story.get('genres')
         for genre in genres_in_story:
             genre
-        fandoms_in_story = story['fandoms']
+        fandoms_in_story = story.get('fandoms')
         for fandom in fandoms_in_story:
             fandom
         author = story['author']
@@ -386,12 +386,14 @@ def update_story(story_to_read):
         else:
             formatted_inputs[f"{key}"] = []
             formatted_inputs[key].append(form_data[value_key])
-    genres = formatted_inputs["genre"]
+    genres = formatted_inputs.get("genre")
+    if genres == None:
+        genres = []
     print(genres)
     if form_data["newgenre"] is not "":
         genres.append(form_data.get("newgenre"))
     print(genres)
-    fandoms = formatted_inputs["fandom"]
+    fandoms = formatted_inputs.get("fandom")
     print(fandoms)
     if form_data["newfandom"] is not "":
         fandoms.append(form_data.get("newfandom"))
