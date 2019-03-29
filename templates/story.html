@@ -24,9 +24,9 @@
     Author: <a href="{{url_for('profile', user=author) }}">{{ author }}</a
     ><br />
     Rating: {{ rating }} <br />
-    Fandom: {% for fandom in fandoms %} {{ fandom }}{% if loop.index <
-    loop.length %}, {% endif %} {% endfor %} <br />
-    Genre: {% for genre in genres %} {{ genre }}{% if loop.index < loop.length
+    Fandom: {% if fandoms != None %} {% for fandom in fandoms %} {{ fandom }}{% if loop.index <
+    loop.length %}, {% endif %} {% endfor %} {% else %} <em>Author has not selected a fandom.</em> {% endif %} <br />
+    Genre:  {% for genre in genres %} {{ genre }}{% if loop.index < loop.length
     %}, {% endif %} {% endfor %} <br />
     Summary: {{ summary }} <br />
     Disclaimer: {{ disclaimer }} <br />
