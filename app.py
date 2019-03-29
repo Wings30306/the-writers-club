@@ -32,11 +32,13 @@ def list_by_type():
     for story in stories_collection.find():
         rating = story['rating']
         genres_in_story = story.get('genres')
-        for genre in genres_in_story:
-            genre
+        if genres_in_story != None:
+            for genre in genres_in_story:
+                genre
         fandoms_in_story = story.get('fandoms')
-        for fandom in fandoms_in_story:
-            fandom
+        if fandoms_in_story != None:
+            for fandom in fandoms_in_story:
+                fandom
         author = story['author']
         if rating not in ratings:
             ratings.append(rating)
@@ -48,6 +50,7 @@ def list_by_type():
             authors.append(author)
     list_by_type.update({"ratings": ratings, "genres": genres,
                          "fandoms": fandoms, "authors": authors})
+    print(list_by_type)
     return list_by_type
 
 
@@ -599,4 +602,4 @@ def send_story_report(story_to_read):
 if __name__ == "__main__":
     app.run(host=os.getenv("IP"),
             port=os.getenv("PORT"),
-            debug=os.getenv("DEBUG"))
+            debug=True)
