@@ -11,7 +11,7 @@
 				<form class="form-signin" method="POST" action="/register">
 					<div class="form-group">
 						<label for="sign-in-username">User name*</label>
-						<input name="username" type="text" class="form-control" id="sign-in-username" required>
+						<input name="username" type="text" class="form-control" id="sign-in-username" pattern=".{5,}" title="Must be five or more characters" required>
 					</div>
 					<div class="form-group">
 						<label for="birthday">Birthday*: </label><input type="date" name="birthday" id="birthday" required> 
@@ -23,7 +23,7 @@
 					</div>
 					<div class="form-group">
 						<label for="sign-in-password">Password*</label>
-						<input class="form-control" name="user_password" type="password" id="sign-in-password" required>
+						<input class="form-control" name="user_password" type="password" id="sign-in-password" pattern=".{7,}" title="Seven or more characters" required>
 					</div>
 					<div class="form-group">
 						<label for="sign-in-password">Password again*</label>
