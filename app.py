@@ -258,6 +258,9 @@ def update_profile(user):
     if request.form['editor'] == '\"<p><br></p>\"':
         flash("You cannot send in empty posts!")
         return redirect(url_for("edit_profile", user=user))
+    elif request.form['editor'] == "":
+        flash("You cannot send in empty posts!")
+        return redirect(url_for("edit_profile", user=user))
     else:
         if session:
             if user == session['username']:
