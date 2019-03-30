@@ -4,6 +4,7 @@
   Feedback Page for {{story.title}}
   </h2>
   <h3>chapter {{chapter.chapter_number}}: {{chapter.chapter_title}}</h3>
+  {% if session.username != story.author %}
 <p>You are posting as <strong>{{ session.username }}</strong>. <a href="">Not you?</a></p>
 <form id="form" method="POST" action="{{url_for('post_feedback', story_to_read=story.url, chapter_number=chapter.chapter_number)}}"">
     <div class="form-group d-none">
@@ -24,9 +25,10 @@
     <!--   Hidden Button     -->
     <button type="submit">Post Feedback</button>
   </form>
-
+  <hr>
+{% endif %}
   {% if feedback %}
-  Previous posts:
+  {% if story.author != session.username %} <h5>Previous posts: </h5> {% endif %}
   {% for post in feedback %}
   {% if post.fb_for_chapter|int == chapter.chapter_number|int %}
   <div class="postbox">
@@ -35,5 +37,8 @@
   </div>
   {% endif %}
   {% endfor %}
+  {% else %}
+  <h5>No feedback yet for this story!</h5>
+ <p>{% if story.author != session.username %}Be the first to comment on this story! {% endif %}</p>
   {% endif %}
 {% endblock %}
