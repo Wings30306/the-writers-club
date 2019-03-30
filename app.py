@@ -562,16 +562,21 @@ def post_feedback(story_to_read, chapter_number):
     story = story_to_read
     chapter = chapter_number
     chapter_index = int(chapter_number) - 1
-    feedback = json.loads(request.form['editor'])
-    posted_by = request.form['posted_by']
-    feedback_post = {"fb_for_chapter": chapter, "posted_by": posted_by, "feedback_content": feedback}
-    print("feedback for" + story + ", chapter " + chapter + ": " + str(feedback_post))
-    stories_collection.find_one_and_update({"url": story},
+    print(request.form['editor'])
+    if request.form['editor'] == '\"<p><br></p>\"':
+        flash("You cannot send in empty posts!")
+    else:
+        feedback = json.loads(request.form['editor'])
+        print(feedback)
+        posted_by = request.form['posted_by']
+        feedback_post = {"fb_for_chapter": chapter, "posted_by": posted_by, "feedback_content": feedback}
+        print("feedback for" + story + ", chapter " + chapter + ": " + str(feedback_post))
+        stories_collection.find_one_and_update({"url": story},
                                            {"$push": {
                                                "feedback": feedback_post
                                            }}, upsert=True
                                            )
-    flash("Feedback Posted")
+        flash("Feedback Posted")
     return redirect(url_for("display_fb_page", story_to_read=story, chapter_number=chapter))
 
 

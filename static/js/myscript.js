@@ -33,7 +33,6 @@ const editor = document.querySelector('#editor');
 const hiddenInput = document.querySelector('#hidden-input');
 const qlEditor = document.querySelector(".ql-editor");
 
-
 // Listen for submit and intersept
 form.addEventListener('submit', (event) => {
   
@@ -44,8 +43,13 @@ form.addEventListener('submit', (event) => {
   let data = JSON.stringify(qlEditor.innerHTML);
 
   // apply json data to hidden input value
-  hiddenInput.value = data;
-  console.log(data)
+  if (data = "<p><br></p>"){
+    hiddenInput.value = null;}
+    else {
+    hiddenInput.value = data;
+    console.log(data)
+  }
+  
 
   // allow form to be submitted
   form.submit()
