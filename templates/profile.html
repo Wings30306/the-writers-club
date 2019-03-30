@@ -61,7 +61,7 @@ this_user in profile %}
   >
 </h4>
 <p>
-  Fandom: {{ story.fandom }}<br />
+  Fandom: {% if story.fandoms != None %} {% for fandom in story.fandoms %} {{fandom}} {% endfor %} {% else %} <em>No fandom selected.</em> {% endif %}<br />
   Summary: {{ story.summary }}
 </p>
 {% if story.author == session['username'] %}

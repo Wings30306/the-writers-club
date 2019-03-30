@@ -42,7 +42,7 @@
           class="form-check-input"
           name="genre-{{loop.index}}"
           value="{{ genre }}"
-          {% if genre in story.genres %} checked {% endif %}
+          {% if story.genres != None %} {% if genre in story.genres %} checked {% endif %} {% endif %}
         />{{ genre }}
       </label>
       {% endfor %}
@@ -61,7 +61,7 @@
       <label class="form-check-label">
         <input type="checkbox" class="form-check-input" name="fandom-{{loop.index}}" value="{{
           fandom
-        }}" {% if fandom in story.fandoms %} checked {% endif %} />{{ fandom }}
+        }}" {% if story.fandoms != None %}{% if fandom in story.fandoms %} checked {% endif %} {% endif %}/>{{ fandom }}
       </label>
       {% endfor %}
       <label class="form-check-label">
@@ -158,4 +158,4 @@
   class="btn btn-my-color btn-sm btn-my-color"
   >Add a chapter</a
 >
-{%endblock%}
+{% endblock %}
