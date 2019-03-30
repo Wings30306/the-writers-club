@@ -354,6 +354,9 @@ def add_chapter(story_url):
     if request.form['editor'] == '\"<p><br></p>\"':
         flash("You cannot send in empty posts!")
         return redirect(url_for("new_chapter", story_url=story_url))
+    elif request.form['editor'] == "":
+        flash("You cannot send in empty posts!")
+        return redirect(url_for("new_chapter", story_url=story_url))
     else:
         chapter_content = json.loads(request.form['editor'])
         chapter_number = request.form['chapter_number']
@@ -446,6 +449,9 @@ def edit_chapter(story_to_read, chapter_number):
 @app.route('/story/<story_to_read>/<chapter_number>/edit', methods=['POST'])
 def update_chapter(story_to_read, chapter_number):
     if request.form['editor'] == '\"<p><br></p>\"':
+        flash("You cannot send in empty posts!")
+        return redirect(url_for("edit_chapter", story_to_read=story_to_read, chapter_number=chapter_number))
+    elif request.form['editor'] == "":
         flash("You cannot send in empty posts!")
         return redirect(url_for("edit_chapter", story_to_read=story_to_read, chapter_number=chapter_number))
     else:
@@ -579,6 +585,8 @@ def post_feedback(story_to_read, chapter_number):
     chapter_index = int(chapter_number) - 1
     print(request.form['editor'])
     if request.form['editor'] == '\"<p><br></p>\"':
+        flash("You cannot send in empty posts!")
+    elif request.form['editor'] == "":
         flash("You cannot send in empty posts!")
     else:
         feedback = json.loads(request.form['editor'])
