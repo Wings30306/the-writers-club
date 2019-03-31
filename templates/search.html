@@ -30,6 +30,10 @@ block header %} Search for a story {% endblock %} {% block content %}
       <option>{{ item.rating }}</option>
     {% endfor %}
         </select>
+        <span>
+          <a data-toggle="modal"
+      data-target="#ratings-modal">Ratings Guidelines</a>
+        </span> 
       </div>
       <div class="form-group col-md-3">
           <label for="author">Author</label>

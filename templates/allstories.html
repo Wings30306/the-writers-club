@@ -6,7 +6,6 @@ All Stories
 All Stories
 {% endblock %}
 {% block content %}
-<hr>
 {% if stories == [] %}
 <p>
   No stories were found with the selected criteria!
@@ -15,9 +14,12 @@ All Stories
 {% else %}
 {% for story in stories %}
 <h4><a href="{{url_for('read', story_to_read=story.url, chapter_number=1)}}">{{story.title}}</a><span> by <a href="{{url_for('profile', user=story.author) }}">{{ story.author }}</a></span></h4>
-<p>Fandom: {% if story.fandoms != None %} {% for fandom in story.fandoms %} {{fandom}} {% endfor %} {% else %} <em>Author has not selected a fandom.</em> {% endif %}</p>
+<p>Rating:<a data-toggle="modal"
+  data-target="#ratings-modal">{{story.rating}}</a></p>
+<p>Genre: {% if story.genres != None %} {% for genre in story.genres %} {{genre}}{% if loop.index<loop.length%}, {% endif %} {% endfor %} {% else %} <em>Author has not selected a fandom.</em> {% endif %}</p>
+<p>Fandom: {% if story.fandoms != None %} {% for fandom in story.fandoms %} {{fandom}}{% if loop.index<loop.length%}, {% endif %} {% endfor %} {% else %} <em>Author has not selected a fandom.</em> {% endif %}</p>
 <p>Summary: {{story.summary}}</p>
-<hr>
+{% if loop.index < loop.length %}<hr>{% endif %}
 {% endfor %}
 <a class="btn btn-large btn-my-color" href="{{url_for('search')}}">Search</a>
 {% endif %}

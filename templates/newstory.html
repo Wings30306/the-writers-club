@@ -49,10 +49,14 @@ block header %} Submit Your Story {% endblock %} {% block content %}
   </div>
   <div class="form-group">
     <label for="rating">Rating</label>
+    <span>
+        <a data-toggle="modal"
+    data-target="#ratings-modal">Ratings Guidelines</a>
+      </span> 
     <select class="form-control" id="rating" name="rating" required>
-      <option>Adult/NSFW</option>
+      <option>R/Adult/NSFW</option>
       <option>15</option>
-      <option>12</option>
+      <option>PG13</option>
       <option>PG</option>
       <option>All Ages</option>
     </select>

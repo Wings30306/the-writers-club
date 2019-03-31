@@ -23,7 +23,10 @@
     <h4>{{ title }}</h4>
     Author: <a href="{{url_for('profile', user=author) }}">{{ author }}</a
     ><br />
-    Rating: {{ rating }} <br />
+    Rating: {{ rating }} <span>
+        (<a data-toggle="modal"
+    data-target="#ratings-modal">Ratings Guidelines</a>)
+      </span>  <br />
     Fandom: {% if fandoms != None %} {% for fandom in fandoms %} {{ fandom }}{% if loop.index <
     loop.length %}, {% endif %} {% endfor %} {% else %} <em>Author has not selected a fandom.</em> {% endif %} <br />
     Genre:  {% for genre in genres %} {{ genre }}{% if loop.index < loop.length
