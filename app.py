@@ -172,7 +172,7 @@ def user_auth():
         # If passwords match (hashed / real password)
         if check_password_hash(user_in_db['password'], form['user_password']):
             # Log user in (add to session)
-            session['username'] = form['username']
+            session['username'] = user_in_db['user_name']
             session['is_admin'] = user_in_db.get('is_admin')
             print(session)
 
