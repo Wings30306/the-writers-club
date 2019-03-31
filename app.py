@@ -114,10 +114,14 @@ def check_registration():
     if form['user_password'] == form['user_password1']:
         # If so try to find the user in db
         user = users_collection.find_one({"user_name": form['username']})
+        email = users_collection.find_one({"email": form['email']})
         if user:
             flash(form['username'].title(
             ) + " already exists!  Is this you?  Please sign in instead.  Else, please choose a different username.")
             return redirect(url_for('register'))
+        elif email: 
+            flash("We already have a registered user with " + form['email'] + "! Did you forget your username? Sign in with email instead.")
+            return redirect(url_for('login'))
         # If user does not exist register new user
         else:
             # Hash password
@@ -162,7 +166,7 @@ def login():
 @app.route('/user_auth', methods=['POST'])
 def user_auth():
     form = request.form.to_dict()
-    user_in_db = users_collection.find_one({"user_name": form['username']})
+    user_in_db = users_collection.find_one({"$or" :[{"user_name": form['username']}, {"email": form['username']}]})
     # Check for user in database
     if user_in_db:
         # If passwords match (hashed / real password)
