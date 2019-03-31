@@ -259,32 +259,28 @@ def edit_profile(user):
 
 @app.route('/<user>/edit', methods=['POST'])
 def update_profile(user):
-    if request.form['editor'] == '\"<p><br></p>\"':
-        flash("You cannot send in empty posts!")
-        return redirect(url_for("edit_profile", user=user))
-    elif request.form['editor'] == "":
-        flash("You cannot send in empty posts!")
-        return redirect(url_for("edit_profile", user=user))
-    else:
-        if session:
-            if user == session['username']:
-                users_collection.find_one_and_update({"user_name": user},
-                                                    {"$set":
-                                                    {
-                                                        "user_name": user,
-                                                        "birthday": request.form.get('birthday'),
-                                                        "date_started_writing": request.form.get('date_started_writing'),
-                                                        "intro": json.loads(request.form.get('editor')),
-                                                        "show_birthday": request.form.get('show_birthday')
-                                                    }
-                                                    })
-                return redirect(url_for('profile', user=user))
-            else:
-                flash("You cannot edit someone else's profile!")
-                return redirect(url_for('profile', user=user, profile=profile))
+    print(request.form)
+    print("here", len(request.form['editor']))
+    print(json.loads(request.form.get('editor')))
+    if session:
+        if user == session['username']:
+            users_collection.find_one_and_update({"user_name": user},
+                                                {"$set":
+                                                {
+                                                    "user_name": user,
+                                                    "birthday": request.form.get('birthday'),
+                                                    "date_started_writing": request.form.get('date_started_writing'),
+                                                    "intro": json.loads(request.form.get('editor')),
+                                                    "show_birthday": request.form.get('show_birthday')
+                                                }
+                                                })
+            return redirect(url_for('profile', user=user))
         else:
-            flash("You must be signed in to edit your profile!")
+            flash("You cannot edit someone else's profile!")
             return redirect(url_for('profile', user=user, profile=profile))
+    else:
+        flash("You must be signed in to edit your profile!")
+        return redirect(url_for('profile', user=user, profile=profile))
 
 
 @app.route('/all_stories')
@@ -587,7 +583,7 @@ def post_feedback(story_to_read, chapter_number):
     story = story_to_read
     chapter = chapter_number
     chapter_index = int(chapter_number) - 1
-    print(request.form['editor'])
+    print(request.form['editor'], "here")
     if request.form['editor'] == '\"<p><br></p>\"':
         flash("You cannot send in empty posts!")
     elif request.form['editor'] == "":

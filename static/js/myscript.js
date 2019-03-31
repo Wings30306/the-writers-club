@@ -43,7 +43,7 @@ form.addEventListener('submit', (event) => {
   let data = JSON.stringify(qlEditor.innerHTML);
 
   // apply json data to hidden input value
-  if (data = "<p><br></p>"){
+  if (data === "<p><br></p>"){
     hiddenInput.value = null;}
     else {
     hiddenInput.value = data;
