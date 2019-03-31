@@ -10,28 +10,29 @@
 			<div class="card-body">
 				<form class="form-signin" method="POST" action="/register">
 					<div class="form-group">
-						<label for="sign-in-username">User name*</label>
+						<label for="sign-in-username">User name</label>
 						<input name="username" type="text" class="form-control" id="sign-in-username" pattern=".{5,}" title="Must be five or more characters" required>
 					</div>
 					<div class="form-group">
-						<label for="birthday">Birthday*: </label><input type="date" name="birthday" id="birthday" required> 
+						<label for="birthday">Birthday: </label><input type="date" name="birthday" id="birthday" required> 
 						<span class="why"><a href="">Why do we ask this?</a></span>
 					</div>
 					<div class="form-group">
 						<label for="email">Email</label>
-						<input name="email" type="email" class="form-control" id="email">
+						<input name="email" type="email" class="form-control" id="email" required>
+						<span class="why"><a href="">Privacy policy</a></span>
 					</div>
 					<div class="form-group">
-						<label for="sign-in-password">Password*</label>
+						<label for="sign-in-password">Password</label>
 						<input class="form-control" name="user_password" type="password" id="sign-in-password" pattern=".{7,}" title="Seven or more characters" required>
 					</div>
 					<div class="form-group">
-						<label for="sign-in-password">Password again*</label>
+						<label for="sign-in-password">Password again</label>
 						<input class="form-control" name="user_password1" type="password" id="sign-in-password1" required>
 					</div>
 					<div class="form-group">
 						<p>
-							*Required field
+							<em><strong>All fields are required!</strong></em>
 						</p>
 					</div>
 					<button class="btn btn-outline-success btn-lg btn-block" type="submit">Sign Up</button>
