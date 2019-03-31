@@ -140,6 +140,9 @@ def check_registration():
             if user_in_db:
                 # Log user in (add to session)
                 session['username'] = user_in_db['user_name']
+                # If user came from elsewhere in the app
+                if next in session:
+                    return redirect(session['next'])
                 return redirect(url_for('profile', user=user_in_db['user_name']))
             else:
                 flash("There was a problem saving your profile")
@@ -156,6 +159,8 @@ def login():
         # Check if user is not logged in already
     if session.get('username') is not None:
         flash("You are logged in already!")
+        if next in session:
+            return redirect(session['next'])
         return redirect(url_for('profile', user=session['username']))
     else:
         # Render the page for user to be able to log in
@@ -177,6 +182,9 @@ def user_auth():
             print(session)
 
             flash("You have been successfully signed in!")
+            if session.get('next') is not None:
+                print(session['next'])
+                return redirect(session['next'])
             return redirect(url_for('profile', user=user_in_db['user_name']))
 
         else:
@@ -262,7 +270,7 @@ def update_profile(user):
     print(request.form)
     print("here", len(request.form['editor']))
     print(json.loads(request.form.get('editor')))
-    if session:
+    if session.get('username') is not None:
         if user == session['username']:
             users_collection.find_one_and_update({"user_name": user},
                                                 {"$set":
@@ -279,6 +287,7 @@ def update_profile(user):
             flash("You cannot edit someone else's profile!")
             return redirect(url_for('profile', user=user, profile=profile))
     else:
+        session['next'] = request.url
         flash("You must be signed in to edit your profile!")
         return redirect(url_for('profile', user=user, profile=profile))
 
@@ -344,8 +353,9 @@ def new_chapter(story_url):
                 flash("You cannot edit someone else's story!")
                 return redirect(url_for("index"))
         else:
+            session['next'] = request.url
             flash("You must be signed in to edit your stories!")
-            return redirect(url_for("index"))
+            return redirect(url_for("login"))
 
 
 @app.route('/story/<story_url>/new-chapter', methods=["POST"])
@@ -376,18 +386,19 @@ def add_chapter(story_url):
 @app.route('/story/<story_to_read>/edit')
 def edit_story(story_to_read):
     for story in stories_collection.find({"url": story_to_read}):
-        if session:
+        if session.get('username') is not None:
             if session['username'] == story['author']:
                 genres = list_by_type()["genres"]
                 fandoms = list_by_type()["fandoms"]
-                ratings = ['Adult/NSFW', '15', '12', 'PG', 'All Ages']
+                ratings = ['R/Adult/NSFW', '15', 'PG13', 'PG', 'All Ages']
                 return render_template("editstory.html", story=story, story_to_read=story_to_read, genres=genres, fandoms=fandoms, ratings=ratings)
             else:
                 flash("You cannot edit someone else's story!")
                 return redirect(url_for("index"))
         else:
+            session['next'] = request.url
             flash("You must be signed in to edit your stories.")
-            return redirect(url_for("index"))
+            return redirect(url_for("login"))
 
 
 @app.route('/story/<story_to_read>/edit', methods=['POST'])
@@ -434,7 +445,7 @@ def update_story(story_to_read):
 def edit_chapter(story_to_read, chapter_number):
     story = stories_collection.find_one({"url": story_to_read})
     chapter_index = int(chapter_number) - 1
-    if session:
+    if session.get('username') is not None:
         if session['username'] == story['author']:
             chapter = story['chapters'][chapter_index]
             return render_template("editchapter.html", story_to_read=story_to_read, story=story, chapter=chapter, chapter_number=chapter_number)
@@ -442,8 +453,9 @@ def edit_chapter(story_to_read, chapter_number):
             flash("You cannot edit someone else's story!")
             return redirect(url_for("index"))
     else:
+        session['next'] = request.url
         flash("You must be signed in to edit your stories!")
-        return redirect(url_for("index"))
+        return redirect(url_for("login"))
 
 
 @app.route('/story/<story_to_read>/<chapter_number>/edit', methods=['POST'])
@@ -472,20 +484,21 @@ def update_chapter(story_to_read, chapter_number):
 
 @app.route('/new_story')
 def new_story():
-    if session:
+    if session.get('username') is not None:
         images = ["Wings dark angel blue and white.jpg", "Wings dark angel christmas.jpg", "wings dark angel green and purple.jpg",
                   "wings dark angel Hufflepuff.jpg", "Wings dark angel pink.jpg", "Wings dark angel stressed.jpg", "Wings dark fairy colour.jpg"]
         genres = list_by_type()["genres"]
         fandoms = list_by_type()["fandoms"]
         return render_template("newstory.html", images=images, genres=genres, fandoms=fandoms)
     else:
+        session['next'] = request.url
         flash("You must be signed in to add a story!")
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
 
 
 @app.route('/new_story', methods=["POST"])
 def add_story():
-    if session:
+    if session.get('username') is not None:
         formatted_inputs = {}
         form_data = request.form
         for key in form_data:
@@ -531,7 +544,7 @@ def add_story():
 @app.route('/story/<story_to_read>/delete')
 def delete_story(story_to_read):
     story = stories_collection.find_one({"url": story_to_read})
-    if session:
+    if session.get('username') is not None:
         if session['username'] == story['author']:
             stories_collection.remove({"url": story_to_read})
             flash("Story deleted!")
@@ -539,15 +552,16 @@ def delete_story(story_to_read):
         else:
             flash("You cannot delete someone else's story!")
     else:
+        session['next'] = request.url
         flash("You must be signed in to delete stories!")
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 @app.route('/story/<story_to_read>/<chapter_number>/delete')
 def delete_chapter(story_to_read, chapter_number):
     story = stories_collection.find_one({"url": story_to_read})
     chapter_index = int(chapter_number) - 1
-    if session:
+    if session.get('username') is not None:
         if session['username'] == story['author']:
             chapter = story['chapters'][chapter_index]
             stories_collection.find_one_and_update({"url": story_to_read},
@@ -561,21 +575,23 @@ def delete_chapter(story_to_read, chapter_number):
             flash("You cannot delete someone else's story!")
             return redirect(url_for("index"))
     else:
+        session['next'] = request.url
         flash("You must be signed in to delete chapters!")
         return redirect(url_for("index"))
 
 
 @app.route('/story/<story_to_read>/<chapter_number>/feedback')
 def display_fb_page(story_to_read, chapter_number):
-    if session:
+    if session.get('username') is not None:
         stories=stories_collection.find({"url": story_to_read})
         for story in stories:
             chapter=story["chapters"][int(chapter_number) - 1]
             feedback=story.get("feedback")
         return render_template("feedback.html", story=story, chapter = chapter, feedback=feedback)
     else:
+        session['next'] = request.url
         flash("You must be signed in to post feedback.")
-        return redirect(url_for('read', story_to_read=story_to_read, chapter_number=chapter_number))
+        return redirect(url_for('login'))
 
 
 @app.route('/story/<story_to_read>/<chapter_number>/feedback', methods=["POST"])
@@ -608,12 +624,14 @@ def post_feedback(story_to_read, chapter_number):
 
 @app.route('/story/<story_to_read>/report')
 def report_story(story_to_read):
-    if session:
+    if session.get('username') is not None:
         stories = stories_collection.find({"url": story_to_read})
         for story in stories:
             story
         return render_template('report.html', story=story)
     else:
+        session['next'] = request.url
+        print(session['next'])
         flash("You must be signed in to report stories.")
         return redirect(url_for('login'))
 
