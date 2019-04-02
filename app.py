@@ -141,7 +141,7 @@ def check_registration():
                 # Log user in (add to session)
                 session['username'] = user_in_db['user_name']
                 # If user came from elsewhere in the app
-                if next in session:
+                if session.get('next') is not None:
                     return redirect(session['next'])
                 return redirect(url_for('profile', user=user_in_db['user_name']))
             else:
@@ -159,7 +159,7 @@ def login():
         # Check if user is not logged in already
     if session.get('username') is not None:
         flash("You are logged in already!")
-        if next in session:
+        if session.get('next') is not None:
             return redirect(session['next'])
         return redirect(url_for('profile', user=session['username']))
     else:
