@@ -1,92 +1,14 @@
 import os
 import json
-from flask import Flask, app, redirect, url_for, render_template, request, flash, session
-from flask_pymongo import PyMongo
+from helper import app, stories_collection, users_collection, story_count, list_by_type, report
+from flask import Flask, redirect, url_for, render_template, request, flash, session
 from bson.objectid import ObjectId
 from slugify import slugify
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-app = Flask(__name__)
-app.config["MONGO_DBNAME"] = os.getenv('MONGO_DBNAME')
-app.config["MONGO_URI"] = os.getenv('MONGO_URI')
-app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
-
-mongo = PyMongo(app)
-
-
-"""Collections"""
-stories_collection = mongo.db.stories
-users_collection = mongo.db.users
-
-
-"""Helper functions"""
-
-
-def list_by_type():
-    list_by_type = {}
-    ratings = []
-    genres = []
-    fandoms = []
-    authors = []
-    for story in stories_collection.find():
-        rating = story['rating']
-        genres_in_story = story.get('genres')
-        if genres_in_story != None:
-            for genre in genres_in_story:
-                genre
-        fandoms_in_story = story.get('fandoms')
-        if fandoms_in_story != None:
-            for fandom in fandoms_in_story:
-                fandom
-        author = story['author']
-        if rating not in ratings:
-            ratings.append(rating)
-        if genre not in genres:
-            genres.append(genre)
-        if fandom not in fandoms:
-            fandoms.append(fandom)
-        if author not in authors:
-            authors.append(author)
-    list_by_type.update({"ratings": ratings, "genres": genres,
-                         "fandoms": fandoms, "authors": authors})
-    print(list_by_type)
-    return list_by_type
-
-
-def story_count():
-    story_count = []
-    ratings_list = list_by_type()["ratings"]
-    genres_list = list_by_type()["genres"]
-    fandoms_list = list_by_type()["fandoms"]
-    authors_list = list_by_type()["authors"]
-    for rating in ratings_list:
-        count = stories_collection.count_documents({"rating": rating})
-        count_rating = {"rating": rating, "total": count}
-        story_count.append(count_rating)
-    for genre in genres_list:
-        count = stories_collection.count_documents({"genres": genre})
-        count_genre = {"genre": genre, "total": count}
-        story_count.append(count_genre)
-    for fandom in fandoms_list:
-        count = stories_collection.count_documents({"fandoms": fandom})
-        count_fandom = {"fandom": fandom, "total": count}
-        story_count.append(count_fandom)
-    for author in authors_list:
-        count = stories_collection.count_documents({"author": author})
-        count_author = {"author": author, "total": count}
-        story_count.append(count_author)
-    return story_count
-
-
-def report(item, reason_given, this_story, reported_by):
-    stories_collection.find_one_and_update({"url": this_story}, {'$push': {"reports": {"item_reported": item, "reported_by": reported_by, "reason_given": reason_given}}}, upsert=True)
-    return flash("Report sent to admins.")
-
 
 """Routes"""
-
-
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -202,7 +124,6 @@ def logout():
     session.clear()
     flash('You have been logged out. We hope to see you again soon!')
     return redirect(url_for('index'))
-
 
 """
 End of User AUTH
