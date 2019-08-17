@@ -1,5 +1,5 @@
 import os
-from flask import Flask, app
+from flask import Flask, app, flash
 from flask_pymongo import PyMongo
 
 app = Flask(__name__)
