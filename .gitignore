@@ -1,4 +1,4 @@
-.venv
+.ms4env
 .vscode
 __pycache__
 config.*
