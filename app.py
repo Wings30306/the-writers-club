@@ -101,11 +101,9 @@ def user_auth():
             # Log user in (add to session)
             session['username'] = user_in_db['user_name']
             session['is_admin'] = user_in_db.get('is_admin')
-            print(session)
 
             flash("You have been successfully signed in!")
             if session.get('next') is not None:
-                print(session['next'])
                 return redirect(session['next'])
             return redirect(url_for('profile', user=user_in_db['user_name']))
 
@@ -188,9 +186,6 @@ def edit_profile(user):
 
 @app.route('/<user>/edit', methods=['POST'])
 def update_profile(user):
-    print(request.form)
-    print("here", len(request.form['editor']))
-    print(json.loads(request.form.get('editor')))
     if session.get('username') is not None:
         if user == session['username']:
             users_collection.find_one_and_update({"user_name": user},
@@ -259,7 +254,6 @@ def read(story_to_read, chapter_number):
         chapter = this_chapter
         rating = story['rating']
         genres = story['genres']
-        url = story['url']
         total_chapters = len(story['chapters'])
         return render_template("story.html", story=story, story_to_read=story_to_read, cover_image=cover_image, title=title, author=author, fandoms=fandoms, genres=genres, rating=rating, chapter=chapter, chapter_number=int(chapter_number), summary=summary, disclaimer=disclaimer, total_chapters=int(total_chapters))
 
@@ -294,7 +288,6 @@ def add_chapter(story_url):
         chapter = {"chapter_number": chapter_number,
                 "chapter_title": chapter_title,
                 "chapter_content": chapter_content}
-        print(chapter)
         stories_collection.find_one_and_update({"url": story_url},
                                             {"$push": {
                                                 "chapters": chapter
@@ -338,15 +331,11 @@ def update_story(story_to_read):
     genres = formatted_inputs.get("genre")
     if genres == None:
         genres = []
-    print(genres)
     if form_data["newgenre"] is not "":
         genres.append(form_data.get("newgenre"))
-    print(genres)
     fandoms = formatted_inputs.get("fandom")
-    print(fandoms)
     if form_data["newfandom"] is not "":
         fandoms.append(form_data.get("newfandom"))
-    print(fandoms)
 
     stories_collection.find_one_and_update({"url": story_to_read},
                                            {"$set": {
@@ -436,14 +425,11 @@ def add_story():
             genres = []
         if form_data["newgenre"] is not "":
             genres.append(form_data.get("newgenre"))
-        print(genres)
         fandoms = formatted_inputs.get("fandom")
-        print(fandoms)
         if fandoms == None:
             fandoms = []
         if form_data["newfandom"] is not "":
             fandoms.append(form_data.get("newfandom"))
-        print(fandoms)
         story_url = (session['username'] + "-" +
                      slugify(request.form.get('title'))).lower()
         stories_collection.insert_one({
@@ -519,18 +505,14 @@ def display_fb_page(story_to_read, chapter_number):
 def post_feedback(story_to_read, chapter_number):
     story = story_to_read
     chapter = chapter_number
-    chapter_index = int(chapter_number) - 1
-    print(request.form['editor'], "here")
     if request.form['editor'] == '\"<p><br></p>\"':
         flash("You cannot send in empty posts!")
     elif request.form['editor'] == "":
         flash("You cannot send in empty posts!")
     else:
         feedback = json.loads(request.form['editor'])
-        print(feedback)
         posted_by = request.form['posted_by']
         feedback_post = {"fb_for_chapter": chapter, "posted_by": posted_by, "feedback_content": feedback}
-        print("feedback for" + story + ", chapter " + chapter + ": " + str(feedback_post))
         stories_collection.find_one_and_update({"url": story},
                                            {"$push": {
                                                "feedback": feedback_post
@@ -552,7 +534,6 @@ def report_story(story_to_read):
         return render_template('report.html', story=story)
     else:
         session['next'] = request.url
-        print(session['next'])
         flash("You must be signed in to report stories.")
         return redirect(url_for('login'))
 
