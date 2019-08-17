@@ -1,6 +1,7 @@
 import os
 from flask import Flask, app, flash
 from flask_pymongo import PyMongo
+from datetime import date, datetime
 
 app = Flask(__name__)
 app.config["MONGO_DBNAME"] = os.getenv('MONGO_DBNAME')
@@ -80,3 +81,9 @@ def report(item, reason_given, this_story, reported_by):
     stories_collection.find_one_and_update({"url": this_story}, {'$push': {"reports": {"item_reported": item, "reported_by": reported_by, "reason_given": reason_given}}}, upsert=True)
     return flash("Report sent to admins.")
 
+
+def calculate_age(born):
+    today = date.today()
+    bday = datetime.strptime(born, '%Y-%m-%d')
+    age = today.year - bday.year - ((today.month, today.day) < (bday.month, bday.day))
+    return age

@@ -1,11 +1,10 @@
 import os
 import json
-from helper import app, stories_collection, users_collection, story_count, list_by_type, report
+from helper import app, stories_collection, users_collection, story_count, list_by_type, report, calculate_age
 from flask import Flask, redirect, url_for, render_template, request, flash, session
 from bson.objectid import ObjectId
 from slugify import slugify
 from werkzeug.security import generate_password_hash, check_password_hash
-
 
 
 """Routes"""
@@ -101,7 +100,12 @@ def user_auth():
             # Log user in (add to session)
             session['username'] = user_in_db['user_name']
             session['is_admin'] = user_in_db.get('is_admin')
-
+            birthday = user_in_db['birthday']
+            age = calculate_age(birthday)
+            if age >= 18:
+                session['is_adult'] = True
+            else:
+                session['is_adult'] = False
             flash("You have been successfully signed in!")
             if session.get('next') is not None:
                 return redirect(session['next'])
