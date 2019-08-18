@@ -214,7 +214,15 @@ def update_profile(user):
 
 @app.route('/all_stories')
 def all_stories():
-    all_stories = stories_collection.find()
+    if session:
+        if session['is_adult'] == True:
+            all_stories = stories_collection.find()
+        else:
+            all_stories = stories_collection.find( {"rating": {"$nin": ["R/Adult/NSFW"]}})
+            flash("Adult stories have been filtered out because you are underage")
+    else:
+        all_stories = stories_collection.find( {"rating": {"$nin": ["R/Adult/NSFW", "Adult/NSFW"]}})
+        flash("Adult-rated stories have been filtered out. You need to sign in to read these.")
     return render_template("allstories.html",
                            stories=all_stories)
 
