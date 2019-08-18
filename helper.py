@@ -48,7 +48,6 @@ def list_by_type():
             authors.append(author)
     list_by_type.update({"ratings": ratings, "genres": genres,
                          "fandoms": fandoms, "authors": authors})
-    print(list_by_type)
     return list_by_type
 
 
