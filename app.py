@@ -243,7 +243,10 @@ def get_search_results():
         fandom = {'$exists': True}
     rating = request.form.get("rating")
     if rating == "No rating selected":
-        rating = {'$exists': True}
+        if session.get('is_adult') == True:
+            rating = {'$exists': True}
+        else:
+            rating = {"$nin": ["R/Adult/NSFW", "Adult/NSFW"]}
     author = request.form.get("author")
     if author == "No author selected":
         author = {'$exists': True}

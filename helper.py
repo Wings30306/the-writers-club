@@ -1,5 +1,5 @@
 import os
-from flask import Flask, app, flash
+from flask import Flask, app, flash, session
 from flask_pymongo import PyMongo
 from datetime import date, datetime
 
@@ -27,16 +27,22 @@ def list_by_type():
     genres = []
     fandoms = []
     authors = []
-    for story in stories_collection.find():
+    if session.get('is_adult') == True:
+        selection = stories_collection.find()
+    else:
+        selection = stories_collection.find( {"rating": {"$nin": ["R/Adult/NSFW", "Adult/NSFW"]}})
+    for story in selection:
         rating = story['rating']
         genres_in_story = story.get('genres')
-        if genres_in_story != None:
+        if genres_in_story != []:
             for genre in genres_in_story:
                 genre
         fandoms_in_story = story.get('fandoms')
-        if fandoms_in_story != None:
+        if fandoms_in_story != []:
             for fandom in fandoms_in_story:
                 fandom
+        else:
+            fandom = "Fandom not added"
         author = story['author']
         if rating not in ratings:
             ratings.append(rating)
