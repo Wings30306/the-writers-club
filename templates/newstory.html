@@ -12,9 +12,7 @@ block header %} Submit Your Story {% endblock %} {% block content %}
       required
     />
   </div>
-  <label
-    >Choose a cover image</label
-  >
+  <label>Choose a cover image</label>
   {% for image in images %}
   <div class="form-check-inline">
     <label class="form-check-label">
@@ -30,13 +28,21 @@ block header %} Submit Your Story {% endblock %} {% block content %}
     </label>
   </div>
   {% endfor %}
-  <p>Images provided by <a href="https://robbehenderickx.wixsite.com/creafien" target="_blank" rel="noopener noreferrer">Crea-Fien</a><br> <span
-  >(If no image is selected, a grey placeholder will show with the chapter
-  title.<br />Uploading your own image is not yet possible at this
-  time.)</span
->
+  <p>
+    Images provided by
+    <a
+      href="https://robbehenderickx.wixsite.com/creafien"
+      target="_blank"
+      rel="noopener noreferrer"
+      >Crea-Fien</a
+    ><br />
+    <span
+      >(If no image is selected, a grey placeholder will show with the chapter
+      title.<br />Uploading your own image is not yet possible at this
+      time.)</span
+    >
   </p>
-  
+
   <div class="form-group">
     <label for="summary">Summary</label>
     <textarea
@@ -50,9 +56,8 @@ block header %} Submit Your Story {% endblock %} {% block content %}
   <div class="form-group">
     <label for="rating">Rating</label>
     <span>
-        <a data-toggle="modal"
-    data-target="#ratings-modal">Ratings Guidelines</a>
-      </span> 
+      <a data-toggle="modal" data-target="#ratings-modal">Ratings Guidelines</a>
+    </span>
     <select class="form-control" id="rating" name="rating" required>
       <option>R/Adult/NSFW</option>
       <option>15</option>

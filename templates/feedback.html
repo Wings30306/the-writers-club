@@ -7,25 +7,21 @@
   {% if session.username != story.author %}
 <p>You are posting as <strong>{{ session.username }}</strong>. <a href="">Not you?</a></p>
 <form id="form" method="POST" action="{{url_for('post_feedback', story_to_read=story.url, chapter_number=chapter.chapter_number)}}"">
-    <div class="form-group d-none">
-      <label for="posted_by">Poster: </label>
-      <input type="text" name="posted_by" id="posted_by" value="{{session.username}}" class="form-control">
-    </div>
-    <br>
-    <!--    Quill Editor    -->
-    
-    <div id="#toolbar">
-      
-    </div>
-    <div id="editor">
-      <p></p>
-    </div>
-    <!--    Hidden Input    -->
-    <input id="hidden-input" name="editor" type="hidden" required>
-    <!--   Hidden Button     -->
-    <button type="submit">Post Feedback</button>
-  </form>
-  <hr>
+  <div class="form-group d-none">
+    <label for="posted_by">Poster: </label>
+    <input type="text" name="posted_by" id="posted_by" value="{{session.username}}" class="form-control">
+  </div>
+  <!--    Quill Editor    -->
+  
+  <div id="#toolbar"></div>
+  <div id="editor">
+    <p></p>
+  </div>
+  <!--    Hidden Input    -->
+  <input id="hidden-input" name="editor" type="hidden" required>
+  <!--   Hidden Button     -->
+  <button type="submit">Post Feedback</button>
+</form>
 {% endif %}
   {% if feedback %}
   {% if story.author != session.username %} <h5>Previous posts: </h5> {% endif %}
