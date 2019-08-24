@@ -14,7 +14,7 @@
     {% else %}
     <img
       class="cover-image"
-      src="https://dummyimage.com/200x300.jpg&text='{{ title }}'"
+      src="https://dummyimage.com/200x300.jpg&text={{ title|replace(' ', '%20') }}"
       alt="Cover image for {{ title }}"
     />
     {% endif %}
