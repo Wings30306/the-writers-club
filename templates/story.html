@@ -23,20 +23,26 @@
     <h4>{{ title }}</h4>
     Author: <a href="{{url_for('profile', user=author) }}">{{ author }}</a
     ><br />
-    Rating: {{ rating }} <span>
-        (<a data-toggle="modal"
-    data-target="#ratings-modal">Ratings Guidelines</a>)
-      </span>  <br />
-    Fandom: {% if fandoms != None %} {% for fandom in fandoms %} {{ fandom }}{% if loop.index <
-    loop.length %}, {% endif %} {% endfor %} {% else %} <em>Author has not selected a fandom.</em> {% endif %} <br />
-    Genre:  {% for genre in genres %} {{ genre }}{% if loop.index < loop.length
+    Rating: {{ rating }}
+    <span>
+      (<a data-toggle="modal" data-target="#ratings-modal">Ratings Guidelines</a
+      >)
+    </span>
+    <br />
+    Fandom: {% if fandoms != None %} {% for fandom in fandoms %} {{ fandom }}{%
+    if loop.index < loop.length %}, {% endif %} {% endfor %} {% else %}
+    <em>Author has not selected a fandom.</em> {% endif %} <br />
+    Genre: {% for genre in genres %} {{ genre }}{% if loop.index < loop.length
     %}, {% endif %} {% endfor %} <br />
     Summary: {{ summary }} <br />
     Disclaimer: {{ disclaimer }} <br />
     Total chapters in this story: {{ total_chapters }}
   </div>
 </div>
-{% if session.username != author %} <a href="{{url_for('report_story', story_to_read = story_to_read)}}">Report this story to admins</a>{% endif %}
+{% if session.username != author %}
+<a href="{{url_for('report_story', story_to_read = story_to_read)}}"
+  >Report this story to admins</a
+>{% endif %}
 <hr />
 <h5 class="center">{{ chapter.chapter_title | title }}</h5>
 {{ chapter.chapter_content | safe }}
@@ -63,6 +69,8 @@
   {% endif %}
 </div>
 {% if session.username == author %}
-<a href="{{ url_for('edit_chapter', story_to_read=story_to_read, chapter_number = chapter_number) }}">Edit this chapter</a>
-{% endif %}
-{% endblock %}
+<a
+  href="{{ url_for('edit_chapter', story_to_read=story_to_read, chapter_number = chapter_number) }}"
+  >Edit this chapter</a
+>
+{% endif %} {% endblock %}
