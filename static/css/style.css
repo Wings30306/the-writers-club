@@ -48,7 +48,7 @@ form span {
 .form-check-inline {
   width: 20%;
   box-sizing: border-box;
-  margin: 5%;
+  margin: 0px 5px 5px 10px;
 }
 
 .form-check-inline img {

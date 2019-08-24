@@ -410,8 +410,7 @@ def update_chapter(story_to_read, chapter_number):
 @app.route('/new_story')
 def new_story():
     if session.get('username') is not None:
-        images = ["Wings dark angel blue and white.jpg", "Wings dark angel christmas.jpg", "wings dark angel green and purple.jpg",
-                  "wings dark angel Hufflepuff.jpg", "Wings dark angel pink.jpg", "Wings dark angel stressed.jpg", "Wings dark fairy colour.jpg"]
+        images = ["bay", "beach", "blue", "buddha", "circles", "city-blue", "city-green", "city-pink", "crowd-blue", "crowd-red", "daisy", "dark-blue", "desert", "eye-in-the-sky", "family", "farmhouse", "flowers", "green-face", "heart", "justice-is-blind", "moon-sea", "rose-moon", "sailing-day", "sailing-night", "sea", "silhouette-red", "storm", "wildflowers"]
         genres = list_by_type()["genres"]
         fandoms = list_by_type()["fandoms"]
         return render_template("newstory.html", images=images, genres=genres, fandoms=fandoms)
