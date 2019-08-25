@@ -135,7 +135,10 @@ End of User AUTH
 @app.route('/<user>')
 def profile(user):
     user_profile = users_collection.find({'user_name': user})
-    user_stories = stories_collection.find({'author': user})
+    if session.get("is_adult") == True:
+        user_stories = stories_collection.find({'author': user})
+    else:
+        user_stories = stories_collection.find({'author': user, "rating": {"$nin": ["R/Adult/NSFW", "Adult/NSFW"]}})
     return render_template("profile.html", user=user, stories=user_stories, profile=user_profile)
 
 
