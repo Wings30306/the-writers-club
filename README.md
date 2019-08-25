@@ -5,7 +5,8 @@ When I did the first project ([User Centric Frontend](https://wings30306.github.
 Happy reading / writing!
  
 ## UX
- 
+
+Read the full document for [thought process and database schemas](thought-process-and-database-schemas.pdf). As this project focuses on the back-end, a [template](https://startbootstrap.com/template-overviews/clean-blog/) has been used for the front-end look.
 
 
 ### User Stories
@@ -16,15 +17,14 @@ Happy reading / writing!
 6.	As a reader, I would also like to rate stories when I give feedback.
 7.	As a writer, I would like to easily add new chapters / stories.
 8.	As a writer, I would like to be able to change already-uploaded chapters too, in case I find a mistake or typo that needs to be corrected.
-9.	**WIP** As a writer, I would like to be able to upload a cover image for my story. If I don’t have a cover image, I'd like to have a choice of placeholder.
+9.	**WIP** As a writer, I would like to be able to upload a cover image for my story. 
+1.  If I don’t have a cover image, I'd like to have a choice of placeholder. 
 1.	**WIP** As a writer, I would like to receive any feedback in email so I don’t always have to check the site for new posts.
 1.	As a writer, I would like to be able to add a keyword (new genre, new fandom,…) if the one applicable to my story isn’t listed yet.
 1.	**WIP** As a writer, I would like to know how many times my story has been read. Visualisation (statistical graphs)  would be also be  nice for this. Perhaps a dashboard for each author, to be accessed on sign-in?
-1.	As an admin, I would like to be able to suspend or block users who don’t follow the terms and conditions, for example those who post spam or don’t follow the guidelines for appropriate conduct.
-1. As an admin, I'd like to be able to delete inappropriate comments in feedback or edit the story characteristics if they were put in incorrectly.
+1.	**WIP** As an admin, I would like to be able to suspend or block users who don’t follow the terms and conditions, for example those who post spam or don’t follow the guidelines for appropriate conduct.
+1. **WIP** As an admin, I'd like to be able to delete inappropriate comments in feedback or edit the story characteristics if they were put in incorrectly.
 
-
-This section is also where you would share links to any wireframes, mockups, diagrams etc. that you created as part of the design process. These files should themselves either be included in the project itself (in an separate directory), or just hosted elsewhere online and can be in any format that is viewable inside the browser.
 
 ## Features
 
@@ -39,7 +39,10 @@ For some/all of your features, you may choose to reference the specific project 
 In addition, you may also use this section to discuss plans for additional features to be implemented in the future:
 
 ### Features Left to Implement
-- Allowing users to upload their own cover image for a story.
+- Allow users to upload their own cover image for a story.
+- Show graphs for users and admins as detailed in user stories.
+- 
+
 
 ## Technologies Used
 
