@@ -14,7 +14,7 @@ Read the full document for [thought process and database schemas](thought-proces
 2.	**WIP** As a reader, I would like to see the ratings by other people to decide which story I would like to read.
 4.	As a reader, I would like to be able to filter stories by fandom, genre, rating,…
 5.	As a reader, I would like to give feedback for stories. I understand I’ll have to sign in to do this.
-6.	As a reader, I would also like to rate stories when I give feedback.
+6.	**WIP** As a reader, I would also like to rate stories when I give feedback.
 7.	As a writer, I would like to easily add new chapters / stories.
 8.	As a writer, I would like to be able to change already-uploaded chapters too, in case I find a mistake or typo that needs to be corrected.
 9.	**WIP** As a writer, I would like to be able to upload a cover image for my story. 
@@ -27,21 +27,22 @@ Read the full document for [thought process and database schemas](thought-proces
 
 
 ## Features
-
-In this section, you should go over the different parts of your project, and describe each in a sentence or so.
  
 ### Existing Features
-- Feature 1 - allows users X to achieve Y, by having them fill out Z
-- ...
-
-For some/all of your features, you may choose to reference the specific project files that implement them, although this is entirely optional.
-
-In addition, you may also use this section to discuss plans for additional features to be implemented in the future:
+- User Registration: allows new users to create an account so they can log in.
+- User Log-in: allows existing users to log in using their username or email and password. Passwords are hashed for security reasons. Log-in is required to read adult-rated stories, post your own stories and give feedback. 
+- User Profiles: allow users to tell others about themselves, provide a list of stories posted by this user. A user must be logged in to edit their own profile. A user cannot edit someone else's profile. A user must be logged in and an adult to be able to see adult-rated stories by the user whose profile they visit.
+- Search: allows a user to search for stories by rating, genre, fandom and/or author.
+- All Stories: exactly what it says: provides a list of all stories available to the user (filters out adult-rated stories if user is not logged in or underage).
+- Story pages: the main reason of existence for this project. These pages, generated for each chapter of each story, allow the user to actually read said story. 
+- Admin Area/Meet the Team: introduces users to the admin team. If user is an admin, they will also see reports by users that may require admin action. 
 
 ### Features Left to Implement
 - Allow users to upload their own cover image for a story.
-- Show graphs for users and admins as detailed in user stories.
-- 
+- Show graphs for writers as detailed in user stories.
+- Allow readers to rate other people's stories.
+- Allow readers to search for stories based on other users' average rating.
+- Allow admins to block/suspend users where necessary.
 
 
 ## Technologies Used
@@ -91,7 +92,7 @@ In addition, if it is not obvious, you should also describe how to run your code
 
 ### Media
 - The masthead image [Person Typing On Typewriter](https://www.pexels.com/photo/person-typing-on-typewriter-958164/) was posted by [rawpixel.com](https://www.pexels.com/@rawpixel) on www.pexels.com.
-- The paintings for the cover image choice were kindly provided by [CreaFien](https://www.facebook.com/pages/category/Fictional-Character/Crea-Fien-1600059000229210/)
+- The paintings for the cover image choice were kindly provided by [CreaFien](https://robbehenderickx.wixsite.com/creafien)
 
 ### Acknowledgements
 
