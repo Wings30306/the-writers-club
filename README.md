@@ -42,19 +42,27 @@ Read the full document for [thought process and database schemas](thought-proces
 - Show graphs for writers as detailed in user stories.
 - Allow readers to rate other people's stories.
 - Allow readers to search for stories based on other users' average rating.
-- Allow admins to block/suspend users where necessary.
+- Allow admins to block/suspend users when necessary.
 
 
 ## Technologies Used
 
 ### Languages
+- [HTML](https://html.com/#What_is_HTML) provides the main building blocks of the website in terms of structure and fixed content.
+- [CSS](https://techterms.com/definition/css) adds custom styling beyond what's provided in the template.
+- [Javascript](https://www.javascript.com/) is used to make the Quill editor work: 
+    - customize user options for styling their story, feedback or profile text.
+    - transfer the content of the Quill editor to a hidden input field in order to send it to the back-end for storing in the Database.
+- [Python](https://www.python.org/) provides the connection to the backend, specifically the NoSQL (Mongo) database that's hosted by [mlab](https://mlab.com). Also, it allows the use of the [Jinja](https://palletsprojects.com/p/jinja/) templating language that's used to display the data to the user and make the website dynamic - no need for hard-coding everything!
 
 ### Frameworks
+- [Bootstrap](https://getbootstrap.com/) provides the grid system that's used to make the website look good, as well as several components such as the responsive nav bar. The [template](https://startbootstrap.com/template-overviews/clean-blog/) used was also built with and provided by Bootstrap.
 
 ### Libraries
 
-- [JQuery](https://jquery.com)
-    - The project uses **JQuery** to simplify DOM manipulation.
+- [JQuery](https://jquery.com) was used to simplify DOM manipulation. It is also required to make Bootstrap work. 
+- [Popper](https://popper.js.org/) is required to make Bootstrap work.
+- [QuillJS](https://quilljs.com/) provides the text editor that allow users to style their own content (stories, feedback, profile text). If you want _italic_ or **bold** text for example, you can add this easily.
 
 
 ## Testing
