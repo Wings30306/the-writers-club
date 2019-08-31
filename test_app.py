@@ -1,12 +1,27 @@
 import unittest
-import app
-from helper import calculate_age, stories_collection, users_collection
+import app as project
+from helper import calculate_age, stories_collection, users_collection, app
 import os
 from datetime import date, datetime
 
 
 
 class testApp(unittest.TestCase):
+
+    """Set up and tear down"""
+    # executed prior to each test
+    def setUp(self):
+        app.config['TESTING'] = True
+        app.config['WTF_CSRF_ENABLED'] = False
+        app.config['DEBUG'] = False
+        self.app = app.test_client()
+ 
+        # Disable sending emails during unit testing
+        self.assertEqual(app.debug, False)
+ 
+    # executed after each test
+    def tearDown(self):
+        pass
     
     """
     Test suite for app.py
@@ -39,7 +54,33 @@ class testApp(unittest.TestCase):
         self.assertIsNotNone(stories_collection.find())
         self.assertIsNotNone(users_collection.find())
 
-    
+    def test_main_page(self):
+        response = self.app.get('/', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_register_page(self):
+        response = self.app.get('/register', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_login_page(self):
+        response = self.app.get('/login', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_logout_page(self):
+        response = self.app.get('/logout', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_stories_page(self):
+        response = self.app.get('/all_stories', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_admin_page(self):
+        response = self.app.get('/admin', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_search_page(self):
+        response = self.app.get('/search', follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
 
 if __name__ == "__main__":
     unittest.main()  
