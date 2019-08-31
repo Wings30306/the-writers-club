@@ -10,8 +10,6 @@ app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
 
 mongo = PyMongo(app)
 
-mongo = PyMongo(app)
-
 
 """Collections"""
 stories_collection = mongo.db.stories
