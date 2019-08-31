@@ -27,7 +27,7 @@ class testApp(unittest.TestCase):
         database_name = os.getenv("MONGO_DBNAME")
         self.assertIn(database_name, database_url)
 
-    def test_age_calculator(self):
+    def test_calculate_age(self):
         age1 = calculate_age("1984-06-21")
         age2 = calculate_age("2010-11-10")
         age3 = calculate_age(datetime.strftime(date.today(), '%Y-%m-%d'))
@@ -41,4 +41,5 @@ class testApp(unittest.TestCase):
 
     
 
-    
+if __name__ == "__main__":
+    unittest.main()  

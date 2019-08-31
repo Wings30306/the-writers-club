@@ -1,5 +1,6 @@
 .ms4env
 .vscode
 __pycache__
-config.*
 static/images/heidi/*
+.coverage
+htmlcov
