@@ -138,7 +138,7 @@ This project is hosted on [Heroku](heroku.com). It's been deployed using the fol
         "SECRET_KEY": "YourSecretKeyHere"
     },
     ``` 
-1. Run the project in your terminal using the command `python app.py`
+1. Run the project in your terminal using the command `python app.py` (like pip, for Unix-based systems you may need to use `python3`).
 
 ## Credits
 
