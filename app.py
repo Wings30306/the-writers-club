@@ -7,6 +7,20 @@ from slugify import slugify
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+
+"""Error Handlers"""
+"""Page Not Found"""
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+"""Server Error"""
+@app.errorhandler(500)
+def server_error(e):
+    return render_template('500.html'), 500 
+
+
 """Routes"""
 @app.route('/')
 def index():
