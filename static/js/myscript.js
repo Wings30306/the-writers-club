@@ -1,8 +1,3 @@
-if (window.location.href.endsWith("edit"||"feedback")) {
-  // you could be all code in here so that if this JS runs on a
-  // page without the editor - it will be ignored
-}
-
 // Initialize Quill editor 
 
 var toolbarOptions = [
