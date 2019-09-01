@@ -79,7 +79,7 @@ class testApp(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_stories_page(self):
-        response = self.app.get('/all_stories', follow_redirects=True)
+        response = self.app.get('/all-stories', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
     def test_admin_page(self):

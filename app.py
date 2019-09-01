@@ -145,13 +145,13 @@ def profile(user):
     return render_template("profile.html", user=user, stories=user_stories, profile=user_profile)
 
 
-@app.route('/user/<user>/make_admin')
+@app.route('/user/<user>/make-admin')
 def make_admin(user):
     users_collection.find_one_and_update({"user_name": user}, {"$set": {"is_admin": True}})
     return redirect(url_for("profile", user=user))
 
 
-@app.route('/user/<user>/remove_admin')
+@app.route('/user/<user>/remove-admin')
 def remove_admin(user):
     users_collection.find_one_and_update({"user_name": user}, {"$set": {"is_admin": False}})
     return redirect(url_for("profile", user=user))
@@ -171,7 +171,7 @@ def admin_page():
     return render_template("adminteam.html", users=users)
 
 
-@app.route('/story/<story_to_read>/clear_report/<loop_index>')
+@app.route('/story/<story_to_read>/clear-report/<loop_index>')
 def clear_reports(story_to_read, loop_index):
     list_index = int(loop_index) - 1
     story = stories_collection.find_one({"url": story_to_read})
@@ -218,7 +218,7 @@ def update_profile(user):
         return redirect(url_for('profile', user=user, profile=profile))
 
 
-@app.route('/all_stories')
+@app.route('/all-stories')
 def all_stories():
     if session:
         if session['is_adult'] == True:
@@ -413,7 +413,7 @@ def update_chapter(story_to_read, chapter_number):
         return redirect(url_for('read', story_to_read=story_to_read, chapter_number=chapter_number))
 
 
-@app.route('/new_story')
+@app.route('/new-story')
 def new_story():
     if session.get('username') is not None:
         images = ["bay", "beach", "blue", "buddha", "circles", "city-blue", "city-green", "city-pink", "crowd-blue", "crowd-red", "daisy", "dark-blue", "desert", "eye-in-the-sky", "family", "farmhouse", "flowers", "green-face", "heart", "justice-is-blind", "moon-sea", "rose-moon", "sailing-day", "sailing-night", "sea", "silhouette-red", "storm", "wildflowers"]
@@ -426,7 +426,7 @@ def new_story():
         return redirect(url_for('login'))
 
 
-@app.route('/new_story', methods=["POST"])
+@app.route('/new-story', methods=["POST"])
 def add_story():
     if session.get('username') is not None:
         formatted_inputs = {}
