@@ -14,6 +14,7 @@ mongo = PyMongo(app)
 """Collections"""
 stories_collection = mongo.db.stories
 users_collection = mongo.db.users
+fake_collection = None
 
 
 """Helper functions"""

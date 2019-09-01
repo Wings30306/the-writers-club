@@ -132,9 +132,12 @@ End of User AUTH
 """
 
 
-@app.route('/<user>')
+@app.route('/user/<user>')
 def profile(user):
-    user_profile = users_collection.find({'user_name': user})
+    user_profile = users_collection.find_one({'user_name': user})
+    if user_profile == None:
+        flash(user + " doesn't exist")
+        return redirect(url_for('index'))
     if session.get("is_adult") == True:
         user_stories = stories_collection.find({'author': user})
     else:
@@ -142,13 +145,13 @@ def profile(user):
     return render_template("profile.html", user=user, stories=user_stories, profile=user_profile)
 
 
-@app.route('/<user>/make_admin')
+@app.route('/user/<user>/make_admin')
 def make_admin(user):
     users_collection.find_one_and_update({"user_name": user}, {"$set": {"is_admin": True}})
     return redirect(url_for("profile", user=user))
 
 
-@app.route('/<user>/remove_admin')
+@app.route('/user/<user>/remove_admin')
 def remove_admin(user):
     users_collection.find_one_and_update({"user_name": user}, {"$set": {"is_admin": False}})
     return redirect(url_for("profile", user=user))
@@ -177,7 +180,7 @@ def clear_reports(story_to_read, loop_index):
     return redirect(url_for("admin_page"))
 
 
-@app.route('/<user>/edit')
+@app.route('/user/<user>/edit')
 def edit_profile(user):
     if session:
         user_profile = users_collection.find({'user_name': user})
@@ -191,7 +194,7 @@ def edit_profile(user):
         return redirect(url_for("login"))
 
 
-@app.route('/<user>/edit', methods=['POST'])
+@app.route('/user/<user>/edit', methods=['POST'])
 def update_profile(user):
     if session.get('username') is not None:
         if user == session['username']:

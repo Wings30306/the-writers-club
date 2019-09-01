@@ -1,8 +1,10 @@
 import unittest
 import app as project
-from helper import calculate_age, stories_collection, users_collection, app
+from app import index, login, register, search, all_stories, admin_page, logout
+from helper import calculate_age, stories_collection, users_collection, fake_collection, app
 import os
 from datetime import date, datetime
+from flask import url_for, session
 
 
 
@@ -14,7 +16,7 @@ class testApp(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['DEBUG'] = False
-        self.app = app.test_client()
+        self.app = project.app.test_client()
  
         # Disable sending emails during unit testing
         self.assertEqual(app.debug, False)
@@ -51,19 +53,25 @@ class testApp(unittest.TestCase):
         self.assertEqual(age3, 0)
 
     def test_collections(self):
-        self.assertIsNotNone(stories_collection.find())
-        self.assertIsNotNone(users_collection.find())
+        self.assertIsNotNone(stories_collection)
+        self.assertIsNotNone(users_collection)
+        self.assertIsNone(fake_collection)
 
     def test_main_page(self):
-        response = self.app.get('/', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
+        response1 = self.app.get('/')
+        response2 = self.app.get('/a')
+        self.assertEqual(response1.status_code, 200)
+        self.assertNotEqual(response2.status_code, 200)
         
+
     def test_register_page(self):
-        response = self.app.get('/register', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
+        response1 = self.app.get('/register')
+        self.assertEqual(response1.status_code, 200)
+        response2 = self.app.get('/registration')
+        self.assertNotEqual(response2.status_code, 200)
 
     def test_login_page(self):
-        response = self.app.get('/login', follow_redirects=True)
+        response = self.app.get('/login', follow_redirects=False)
         self.assertEqual(response.status_code, 200)
 
     def test_logout_page(self):
@@ -81,6 +89,12 @@ class testApp(unittest.TestCase):
     def test_search_page(self):
         response = self.app.get('/search', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_profile_page(self):
+        response1 = self.app.get('/user/wings30306')
+        response2 = self.app.get('/user/fake')
+        self.assertEqual(response1.status_code, 200)
+        self.assertNotEqual(response2.status_code, 200)
 
 if __name__ == "__main__":
     unittest.main()  
