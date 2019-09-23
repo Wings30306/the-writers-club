@@ -132,8 +132,14 @@ form {
   color: darkred;
 }
 
-
+.btn-my-color:hover,
 a:hover {
   font-weight: bold;
   text-decoration: none;
+  box-shadow: 5px 5px 8px rgb(63, 62, 62);
+}
+
+.search-btn {
+  width: 80%;
+  padding: 15px 25px;
 }

@@ -45,11 +45,20 @@ block header %} Search for a story {% endblock %} {% block content %}
       </select>
     </div>
   </div>
-  <button class="btn btn-my-color btn-lg">
-    Search<br /><span>lists matching stories</span>
-  </button>
+  <div class="row">
+    <div class="col-6">
+      <button class="btn btn-my-color btn-lg search-btn">
+        Search
+      </button>
+    </div>
+    <div class="col-6">
+      <a
+        href="{{ url_for('all_stories') }}"
+        class="btn btn-my-color btn-lg search-btn">
+        Cancel</a
+      >
+    </div>
+  </div>
 </form>
-<a href="{{ url_for('all_stories') }}" class="btn btn-my-color btn-lg"
-  >Cancel<br /><span>go to All Stories</span></a
->
+
 {%endblock%}
