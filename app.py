@@ -66,7 +66,8 @@ def check_registration():
                 {
                     'user_name': form['username'],
                     'email': form['email'],
-                    'password': hash_pass
+                    'password': hash_pass,
+                    'birthday': form['birthday']
                 }
             )
             # Check if user is actualy saved
@@ -75,6 +76,14 @@ def check_registration():
             if user_in_db:
                 # Log user in (add to session)
                 session['username'] = user_in_db['user_name']
+                session['is_admin'] = user_in_db.get('is_admin')
+                birthday = user_in_db['birthday']
+                age = calculate_age(birthday)
+                if age >= 18:
+                    session['is_adult'] = True
+                else:
+                    session['is_adult'] = False
+                flash("You have been successfully signed in!")
                 # If user came from elsewhere in the app
                 if session.get('next') is not None:
                     return redirect(session['next'])
