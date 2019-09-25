@@ -3,8 +3,8 @@ import json
 from helper import app, stories_collection, users_collection, story_count, list_by_type, report, calculate_age
 from flask import Flask, redirect, url_for, render_template, request, flash, session
 from bson.objectid import ObjectId
-from slugify import slugify
 from werkzeug.security import generate_password_hash, check_password_hash
+from slugify import slugify
 
 
 
