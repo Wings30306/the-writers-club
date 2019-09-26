@@ -77,6 +77,20 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('index') }}">Home</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('all_stories') }}"
+                >All stories</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('search') }}">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin_page') }}"
+                >{% if session.is_admin == True %}Admin Area{% else %}Meet the
+                Team!{% endif %}</a
+              >
+            </li>
             {% if session.username %}
             <li class="nav-item">
               <a
@@ -101,20 +115,6 @@
               <a class="nav-link" href="{{ url_for('register') }}">Register</a>
             </li>
             {% endif %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('all_stories') }}"
-                >All stories</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('search') }}">Search</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('admin_page') }}"
-                >{% if session.is_admin == True %}Admin Area{% else %}Meet the
-                Team!{% endif %}</a
-              >
-            </li>
           </ul>
         </div>
       </div>
