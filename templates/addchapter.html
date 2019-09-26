@@ -6,10 +6,15 @@ Add Chapter to {{story.title}}
 Add Chapter to {{story.title}}
 {% endblock %}
 {% block content %}
+
+
+<p>Story title: {{story.title}}</p>
+<p>Story summary: {{story.summary}}</p>
+<h2>Add a Chapter:</h2>
 <form id="form" method="POST" action="{{url_for('add_chapter', story_url=story.url)}}"">
   <div class="form-group">
   <label for="chapter_number">Chapter Number: </label>
-  <input type=" inputType" id="chapter_number" name="chapter_number"class="form-control">
+  <input type="number" id="chapter_number" name="chapter_number"class="form-control" min=1 required>
   </div>
   <div class="form-group">
     <label for="chapter_title">Chapter Title: </label>

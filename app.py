@@ -330,6 +330,9 @@ def add_chapter(story_url):
     elif request.form['editor'] == "":
         flash("You cannot send in empty posts!")
         return redirect(url_for("new_chapter", story_url=story_url))
+    elif len(request.form['editor']) < 50:
+        flash("Chapter length must be 50 characters or more!")
+        return redirect(url_for("new_chapter", story_url=story_url))
     else:
         chapter_content = json.loads(request.form['editor'])
         chapter_number = request.form['chapter_number']
@@ -423,6 +426,9 @@ def update_chapter(story_to_read, chapter_number):
         return redirect(url_for("edit_chapter", story_to_read=story_to_read, chapter_number=chapter_number))
     elif request.form['editor'] == "":
         flash("You cannot send in empty posts!")
+        return redirect(url_for("edit_chapter", story_to_read=story_to_read, chapter_number=chapter_number))
+    elif len(request.form['editor']) < 50:
+        flash("Chapter length must be 50 characters or more!")
         return redirect(url_for("edit_chapter", story_to_read=story_to_read, chapter_number=chapter_number))
     else:
         story = stories_collection.find_one({'url': story_to_read})

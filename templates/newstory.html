@@ -9,6 +9,8 @@ block header %} Submit Your Story {% endblock %} {% block content %}
       id="title"
       name="title"
       placeholder="What's your story called?"
+      pattern=".{5,}"
+      title="Must be five or more characters"
       required
     />
   </div>
@@ -50,6 +52,8 @@ block header %} Submit Your Story {% endblock %} {% block content %}
       id="summary"
       name="summary"
       rows="3"
+      pattern=".{20,}"
+      title="Please include a summary of at least twenty characters"
       required
     ></textarea>
   </div>
