@@ -20,16 +20,16 @@
 {% endif %} 
 <hr>
 {% endif %}
-<h3>Meet the Team!</h3>
+<h2>Meet the Team!</h2>
 <div class="row">
   {% for user in users %}
   <div class="col-md-6">
     <div class="card">
-      <h4>
+      <h3>
         <a href="{{url_for('profile', user=user.user_name) }}">{{
           user.user_name | upper
         }}</a>
-      </h4>
+      </h3>
       <p>
         {{ user.intro | safe }}
       </p>

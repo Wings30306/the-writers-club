@@ -15,11 +15,7 @@ block header %} Submit Your Story {% endblock %} {% block content %}
     />
   </div>
   <label>Choose a cover image<br />
-  <span
-    >(If no image is selected, a grey placeholder will show with the chapter
-    title.<br />Uploading your own image is not yet possible at this
-    time.)</span
-  ></label>
+  </label>
   {% for image in images %}
   <div class="form-check-inline">
     <label class="form-check-label">
@@ -33,16 +29,20 @@ block header %} Submit Your Story {% endblock %} {% block content %}
         alt="{{ image }}"
       />
     </label>
+    
   </div>
-  {% endfor %}
-  <p>
+  {% endfor %}<p><span
+    ><strong>
     Images provided by
     <a
       href="https://robbehenderickx.wixsite.com/creafien"
       target="_blank"
       rel="noopener noreferrer"
       >Crea-Fien</a
-    >
+    >.</strong><br>If no image is selected, a grey placeholder will show with the chapter
+    title. Uploading your own image is not yet possible at this
+    time.
+    </span>
   </p>
 
   <div class="form-group">

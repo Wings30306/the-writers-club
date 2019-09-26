@@ -6,6 +6,21 @@ html {
   min-height: 100vh;
 }
 
+h1, h2, h3, h4, h5 {
+  text-align: center;
+}
+
+.story-title {
+  text-align: start
+}
+
+.navbar-brand {
+  font-size: 1.5em;
+  font-style: italic;
+  font-weight: 800;
+  font-family: Lora,'Times New Roman',serif;
+}
+
 header {
   text-align: center;
 }
@@ -21,10 +36,10 @@ header.masthead {
   align-items: center;
 }
 
-header.masthead .site-heading {
+header.masthead .page-heading {
   width:100%;
   padding: 4rem 0 0;
-  font-stretch: ultra-condensed
+  font-stretch: expanded;
 }
 
 section{
@@ -33,6 +48,17 @@ section{
 
 .cover-image {
   width: 100%;
+}
+
+form {
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.log-in-form {
+  border: 2px solid lightgrey;
+  border-radius: 10px;
 }
 
 form label {
@@ -83,10 +109,6 @@ table {
 
 tr {
   padding: 5px
-}
-
-form {
-  width: 100%;
 }
 
 .btn span {
@@ -142,4 +164,10 @@ a:hover {
 .search-btn {
   width: 80%;
   padding: 15px 25px;
+}
+
+@media only screen and (min-width: 768px) {
+  .navbar-brand {
+    font-size: 3em;
+  }
 }
