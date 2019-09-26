@@ -168,7 +168,8 @@ def profile(user):
             user_stories = stories_collection.find({'$and': [{'author': user}, {"chapters.0": {"$exists": True}}]})
         else:
             user_stories = stories_collection.find({'author': user, "rating": {"$nin": ["R/Adult/NSFW", "Adult/NSFW"]}, "chapters.0": {"$exists": True}})
-    return render_template("profile.html", user=user, stories=user_stories, profile=user_profile)
+    user_stories_count = user_stories.count()
+    return render_template("profile.html", user=user, stories=user_stories, profile=user_profile, count=user_stories_count)
 
 
 @app.route('/user/<user>/make-admin')

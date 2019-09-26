@@ -16,6 +16,8 @@ block header %} {{ user | title }} {% endblock %} {% block content %}
 >
 {% endif %} {% endif %} {% if profile.intro %}
 <p>{{ profile.intro | safe }}</p>
+{% else %}
+<p>This user has not filled in any profile info yet.</p>
 {% endif %} {% if profile.date_started_writing %}
 <p>
   <em
@@ -45,7 +47,9 @@ block header %} {{ user | title }} {% endblock %} {% block content %}
 >
 {% endif %}
 <hr />
+
 <h2>Stories</h2>
+{% if count > 0 %}
 {% for story in stories %}
 <h4>
   <a href="{{url_for('read', story_to_read=story.url, chapter_number=1)}}">{{
@@ -65,7 +69,7 @@ block header %} {{ user | title }} {% endblock %} {% block content %}
   Summary: {{ story.summary }}
 </p>
 {% if story.author == session['username'] %}
-<p>Total chapters: {% if chapters %}{{story.chapters.length}}{% else %}0{% endif %} </p>
+<p>Total chapters: {% if story.chapters %}{{story.chapters|length}}{% else %}0{% endif %} </p>
 <a
   class="btn btn-my-color btn-sm btn-success"
   type="button"
@@ -118,8 +122,14 @@ block header %} {{ user | title }} {% endblock %} {% block content %}
     </div>
   </div>
 </div>
+
 <hr />
-{% endfor %} {% if user == session['username'] %}
+
+{% endfor %}
+{% else %}
+<p>No stories yet!</p>
+{% endif %}
+{% if user == session['username'] %}
 <a class="btn btn-my-color btn-sm btn-info" href="{{ url_for('new_story') }}"
   >Add a story</a
 >
