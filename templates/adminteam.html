@@ -23,20 +23,19 @@
 <h3>Meet the Team!</h3>
 <div class="row">
   {% for user in users %}
-  <div class="col-md-4">
+  <div class="col-md-6">
     <div class="card">
       <h4>
         <a href="{{url_for('profile', user=user.user_name) }}">{{
-          user.user_name
+          user.user_name | upper
         }}</a>
       </h4>
       <p>
-        {{ user.intro[0:120] | safe }}{% if user.intro|length > 120 %}... {%
-        endif %}
+        {{ user.intro | safe }}
       </p>
-      <p>
+      <h5>
         <a href="{{url_for('profile', user=user.user_name) }}">Read More</a>
-      </p>
+      </h5>
     </div>
   </div>
   {% endfor %}
