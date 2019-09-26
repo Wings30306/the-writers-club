@@ -65,6 +65,13 @@ block header %} {{ user | title }} {% endblock %} {% block content %}
   Summary: {{ story.summary }}
 </p>
 {% if story.author == session['username'] %}
+<p>Total chapters: {% if chapters %}{{story.chapters.length}}{% else %}0{% endif %} </p>
+<a
+  class="btn btn-my-color btn-sm btn-success"
+  type="button"
+  href="{{url_for('new_chapter', story_url=story.url )}}"
+  >Add Chapter</a
+>
 <a
   class="btn btn-my-color btn-sm btn-warning"
   type="button"
