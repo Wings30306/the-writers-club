@@ -42,6 +42,10 @@ header.masthead .page-heading {
   font-stretch: expanded;
 }
 
+.alert {
+  text-align: center
+}
+
 section{
   padding-top: 30px;
 }
