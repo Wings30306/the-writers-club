@@ -161,10 +161,13 @@ def profile(user):
     if user_profile == None:
         flash(user + " doesn't exist")
         return redirect(url_for('index'))
-    if session.get("is_adult") == True:
+    if user == session.get('username'):
         user_stories = stories_collection.find({'author': user})
-    else:
-        user_stories = stories_collection.find({'author': user, "rating": {"$nin": ["R/Adult/NSFW", "Adult/NSFW"]}})
+    else: 
+        if session.get("is_adult") == True:
+            user_stories = stories_collection.find({'$and': [{'author': user}, {"chapters.0": {"$exists": True}}]})
+        else:
+            user_stories = stories_collection.find({'author': user, "rating": {"$nin": ["R/Adult/NSFW", "Adult/NSFW"]}, "chapters.0": {"$exists": True}})
     return render_template("profile.html", user=user, stories=user_stories, profile=user_profile)
 
 
