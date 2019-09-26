@@ -245,12 +245,12 @@ def update_profile(user):
 def all_stories():
     if session:
         if session['is_adult'] == True:
-            all_stories = stories_collection.find()
+            all_stories = stories_collection.find( {"chapters.0": {'$exists': True} })
         else:
-            all_stories = stories_collection.find( {"rating": {"$nin": ["R/Adult/NSFW"]}})
+            all_stories = stories_collection.find( {"$and": [{"rating": {"$nin": ["R/Adult/NSFW"]}}, {"chapters.0": {'$exists': True} }]})
             flash("Adult stories have been filtered out because you are underage")
     else:
-        all_stories = stories_collection.find( {"rating": {"$nin": ["R/Adult/NSFW", "Adult/NSFW"]}})
+        all_stories = stories_collection.find( {"$and": [{"rating": {"$nin": ["R/Adult/NSFW"]}}, {"chapters.0": {'$exists': True} }]})
         flash("Adult-rated stories have been filtered out. You need to sign in to read these.")
     return render_template("allstories.html",
                            stories=all_stories)
@@ -280,7 +280,7 @@ def get_search_results():
     if author == "No author selected":
         author = {'$exists': True}
     result = stories_collection.find({'$and': [{"genres": genre}, {"fandoms": fandom}, {
-                                     "rating": rating}, {"author": author}]})
+                                     "rating": rating}, {"author": author}, {"chapters.0": {'$exists': True}}]})
     return render_template("allstories.html", stories=result)
 
 
