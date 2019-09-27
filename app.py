@@ -291,14 +291,14 @@ def all_stories():
                 {"chapters.0": {'$exists': True}})
         else:
             all_stories = stories_collection.find(
-                {"$and": [{"rating": {"$nin": ["R/Adult/NSFW"]}},
-                          {"chapters.0": {'$exists': True}}]})
+                {"rating": {"$nin": ["R/Adult/NSFW", "Adult/NSFW"]},
+                 "chapters.0": {'$exists': True}})
             flash("Adult stories have been filtered out" +
                   " because you are underage")
     else:
         all_stories = stories_collection.find(
-            {"$and": [{"rating": {"$nin": ["R/Adult/NSFW"]}},
-                      {"chapters.0": {'$exists': True}}]})
+            {"rating": {"$nin": ["R/Adult/NSFW", "Adult/NSFW"]},
+             "chapters.0": {'$exists': True}})
         flash(
             "Adult-rated stories have been filtered out. " +
             "You need to sign in to read these.")
