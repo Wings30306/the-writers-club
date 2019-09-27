@@ -51,7 +51,7 @@ block header %} {{ user | title }} {% endblock %} {% block content %}
 <h2>Stories</h2>
 {% if count > 0 %}
 {% for story in stories %}
-<h4>
+<h4 class="story-title">
   <a href="{{url_for('read', story_to_read=story.url, chapter_number=1)}}">{{
     story.title
   }}</a
