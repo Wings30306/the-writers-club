@@ -67,23 +67,40 @@ Read the full document for [thought process and database schemas](thought-proces
 
 ## Testing
 
-In this section, you need to convince the assessor that you have conducted enough testing to legitimately believe that the site works well. Essentially, in this part you will want to go over all of your user stories from the UX section and ensure that they all work as intended, with the project providing an easy and straightforward way for the users to achieve their goals.
+### Automated
 
-Whenever it is feasible, prefer to automate your tests, and if you've done so, provide a brief explanation of your approach, link to the test file(s) and explain how to run them.
+Automated testing has been used to check that pages were loading, see [test file](test_app.py) for details.
 
-For any scenarios that have not been automated, test the user stories manually and provide as much detail as is relevant. A particularly useful form for describing your testing process is via scenarios, such as:
+### Manual
 
-1. Contact form:
-    1. Go to the "Contact Us" page
-    2. Try to submit the empty form and verify that an error message about the required fields appears
-    3. Try to submit the form with an invalid email address and verify that a relevant error message appears
-    4. Try to submit the form with all inputs valid and verify that a success message appears.
+All forms have been tested extensively both by myself during the build of this website and fellow students who offered to test. Required fields can't be submitted without a minimum amount of characters, so just typing a period or a single space won't allow the forms to pass.
 
-In addition, you should mention in this section how your project looks and works on different browsers and screen sizes.
+It's also been tested that use of the url won't override the restrictions for users to edit or delete other people's input (profile as well as stories).
 
-You should also mention in this section any interesting bugs or problems you discovered during your testing, even if you haven't addressed them yet.
+A user also can't override the adult restriction by going through the author's profile or a search. I've not restricted individual stories in case of the server restarting during a read (and thus the session expiring) - the user would have to already have the url in order to use this to "cheat" the adult restrictions, meaning they would have to know the exact username of the author as well as the story title, which makes it a bit redundant as neither title or author show up in the story lists for underage or not-signed-in users.
 
-If this section grows too long, you may want to split it off into a separate file and link to it from here.
+### Checking the code
+
+The Python code itself has been checked and made PEP8-compliant using pep8online.com and pycodestyle.
+
+CSS has been run through the [Jigsaw CSS Validator](http://jigsaw.w3.org/css-validator/) with no errors found:
+![Valid CSS](http://jigsaw.w3.org/css-validator/images/vcss-blue "Valid CSS")
+
+HTML has been checked by running the app links in the [W3 Validator](https://validator.w3.org/nu/?doc=https%3A%2F%2Fthe-writers-club.herokuapp.com%2F). This avoids any problems with Jinja templating that might show up if testing the file by upload, seen as the pages are tested **after** Jinja has been loaded rather than before. The only warning given was on the register page where there is a date input. Modern browsers seem to have no issue with this (see Browser Compatibility) as it's at least partially supported, so I've left it as is. 
+
+### Browser compatibility
+
+This site has been tested on following browsers:
+- Google Chrome
+- Microsoft Edge
+- Firefox
+- iOS Safari
+
+### Responsive design
+
+The site has been tested on various screen sizes from phone to SmartTV size using the DevTools provided in Google Chrome.
+
+It's also been tested on a Sony Experia smartphone with no discernable issues. 
 
 ## Deployment
 
