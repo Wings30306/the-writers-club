@@ -743,4 +743,4 @@ def send_story_report(story_to_read):
 if __name__ == "__main__":
     app.run(host=os.getenv("IP"),
             port=os.getenv("PORT"),
-            debug=True)
+            debug=os.getenv("DEBUG"))
