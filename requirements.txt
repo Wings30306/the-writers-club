@@ -4,6 +4,7 @@ bson==0.5.8
 Click==7.0
 colorama==0.4.1
 coverage==4.5.4
+dnspython==2.0.0
 Flask==1.1.1
 Flask-PyMongo==2.3.0
 Flask-Testing==0.7.1
