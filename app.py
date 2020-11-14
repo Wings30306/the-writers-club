@@ -456,10 +456,10 @@ def update_story(story_to_read):
     genres = formatted_inputs.get("genre")
     if genres is None:
         genres = []
-    if form_data["newgenre"] is not "":
+    if form_data["newgenre"] != "":
         genres.append(form_data.get("newgenre"))
     fandoms = formatted_inputs.get("fandom")
-    if form_data["newfandom"] is not "":
+    if form_data["newfandom"] != "":
         fandoms.append(form_data.get("newfandom"))
 
     stories_collection.find_one_and_update({"url": story_to_read},
@@ -608,12 +608,12 @@ def add_story():
         genres = formatted_inputs.get("genre")
         if genres is None:
             genres = []
-        if form_data["newgenre"] is not "":
+        if form_data["newgenre"] != "":
             genres.append(form_data.get("newgenre"))
         fandoms = formatted_inputs.get("fandom")
         if fandoms is None:
             fandoms = []
-        if form_data["newfandom"] is not "":
+        if form_data["newfandom"] != "":
             fandoms.append(form_data.get("newfandom"))
         story_url = (session['username'] + "-" +
                      slugify(request.form.get('title'))).lower()
